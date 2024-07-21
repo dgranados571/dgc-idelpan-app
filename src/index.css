@@ -5,9 +5,98 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #dddfe1;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.div-container {
+  padding: 1rem 1rem;
+  margin-top: 0rem;
+}
+
+.div-container-logo {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.div-logo {
+  display: flex;
+  justify-content: center;
+  height: 9rem;
+  width: 9rem;
+  border-radius: 10px;
+  background-color: white;
+  padding: 0;
+  border: 1px solid white;
+}
+
+.img-logo-idelpan {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.div-style-form {
+  margin-top: 1rem;
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.p-label-form {
+  font-size: 18px;
+  color: #5C5C5C;
+  font-weight: 500;
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+
+.div-buttom-registra {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  height: 100%;
+}
+
+.bottom-custom {
+  width: 10rem;
+  background-color: orange;
+  color: white;
+  border: 1px solid orange;
+  border-radius: 20px;
+  padding: 5px 0px;
+  margin: 0rem 1rem;
+}
+
+.bottom-custom:hover {
+  width: 10rem;
+  background-color: #E3E3E3;
+  color: #5C5C5C;
+  border: 1px solid #E3E3E3;
+  margin: 0rem 1rem;
+}
+
+.a-link-login {
+  color: #333333;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.a-link-login:hover {
+  color: orange;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-control-error {
+  border: 1px solid red;
 }
