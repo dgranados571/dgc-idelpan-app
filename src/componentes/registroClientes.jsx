@@ -1,7 +1,14 @@
 import { useState } from 'react'
 import { AuthServices } from '../api/authServices';
+import ModalMensaje from '../modalMensaje/modalMensaje';
 
 const RegistroClientes = ({ setRedirect, setCargando }) => {
+
+    const [modalMensaje, setModalMensaje] = useState({
+        estado: false,
+        indiceMensaje: 0,
+        funcionSi: () => { }
+    });
 
     const tiposDeDocumentos = [
         { value: 'INITIAL', label: 'Seleccione' },
@@ -45,10 +52,12 @@ const RegistroClientes = ({ setRedirect, setCargando }) => {
                 setTimeout(() => {
                     limpiarCampos();
                     setCargando(false);
+                    ejecutaModalMensaje(1);
                 }, 250);
             } catch (error) {
                 setTimeout(() => {
                     setCargando(false);
+                    ejecutaModalMensaje(2);
                 }, 250);
             }
         } else {
@@ -108,7 +117,7 @@ const RegistroClientes = ({ setRedirect, setCargando }) => {
         setConfirmaCorreoError(confirmaCorreoValidate);
 
         setNumeroCelularError(false);
-        if(numeroCelular.length === 0){
+        if (numeroCelular.length === 0) {
             formValidado.push('numeroCelular');
             setNumeroCelularError(true);
         }
@@ -130,6 +139,24 @@ const RegistroClientes = ({ setRedirect, setCargando }) => {
         setConfirmaCorreo('');
         setNumeroCelular('');
     }
+
+    const ejecutaModalMensaje = (indiceMsj) => {
+        setModalMensaje({
+            estado: true,
+            indiceMensaje: indiceMsj,
+            funcionSi: () => {
+                setModalMensaje({
+                    estado: false,
+                    indiceMensaje: 0,
+                    funcionSi: () => { }
+                });
+                if (indiceMsj === 1) {
+                    setRedirect('USUARIO_LOGIN');
+                }
+            }
+        });
+    }
+
 
     return (
         <div>
@@ -197,6 +224,12 @@ const RegistroClientes = ({ setRedirect, setCargando }) => {
                     </div>
                 </div>
             </div>
+            {
+                modalMensaje.estado ?
+                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} />
+                    :
+                    <></>
+            }
         </div>
     )
 }

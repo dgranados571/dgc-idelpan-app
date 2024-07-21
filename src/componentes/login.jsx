@@ -28,12 +28,12 @@ const Login = ({ setRedirect, setCargando }) => {
                 </div>
                 <div className="col-12 col-sm-6 col-md-6 col-lg-6" >
                     <div className='div-buttom-registra'>
-                        <button className='btn btn-link a-link-login' onClick={()=> setRedirect('USUARIO_UPDATE_PASS')} >Restablecer contraseña</button>
+                        <button className='btn btn-link a-link-login' onClick={() => setRedirect('USUARIO_UPDATE_PASS')} >Restablecer contraseña</button>
                     </div>
                 </div>
                 <div className="col-12 col-sm-6 col-md-6 col-lg-6" >
                     <div className='div-buttom-registra'>
-                        <button className='btn btn-link a-link-login' onClick={()=> setRedirect('USUARIO_SINGIN')} >Crear cuenta</button>
+                        <button className='btn btn-link a-link-login' onClick={() => setRedirect('USUARIO_SINGIN')} >Crear cuenta</button>
                     </div>
                 </div>
             </div>
