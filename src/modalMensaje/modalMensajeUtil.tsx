@@ -34,7 +34,7 @@ export const ModalMensajeUtil = () => {
       claseIcono: 'modal-icono-error'
     },
     'Auth-006': {
-      titulo: 'Se ha activado tu cuenta satisfactoriamente',
+      titulo: 'La cuenta ha sido activada satisfactoriamente.',
       descripcion: '¡Maravilloso! Ya puedes acceder a todos los servicios que te ofrece Idelpan.',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
