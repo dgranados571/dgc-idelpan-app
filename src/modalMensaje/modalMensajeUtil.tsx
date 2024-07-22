@@ -17,7 +17,7 @@ export const ModalMensajeUtil = () => {
     },
     'Auth-003': {
       titulo: '¡Vaya! No es posible crear la cuenta.',
-      descripcion: 'Parece que ya hay un usuario con la información que ha ingresado. Por favor, verifíquela y vuelva a intentarlo.',
+      descripcion: 'Parece que ya existe un usuario con la información que ha ingresado. Por favor, verifíquela y vuelva a intentarlo.',
       icono: faUserTimes,
       claseIcono: 'modal-icono-error'
     },
