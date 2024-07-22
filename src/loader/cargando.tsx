@@ -1,7 +1,5 @@
-import React from 'react'
 import loading from '../img/loading.gif'
 import './cargando.css'
-
 
 export const Cargando = () => {
     return (

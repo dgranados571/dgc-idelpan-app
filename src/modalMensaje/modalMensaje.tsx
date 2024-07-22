@@ -1,8 +1,9 @@
 import { ModalMensajeUtil } from './modalMensajeUtil';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ModalProps } from '../interfaces/IAuthServices';
 import './modalMensaje.css'
 
-const ModalMensaje = ({ funcionSi, indiceMensaje }) => {
+const ModalMensaje: React.FC<ModalProps> = ({ funcionSi, indiceMensaje }) => {
 
     const { modalInfo } = ModalMensajeUtil();
 
@@ -14,11 +15,11 @@ const ModalMensaje = ({ funcionSi, indiceMensaje }) => {
                     <div className="col-12 col-sm-12 col-md-12 col-lg-8">
                         <div className="div-style-form mx-3">
                             <div className="div-modal-titulo-icono">
-                                <h3 className='titulo-form '>{modalInfo[indiceMensaje].titulo}</h3>
-                                <FontAwesomeIcon icon={modalInfo[indiceMensaje].icono} className={modalInfo[indiceMensaje].claseIcono} />
+                                <h3 className='titulo-form '>{modalInfo[indiceMensaje]?.titulo}</h3>
+                                <FontAwesomeIcon icon={modalInfo[indiceMensaje]?.icono} className={modalInfo[indiceMensaje]?.claseIcono} />
                             </div>
                             <p>
-                                {modalInfo[indiceMensaje].descripcion}
+                                {modalInfo[indiceMensaje]?.descripcion}
                             </p>
                             <div className='div-buttom-registra mt-4'>
                                 <button className='btn btn-secondary bottom-custom-secondary' onClick={() => funcionSi()} >Aceptar</button>

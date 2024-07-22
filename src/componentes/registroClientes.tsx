@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { AuthServices } from '../api/authServices';
 import ModalMensaje from '../modalMensaje/modalMensaje';
+import { AuthProps } from '../interfaces/IAuthServices';
+import { GenericResponse } from '../interfaces/IGenericResponse';
 
-const RegistroClientes = ({ setRedirect, setCargando }) => {
+const RegistroClientes: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
 
     const [modalMensaje, setModalMensaje] = useState({
         estado: false,
-        indiceMensaje: 0,
+        indiceMensaje: '',
         funcionSi: () => { }
     });
 
@@ -48,22 +50,18 @@ const RegistroClientes = ({ setRedirect, setCargando }) => {
             }
             const authServices = new AuthServices();
             try {
-                await authServices.requestPost(body);
-                setTimeout(() => {
+                const response: GenericResponse = await authServices.requestPost(body, 1);
+                if (response.estado) {
                     limpiarCampos();
-                    setCargando(false);
-                    ejecutaModalMensaje(1);
-                }, 250);
+                }
+                setCargando(false);
+                ejecutaModalMensaje(response.mensaje);
             } catch (error) {
-                setTimeout(() => {
-                    setCargando(false);
-                    ejecutaModalMensaje(2);
-                }, 250);
+                setCargando(false);
+                ejecutaModalMensaje('Auth-002');
             }
         } else {
-            setTimeout(() => {
-                setCargando(false);
-            }, 250);
+            setCargando(false);
         }
     }
 
@@ -140,23 +138,22 @@ const RegistroClientes = ({ setRedirect, setCargando }) => {
         setNumeroCelular('');
     }
 
-    const ejecutaModalMensaje = (indiceMsj) => {
+    const ejecutaModalMensaje = (indiceMsj: string) => {
         setModalMensaje({
             estado: true,
             indiceMensaje: indiceMsj,
             funcionSi: () => {
                 setModalMensaje({
                     estado: false,
-                    indiceMensaje: 0,
+                    indiceMensaje: '',
                     funcionSi: () => { }
                 });
-                if (indiceMsj === 1) {
+                if (indiceMsj === 'Auth-001') {
                     setRedirect('USUARIO_LOGIN');
                 }
             }
         });
     }
-
 
     return (
         <div>

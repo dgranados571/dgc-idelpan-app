@@ -1,13 +1,25 @@
 import axios from 'axios'
+import { UtilUrl } from './utilUrl';
 
 export class AuthServices {
 
-    requestPost(body: any): Promise<any> {
+    requestPost(body: any, indexUrl: number): Promise<any> {
+        const { url, apiLambda } = UtilUrl();
+        let urlRq: string;
+        const f = new FormData();
+        if (apiLambda) {
+            f.append('urlPath', `${url[indexUrl].urlDominioServidor}${url[indexUrl].pathLambda}`)
+            f.append('body', JSON.stringify(body))
+            urlRq = `${url[indexUrl].urlEntornoLambda}`;
+        } else {
+            urlRq = `${url[indexUrl].urlEntornoLocal}${url[indexUrl].pathLambda}`;            
+        }
         const headers = {
             'Content-Type': 'application/json'
         }
+        const rqBody = apiLambda ? f : body;
         return new Promise((resolve, reject) => {
-            axios.post(`http://localhost:80/service/idelpan/crearCuenta`, body, {
+            axios.post(urlRq, rqBody, {
                 headers
             }).then((response) => {
                 resolve(response.data)

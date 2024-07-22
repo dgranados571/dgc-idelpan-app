@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { AuthProps } from '../interfaces/IAuthServices';
 
-const RestableceContrasenia = ({ setRedirect, setCargando }) => {
+const RestableceContrasenia: React.FC<AuthProps>  = ({ setRedirect, setCargando }) => {
 
     const [viewStep, setviewStep] = useState('');
 
@@ -9,7 +10,7 @@ const RestableceContrasenia = ({ setRedirect, setCargando }) => {
     const [contrasenia, setContrasenia] = useState('');
     const [confirmaContrasenia, setConfirmaContrasenia] = useState('');
 
-    const executeViewStep = (step) => {
+    const executeViewStep = (step: string) => {
         setviewStep(step)
     }
 
@@ -121,11 +122,9 @@ const RestableceContrasenia = ({ setRedirect, setCargando }) => {
     return (
         <div>
             <h3 className='titulo-form'>Recuperar contraseña</h3>
-
             {
                 validateViewStep()
             }
-
         </div>
     )
 }
