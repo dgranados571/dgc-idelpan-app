@@ -11,6 +11,7 @@ const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
         indiceMensaje: '',
         funcionSi: () => { }
     });
+    
     const [viewStep, setviewStep] = useState('');
     const [usuario, setUsuario] = useState('');
     const [contrasenia, setContrasenia] = useState('');

@@ -23,6 +23,12 @@ export const UtilUrl = () => {
       urlEntornoLocal,
       urlDominioServidor,
       pathLambda: '/service/idelpan/actualizaPass'
+    },
+    4: {
+      urlEntornoLambda,
+      urlEntornoLocal,
+      urlDominioServidor,
+      pathLambda: '/service/idelpan/restablecePass'
     }
   };
 

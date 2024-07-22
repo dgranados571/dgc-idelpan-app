@@ -34,11 +34,31 @@ export const ModalMensajeUtil = () => {
       claseIcono: 'modal-icono-error'
     },
     'Auth-006': {
-      titulo: 'La cuenta ha sido activada satisfactoriamente.',
+      titulo: 'La cuenta ha sido activada exitosamente.',
       descripcion: '¡Maravilloso! Ya puedes acceder a todos los servicios que te ofrece Idelpan.',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
-    }
+    },
+
+    'Auth-007': {
+      titulo: 'Restablecer contraseña.',
+      descripcion: 'Hemos enviado un código de seguridad al correo registrado',
+      icono: faCheckDouble,
+      claseIcono: 'modal-icono'
+    },
+    'Auth-008': {
+      titulo: 'Error en la validación.',
+      descripcion: 'Parece que la información que suministras no es correcta. Por favor, verifícala y vuelve a intentarlo',
+      icono: faExclamationCircle,
+      claseIcono: 'modal-icono-error'
+    },
+    'Auth-009': {
+      titulo: 'La contraseña ha sido restablecida exitosamente.',
+      descripcion: '¡Maravilloso! Ya puedes acceder a todos los servicios que te ofrece Idelpan.',
+      icono: faCheckDouble,
+      claseIcono: 'modal-icono'
+    },
+
   }
 
   return {
