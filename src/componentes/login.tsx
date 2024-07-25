@@ -3,8 +3,11 @@ import { AuthProps } from '../interfaces/IAuthServices';
 import { AuthServices } from '../api/authServices';
 import { GenericResponse } from '../interfaces/IGenericResponse';
 import ModalMensaje from '../modalMensaje/modalMensaje';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
+
+    const navigate = useNavigate();
 
     const [modalMensaje, setModalMensaje] = useState({
         estado: false,
@@ -111,7 +114,8 @@ const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
                     setContrasenia('');
                     setviewStep(response.mensaje);
                 } else {
-                    console.log('REDIRECCIONO A LA ZONA TRANSACIONAL')
+                    sessionStorage.setItem('usuarioApp', JSON.stringify(response.objeto))
+                    navigate('/privateZone');
                 }
             } else {
                 ejecutaModalMensaje(response.mensaje);

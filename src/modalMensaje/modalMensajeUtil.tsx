@@ -41,7 +41,7 @@ export const ModalMensajeUtil = () => {
     },
 
     'Auth-007': {
-      titulo: 'Restablecer contraseña.',
+      titulo: 'Se ha enviado el correo exitosamente',
       descripcion: 'Hemos enviado un código de seguridad al correo registrado',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'

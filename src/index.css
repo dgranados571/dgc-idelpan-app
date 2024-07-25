@@ -25,7 +25,24 @@ code {
   border-radius: 20px;
 }
 
+.div-dashboard-container-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .div-logo {
+  display: flex;
+  justify-content: center;
+  height: 9rem;
+  width: 9rem;
+  border-radius: 10px;
+  background-color: white;
+  padding: 0;
+  border: 1px solid white;
+}
+
+.div-dashboard-logo {
   display: flex;
   justify-content: center;
   height: 9rem;
@@ -49,8 +66,25 @@ code {
   border-radius: 20px;
 }
 
+.div-dasboard-icon {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.dasboard-icon {
+  font-size: 4rem;
+}
+
+.div-p-label-form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .p-label-form {
-  font-size: 18px;
+  font-size: 17px;
   color: #5C5C5C;
   font-weight: 500;
   margin-bottom: 5px;
@@ -117,4 +151,117 @@ code {
 
 .form-control-error {
   border: 1px solid red;
+}
+
+.div-dasboard-style-form {
+  margin-top: 1rem;
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.div-dasboard-actions {
+  background-color: #333333;
+  border-radius: 0px 0px 20px 20px;
+}
+
+.a-dasboard-link {
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.a-dasboard-link:hover {
+  color: orange;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.div-co-bottom {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding: 0px 15px 0px 0px; 
+}
+
+.a-link-whit-icon {
+  display: flex;
+  color: #333333;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 5px 5px 5px 5px;
+}
+
+.a-link-whit-icon:hover {
+  display: flex;
+  color: orange;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 5px 5px 5px 5px;
+}
+
+.div-lista-produtos{
+  height: 25rem;
+  overflow: auto;
+  padding: 0px 10px;
+}
+
+.div-item-produto{
+  display: flex;
+  justify-content: space-between;
+  align-items: center
+}
+
+.div-detalle-producto-t1{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.a-link-whit-icon-2 {
+  display: flex;
+  align-items: center;
+  color: #333333;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0px 0px 0px 5px;
+}
+
+.a-link-whit-icon-2:hover {
+  display: flex;
+  align-items: center;
+  color: orange;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0px 0px 0px 5px;
+}
+
+.div-form-tipo-compra{
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (min-width: 760px) {}
+
+
+@media (min-width: 1025px) {
+
+  .div-dashboard-logo {
+    display: flex;
+    justify-content: center;
+    height: 14rem;
+    width: 14rem;
+    border-radius: 10px;
+    background-color: white;
+    padding: 0;
+    border: 1px solid white;
+  }
 }
