@@ -15,6 +15,12 @@ export const ModalMensajeUtil = () => {
       icono: faExclamationCircle,
       claseIcono: 'modal-icono-error'
     },
+    'Auth-002-lambda': {
+      titulo: '¡Ups! Tenemos dificultades en la comunicación.',
+      descripcion: 'No es posible consultar la información en este momento. Por favor, contacte al administrador.',
+      icono: faExclamationCircle,
+      claseIcono: 'modal-icono-error'
+    },
     'Auth-003': {
       titulo: '¡Vaya! No es posible crear la cuenta.',
       descripcion: 'Parece que ya existe un usuario con la información que ha ingresado. Por favor, verifíquela y vuelva a intentarlo.',
@@ -69,6 +75,12 @@ export const ModalMensajeUtil = () => {
       descripcion: '¡Maravilloso! Ya tenemos tu orden de pedido y estamos trabajando en ella.',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
+    },
+    'Auth-012': {
+      titulo: '¡Ups! Tenemos errores de comunicación.',
+      descripcion: 'No es posible consultar la información en este momento. Por favor, contacte al administrador.',
+      icono: faExclamationCircle,
+      claseIcono: 'modal-icono-error'
     },
 
   }
