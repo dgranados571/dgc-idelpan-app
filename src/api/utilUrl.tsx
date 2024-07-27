@@ -1,7 +1,7 @@
 
 const urlEntornoLambda = 'https://cgmoazbtxd.execute-api.us-east-1.amazonaws.com/Stage/unadmin';
 const urlEntornoLocal = 'http://localhost:8080';
-const urlDominioServidor = 'http://54.210.214.166:8080';
+const urlDominioServidor = 'http://44.223.150.80:8080';
 
 export const UtilUrl = () => {
 
@@ -45,7 +45,7 @@ export const UtilUrl = () => {
   };
 
   return {
-    apiLambda: false,
+    apiLambda: true,
     url
   }
 

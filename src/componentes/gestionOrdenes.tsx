@@ -97,7 +97,7 @@ const GestionOrdenes: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) 
   const labelProductName = (idProduct: string) => {
     const productName = productosDetalle[idProduct].nombre;
     return (
-      <>{productName} </>
+      <>{productName}</>
     )
 
   }
