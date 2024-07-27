@@ -58,6 +58,18 @@ export const ModalMensajeUtil = () => {
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
     },
+    'Auth-010': {
+      titulo: 'Sesión finalizada.',
+      descripcion: 'Parece que la sesión ha expirado. Por favor, ingrese de nuevo.',
+      icono: faUserTimes,
+      claseIcono: 'modal-icono-error'
+    },
+    'Auth-011': {
+      titulo: 'Se ha creado la orden.',
+      descripcion: '¡Maravilloso! Ya tenemos tu orden de pedido y estamos trabajando en ella.',
+      icono: faCheckDouble,
+      claseIcono: 'modal-icono'
+    },
 
   }
 

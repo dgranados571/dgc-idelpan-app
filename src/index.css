@@ -249,6 +249,18 @@ code {
   justify-content: space-between;
 }
 
+.div-header-list-op-1{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.div-header-list-op-2{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
 @media (min-width: 760px) {}
 
 

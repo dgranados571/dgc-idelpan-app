@@ -34,12 +34,21 @@ export interface Product {
 }
 
 export interface DetalleProductState {
-    activo: boolean;
+    idProduct: string;
     product: Product;
+    activo: boolean;
 }
 
 export interface OrdenPedidoProduct {
+    idProduct: string;
     product: Product;
     tipoCompra: string;
     cantidad: string;    
+}
+
+export interface GestionOrdenesDePedido {
+    usuario: string;
+    fechaOrdenPedido: string;
+    idProcesamiento: string;
+    productosLista: OrdenPedidoProduct[]    
 }

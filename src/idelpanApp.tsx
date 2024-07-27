@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Autenticacion from "./componentes/autenticacion"
-import Dashboard from "./componentes/dashboard"
 import Transaccional from "./componentes/transaccional"
 
 const IdelpanApp = () => {

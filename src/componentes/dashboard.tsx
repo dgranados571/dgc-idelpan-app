@@ -6,10 +6,17 @@ import { useNavigate } from 'react-router-dom'
 import CrearOrden from './crearOrden'
 import GestionOrdenes from './gestionOrdenes'
 import { TransaccionProps } from '../interfaces/IAuthServices'
+import ModalMensaje from '../modalMensaje/modalMensaje'
 
 const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const navigate = useNavigate();
+
+    const [modalMensaje, setModalMensaje] = useState({
+        estado: false,
+        indiceMensaje: '',
+        funcionSi: () => { }
+    });
 
     const [redirect, setRedirect] = useState('');
 
@@ -32,7 +39,7 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
             setCargando(false);
         } else {
             setCargando(false);
-            cerrarSesion();
+            ejecutaModalMensaje('Auth-010');
         }
     }, [])
 
@@ -89,6 +96,23 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
         navigate('/publicZone');
     }
 
+    const ejecutaModalMensaje = (indiceMsj: string) => {
+        setModalMensaje({
+            estado: true,
+            indiceMensaje: indiceMsj,
+            funcionSi: () => {
+                setModalMensaje({
+                    estado: false,
+                    indiceMensaje: '',
+                    funcionSi: () => { }
+                });
+                if (indiceMsj === 'Auth-010') {
+                    cerrarSesion();                    
+                }
+            }
+        });
+    }
+
     return (
         <div className='div-container'>
             <div className="row">
@@ -132,6 +156,12 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
             </div>
             {
                 validateRedirect()
+            }
+            {
+                modalMensaje.estado ?
+                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} />
+                    :
+                    <></>
             }
         </div>
     )

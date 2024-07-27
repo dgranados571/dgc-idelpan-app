@@ -3,10 +3,22 @@ import { DashBoardProps, DetalleProductState, OrdenPedidoProduct } from '../inte
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReplyAll, faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import productosUtil from '../util/productosUtil'
+import { GenericResponse } from '../interfaces/IGenericResponse'
+import { AuthServices } from '../api/authServices'
+import ModalMensaje from '../modalMensaje/modalMensaje'
+import { useNavigate } from 'react-router-dom'
 
 const CrearOrden: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
 
     const { productosDetalle } = productosUtil();
+
+    const navigate = useNavigate();
+
+    const [modalMensaje, setModalMensaje] = useState({
+        estado: false,
+        indiceMensaje: '',
+        funcionSi: () => { }
+    });
 
     const tiposDeCompra = [
         { value: 'INITIAL', label: 'Seleccione' },
@@ -23,6 +35,7 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
 
     const [detalleProduct, setDetalleProduct] = useState<DetalleProductState>({
         activo: false,
+        idProduct: '',
         product: {
             nombre: 'Sin producto seleccionado',
             PxC: 0,
@@ -34,6 +47,7 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
     const selecionaProducto = (idProduct: any) => {
         setDetalleProduct({
             activo: true,
+            idProduct,
             product: productosDetalle[idProduct]
         });
         setTipoCompra('INITIAL');
@@ -45,6 +59,7 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
     const limpiarBusqueda = () => {
         setDetalleProduct({
             activo: false,
+            idProduct: '',
             product: {
                 nombre: 'Sin producto seleccionado',
                 PxC: 0,
@@ -58,6 +73,7 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
         const formValidado = validaCampos();
         if (formValidado) {
             const productOP: OrdenPedidoProduct = {
+                idProduct: detalleProduct.idProduct,
                 product: detalleProduct.product,
                 tipoCompra,
                 cantidad
@@ -126,8 +142,53 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
         }
     }
 
-    const cerrarOrden = () =>{
-        setOrdenPedido([]);
+    const cerrarOrden = async () => {
+        setCargando(true);
+        let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
+        if (!!usuarioLocalStorage) {
+            const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
+            const body = {
+                usuario: usuarioLocalStorageObj.usuario,
+                ordenPedido: ordenPedido
+            }
+            const authServices = new AuthServices();
+            try {
+                const response: GenericResponse = await authServices.requestPost(body, 5);
+                if (response.estado) {
+                    setOrdenPedido([]);
+                }
+                ejecutaModalMensaje(response.mensaje);
+                setCargando(false);
+            } catch (error) {
+                setCargando(false);
+                ejecutaModalMensaje('Auth-002');
+            }
+        } else {
+            setCargando(false);
+            ejecutaModalMensaje('Auth-010');
+        }
+    }
+
+    const cerrarSesion = () => {
+        sessionStorage.clear();
+        navigate('/publicZone');
+    }
+
+    const ejecutaModalMensaje = (indiceMsj: string) => {
+        setModalMensaje({
+            estado: true,
+            indiceMensaje: indiceMsj,
+            funcionSi: () => {
+                setModalMensaje({
+                    estado: false,
+                    indiceMensaje: '',
+                    funcionSi: () => { }
+                });
+                if (indiceMsj === 'Auth-010') {
+                    cerrarSesion();                    
+                }
+            }
+        });
     }
 
     return (
@@ -261,6 +322,12 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
                     </div>
                 </div>
             </div>
+            {
+                modalMensaje.estado ?
+                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} />
+                    :
+                    <></>
+            }
         </>
     )
 }
