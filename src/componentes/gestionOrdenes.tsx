@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { DashBoardProps, GestionOrdenesDePedido, OrdenPedidoProduct } from '../interfaces/IAuthServices'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faReplyAll, faEyeSlash, faEye, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faReplyAll, faEye, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { AuthServices } from '../api/authServices'
 import { GenericResponse } from '../interfaces/IGenericResponse'
 import { useNavigate } from 'react-router-dom'

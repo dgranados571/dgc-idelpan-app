@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { DashBoardProps, DetalleProductState, OrdenPedidoProduct } from '../interfaces/IAuthServices'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReplyAll, faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons'

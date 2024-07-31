@@ -25,12 +25,6 @@ code {
   border-radius: 20px;
 }
 
-.div-dashboard-container-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .div-logo {
   display: flex;
   justify-content: center;
@@ -42,11 +36,44 @@ code {
   border: 1px solid white;
 }
 
+.div-menu-lateral {
+  display: none;
+  justify-content: space-between;
+  background-color: white;
+  padding: 5px;
+  border-radius: .25rem;
+}
+
+.div-dashboard-container-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-dashboard-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 13px;
+}
+
+.div-dashboard-info-padre {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.div-dashboard-header-busqueda-padre {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .div-dashboard-logo {
   display: flex;
   justify-content: center;
-  height: 9rem;
-  width: 9rem;
+  height: 5rem;
+  width: 5rem;
   border-radius: 10px;
   background-color: white;
   padding: 0;
@@ -75,6 +102,18 @@ code {
 
 .dasboard-icon {
   font-size: 4rem;
+}
+
+.dasboard-icon-header-busqueda {
+  font-size: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.dasboard-icon-header-menu {
+  font-size: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .div-p-label-form {
@@ -153,6 +192,11 @@ code {
   border: 1px solid red;
 }
 
+.form-imput-busqueda {
+  border-radius: 0.50rem;
+  padding: 12px;
+}
+
 .div-dasboard-style-form {
   margin-top: 1rem;
   background-color: white;
@@ -185,7 +229,7 @@ code {
   align-items: center;
   justify-content: space-between;
   margin-top: 1rem;
-  padding: 0px 15px 0px 0px; 
+  padding: 0px 15px 0px 0px;
 }
 
 .a-link-whit-icon {
@@ -206,19 +250,19 @@ code {
   padding: 5px 5px 5px 5px;
 }
 
-.div-lista-produtos{
+.div-lista-produtos {
   height: 25rem;
   overflow: auto;
   padding: 0px 10px;
 }
 
-.div-item-produto{
+.div-item-produto {
   display: flex;
   justify-content: space-between;
   align-items: center
 }
 
-.div-detalle-producto-t1{
+.div-detalle-producto-t1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -244,36 +288,87 @@ code {
   padding: 0px 0px 0px 5px;
 }
 
-.div-form-tipo-compra{
+.div-form-tipo-compra {
   display: flex;
   justify-content: space-between;
 }
 
-.div-header-list-op-1{
+.div-header-list-op-1 {
   width: 100%;
   display: flex;
   justify-content: flex-start;
 }
 
-.div-header-list-op-2{
+.div-header-list-op-2 {
   width: 100%;
   display: flex;
   justify-content: flex-end;
 }
+
+.div-card-padre {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.div-card-img {
+  max-width: 11rem;
+  width: 11rem;
+}
+
+.card-img {
+  object-fit: cover;
+  border-radius: 10px 10px 0px 0px;
+  height: 7rem;
+}
+
+.div-card-info {
+  font-size: 13px;
+  background-color: #dddfe1;
+  padding: 5px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.card-info-nombre {
+  font-weight: bold;
+  padding: 0;
+  margin: 0px 0px;
+}
+
+.div-card-info-txt {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-info-txt {
+  padding: 0;
+  margin: 2px 0px;
+}
+
+.card-info-txt-2 {
+  font-weight: bold;
+  padding: 0;
+  margin: 2px 0px;
+}
+
 
 @media (min-width: 760px) {}
 
 
 @media (min-width: 1025px) {
 
-  .div-dashboard-logo {
+  .dasboard-icon-header-menu {
+    display: none;
+    font-size: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .div-menu-lateral {
     display: flex;
-    justify-content: center;
-    height: 14rem;
-    width: 14rem;
-    border-radius: 10px;
+    justify-content: space-between;
     background-color: white;
-    padding: 0;
-    border: 1px solid white;
+    padding: 5px;
+    border-radius: .25rem;
   }
 }
