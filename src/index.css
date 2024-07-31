@@ -325,11 +325,12 @@ code {
 .div-card-info {
   font-size: 13px;
   background-color: #dddfe1;
-  padding: 5px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 130px;
+  border-radius: 0px 0px 10px 10px;
 }
 
 .card-info-nombre {

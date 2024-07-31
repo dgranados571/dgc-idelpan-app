@@ -152,7 +152,7 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                                         <>
                                             <div className="col-6 col-sm-6 col-md-4 col-lg-4" >
                                                 <div className='div-card-padre'>
-                                                    <div className='div-card-img'>
+                                                    <div className='div-card-img mb-4'>
                                                         <img className='card-img' src={producto.urlImage} alt=''></img>
                                                         <div className='div-card-info'>
                                                             <p className='card-info-nombre'>{producto.nombre}</p>
@@ -165,14 +165,8 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                                                                 <p className='card-info-txt'>Valor Canasta</p>
                                                                 <p className='card-info-txt-2'>${producto.valorCanasta}</p>
                                                             </div>
-                                                        </div>
-                                                        <div className='div-dasboard-actions'>
-                                                            <div className='div-buttom-registra mt-0 mb-5'>
-                                                                <button className='btn btn-link a-dasboard-link' onClick={() => setRedirect('VISTA_GESTION_ORDENES')} >Agregar</button>
-                                                            </div>
-                                                        </div>
+                                                        </div>                                                        
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </>
