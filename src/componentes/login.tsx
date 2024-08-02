@@ -65,7 +65,7 @@ const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
             default:
                 return (
                     <>
-                        <h3 className='titulo-form'>Iniciar sesión</h3>
+                        <h3 className='titulo-form m-0'>Iniciar sesión</h3>
                         <div className="row">
                             <div className="col-12 col-sm-12 col-md-12 col-lg-12" >
                                 <div className='div-form'>
@@ -85,12 +85,12 @@ const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
                                 </div>
                             </div>
                             <div className="col-12 col-sm-6 col-md-6 col-lg-6" >
-                                <div className='div-buttom-registra'>
+                                <div className='div-buttom-registra mt-2'>
                                     <button className='btn btn-link a-link-login' onClick={() => setRedirect('USUARIO_UPDATE_PASS')} >Restablecer contraseña</button>
                                 </div>
                             </div>
                             <div className="col-12 col-sm-6 col-md-6 col-lg-6" >
-                                <div className='div-buttom-registra'>
+                                <div className='div-buttom-registra mt-0'>
                                     <button className='btn btn-link a-link-login' onClick={() => setRedirect('USUARIO_SINGIN')} >Crear cuenta</button>
                                 </div>
                             </div>

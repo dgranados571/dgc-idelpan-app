@@ -40,7 +40,7 @@ const Autenticacion = () => {
             <img src={logo} alt='idelpan-logo' className='img-logo-idelpan'></img>
           </div>
         </div>
-        <div className='div-style-form'>
+        <div className='div-style-form p-3'>
           <div className="row">
             <div className="col-12 col-sm-12 col-md-12 col-lg-6 mb-4" >
               {

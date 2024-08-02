@@ -137,6 +137,22 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                             </div>
                         </div>
                     </div>
+                    <div className='div-menu-lateral mt-3 p-0'>
+                        <div className='div-dashboard-info-padre'>
+                            <div className='div-item-menu p-2'>
+                                <p className='m-0'>Inicio </p>
+                            </div>
+                            <div className='div-item-menu p-2'>
+                                <p className='m-0'>Mis ordenenes </p>
+                            </div>
+                            <div className='div-item-menu p-2'>
+                                <p className='m-0'>Mi cuenta </p>
+                            </div>
+                            <div className='div-item-menu p-2'>
+                                <p className='m-0'>Cerrar sesión </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div className="col-12 col-sm-12 col-md-12 col-lg-9" >
                     <div className='div-dashboard-header-busqueda-padre'>

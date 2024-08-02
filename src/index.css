@@ -58,6 +58,7 @@ code {
 }
 
 .div-dashboard-info-padre {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -353,6 +354,10 @@ code {
   font-weight: bold;
   padding: 0;
   margin: 2px 0px;
+}
+
+.div-item-menu {
+  width: 100%;
 }
 
 
