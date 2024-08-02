@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import logo from '../img/idelpanlogo.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartArrowDown, faFileText, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faCartArrowDown, faBars, faHome, faUser, faSignOut, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import CrearOrden from './crearOrden'
 import GestionOrdenes from './gestionOrdenes'
-import { TransaccionProps } from '../interfaces/IAuthServices'
+import { MenuLateral, TransaccionProps } from '../interfaces/IAuthServices'
 import ModalMensaje from '../modalMensaje/modalMensaje'
 import productosUtil from '../util/productosUtil'
 
@@ -22,11 +22,34 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const [redirect, setRedirect] = useState('');
 
+    const [openMenu, setOpenMenu] = useState(true);
+
     const [infoMenuUsuario, setInfoMenuUsuario] = useState({
         usuario: '',
         nombre_completo: '',
         id_procesamiento: ''
     })
+
+    const [menuLateral, setmenuLateral] = useState<MenuLateral[]>([
+        {
+            nombreItem: 'Inicio',
+            className: 'div-item-menu active',
+            iconMenu: faHome,
+            controlVista: ''
+        },
+        {
+            nombreItem: 'Mis ordenenes',
+            className: 'div-item-menu',
+            iconMenu: faShoppingBag,
+            controlVista: 'VISTA_GESTION_ORDENES'
+        },
+        {
+            nombreItem: 'Mi cuenta',
+            className: 'div-item-menu',
+            iconMenu: faUser,
+            controlVista: 'VISTA_MI_CUENTA'
+        }
+    ])
 
     useEffect(() => {
         setCargando(true);
@@ -44,54 +67,6 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
             ejecutaModalMensaje('Auth-010');
         }
     }, [])
-
-    const validateRedirect = () => {
-        switch (redirect) {
-            case 'VISTA_CREAR_ORDEN':
-                return (
-                    <>
-                        <CrearOrden setRedirect={setRedirect} setCargando={setCargando} />
-                    </>
-                )
-            case 'VISTA_GESTION_ORDENES':
-                return (
-                    <>
-                        <GestionOrdenes setRedirect={setRedirect} setCargando={setCargando} />
-                    </>
-                )
-            default:
-                return (
-                    <>
-                        <div className="row">
-                            <div className="col-12 col-sm-12 col-md-12 col-lg-6" >
-                                <div className='div-dasboard-style-form'>
-                                    <div className='div-dasboard-icon'>
-                                        <FontAwesomeIcon icon={faCartArrowDown} className='dasboard-icon' />
-                                    </div>
-                                </div>
-                                <div className='div-dasboard-actions'>
-                                    <div className='div-buttom-registra mt-0'>
-                                        <button className='btn btn-link a-dasboard-link' onClick={() => setRedirect('VISTA_CREAR_ORDEN')} >Crear orden de pedido</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-12 col-lg-6" >
-                                <div className='div-dasboard-style-form'>
-                                    <div className='div-dasboard-icon'>
-                                        <FontAwesomeIcon icon={faFileText} className='dasboard-icon' />
-                                    </div>
-                                </div>
-                                <div className='div-dasboard-actions'>
-                                    <div className='div-buttom-registra mt-0'>
-                                        <button className='btn btn-link a-dasboard-link' onClick={() => setRedirect('VISTA_GESTION_ORDENES')} >Ver mis ordenes de pedido</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </>
-                )
-        }
-    }
 
     const cerrarSesion = () => {
         sessionStorage.clear();
@@ -115,52 +90,42 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
         });
     }
 
-    return (
-        <div className='div-container'>
-            <div className="row">
-                <div className="col-12 col-sm-12 col-md-12 col-lg-3" >
-                    <div className='div-menu-lateral'>
-                        <div className='div-dashboard-container-logo'>
-                            <div className='div-dashboard-logo'>
-                                <img src={logo} alt='idelpan-logo' className='img-logo-idelpan'></img>
-                            </div>
-                        </div>
-                        <div className='div-dashboard-info-padre'>
-                            <div className='div-dashboard-info'>
-                                <p className='m-0'>{infoMenuUsuario.id_procesamiento} </p>
-                            </div>
-                            <div className='div-dashboard-info'>
-                                <p className='m-0'>{infoMenuUsuario.usuario} </p>
-                            </div>
-                            <div className='div-dashboard-info'>
-                                <p className='m-0'>{infoMenuUsuario.nombre_completo} </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='div-menu-lateral mt-3 p-0'>
-                        <div className='div-dashboard-info-padre'>
-                            <div className='div-item-menu p-2'>
-                                <p className='m-0'>Inicio </p>
-                            </div>
-                            <div className='div-item-menu p-2'>
-                                <p className='m-0'>Mis ordenenes </p>
-                            </div>
-                            <div className='div-item-menu p-2'>
-                                <p className='m-0'>Mi cuenta </p>
-                            </div>
-                            <div className='div-item-menu p-2'>
-                                <p className='m-0'>Cerrar sesión </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-12 col-sm-12 col-md-12 col-lg-9" >
-                    <div className='div-dashboard-header-busqueda-padre'>
-                        <FontAwesomeIcon icon={faBars} className='dasboard-icon-header-menu' />
-                        <input type="text" className='form-control form-imput-busqueda' placeholder='Buscar productos' autoComplete='off' />
-                        <FontAwesomeIcon icon={faCartArrowDown} className='dasboard-icon-header-busqueda' />
-                    </div>
-                    <div className='div-style-form'>
+    const selecionaMenu = (itemSeleccionado: MenuLateral) => {
+        setRedirect(itemSeleccionado.controlVista);
+        const nuevoMenuLateral = menuLateral.map(itemMenu => {
+            if (itemMenu.nombreItem === itemSeleccionado.nombreItem) {
+                return { ...itemMenu, className: 'div-item-menu active' };
+            } else {
+                return { ...itemMenu, className: 'div-item-menu' };
+            }
+        });
+        setmenuLateral(nuevoMenuLateral);
+    };
+
+    const validateRedirect = () => {
+        switch (redirect) {
+            case 'VISTA_CREAR_ORDEN':
+                return (
+                    <>
+                        <CrearOrden setRedirect={setRedirect} setCargando={setCargando} />
+                    </>
+                )
+            case 'VISTA_MI_CUENTA':
+                return (
+                    <>
+                        <CrearOrden setRedirect={setRedirect} setCargando={setCargando} />
+                    </>
+                )
+            case 'VISTA_GESTION_ORDENES':
+                return (
+                    <>
+                        <GestionOrdenes setRedirect={setRedirect} setCargando={setCargando} />
+                    </>
+                )
+            default:
+                return (
+                    <>
+                        <h3 className='titulo-form mb-3'>Producto Idelpan:</h3>
                         <div className="row">
                             {
                                 Object.entries(productosDetalle).map(([key, producto]) => {
@@ -181,7 +146,7 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                                                                 <p className='card-info-txt'>Valor Canasta</p>
                                                                 <p className='card-info-txt-2'>${producto.valorCanasta}</p>
                                                             </div>
-                                                        </div>                                                        
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -191,6 +156,65 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                             }
 
                         </div>
+                    </>
+                )
+        }
+    }
+
+    const actionMenu = (action: boolean) => {
+        setOpenMenu(action)
+    }
+
+    return (
+        <div className='div-container'>
+            <div className="row">
+                <div className="col-12 col-sm-12 col-md-12 col-lg-3" >
+                    <div className={openMenu ? 'div-menu-lateral-padre active' : 'div-menu-lateral-padre'} onClick={() => actionMenu(false)}  >
+                        <div className='div-menu-lateral'>
+                            <div className='div-dashboard-container-logo'>
+                                <div className='div-dashboard-logo'>
+                                    <img src={logo} alt='idelpan-logo' className='img-logo-idelpan'></img>
+                                </div>
+                            </div>
+                            <div className='div-dashboard-info-padre'>
+                                <div className='div-dashboard-info'>
+                                    <p className='m-0'>{infoMenuUsuario.nombre_completo} </p>
+                                </div>
+                                <div className='div-dashboard-info'>
+                                    <p className='m-0'>{infoMenuUsuario.usuario} </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='div-menu-lateral'>
+                            <div className='div-dashboard-info-padre'>
+                                {
+                                    menuLateral.map((itemMenu) => {
+                                        return (
+                                            <div className={itemMenu.className} onClick={() => selecionaMenu(itemMenu)}>
+                                                <FontAwesomeIcon icon={itemMenu.iconMenu} className='icon-menu-lateral' />
+                                                <p className='m-0'>{itemMenu.nombreItem} </p>
+                                            </div>
+                                        )
+                                    })
+                                }
+                                <div className='div-item-menu' onClick={() => cerrarSesion()}>
+                                    <FontAwesomeIcon icon={faSignOut} className='icon-menu-lateral' />
+                                    <p className='m-0'>Cerrar sesión </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-12 col-sm-12 col-md-12 col-lg-9" >
+                    <div className='div-dashboard-header-busqueda-padre'>
+                        <FontAwesomeIcon icon={faBars} className='dasboard-icon-header-menu' onClick={() => actionMenu(true)} />
+                        <input type="text" className='form-control form-imput-busqueda' placeholder='Buscar productos' autoComplete='off' />
+                        <FontAwesomeIcon icon={faCartArrowDown} className='dasboard-icon-header-busqueda' />
+                    </div>
+                    <div className='div-style-form'>
+                        {
+                            validateRedirect()
+                        }
                     </div>
 
                 </div>
@@ -201,7 +225,6 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                     :
                     <></>
             }
-
         </div>
     )
 }

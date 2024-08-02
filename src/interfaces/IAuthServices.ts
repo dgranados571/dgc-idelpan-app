@@ -1,3 +1,4 @@
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import React from 'react'
 
 export interface AuthProps {
@@ -51,4 +52,11 @@ export interface GestionOrdenesDePedido {
     fechaOrdenPedido: string;
     idProcesamiento: string;
     productosLista: OrdenPedidoProduct[]    
+}
+
+export interface MenuLateral {
+    nombreItem: string;
+    className: string;
+    iconMenu: IconDefinition
+    controlVista: string
 }
