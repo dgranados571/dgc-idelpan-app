@@ -11,8 +11,21 @@ export interface TransaccionProps {
 }
 
 export interface DashBoardProps {
+    setCargando: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface MenuLateralProps {
     setRedirect: React.Dispatch<React.SetStateAction<string>>;
     setCargando: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
+    openMenu: boolean,
+    infoMenuUsuario: UsuarioSession
+}
+
+export interface UsuarioSession {
+    usuario: string;
+    nombre_completo: string;
+    id_procesamiento: string
 }
 
 export interface ModalProps {
@@ -44,14 +57,14 @@ export interface OrdenPedidoProduct {
     idProduct: string;
     product: Product;
     tipoCompra: string;
-    cantidad: string;    
+    cantidad: string;
 }
 
 export interface GestionOrdenesDePedido {
     usuario: string;
     fechaOrdenPedido: string;
     idProcesamiento: string;
-    productosLista: OrdenPedidoProduct[]    
+    productosLista: OrdenPedidoProduct[]
 }
 
 export interface MenuLateral {

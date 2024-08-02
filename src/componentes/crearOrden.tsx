@@ -8,7 +8,7 @@ import { AuthServices } from '../api/authServices'
 import ModalMensaje from '../modalMensaje/modalMensaje'
 import { useNavigate } from 'react-router-dom'
 
-const CrearOrden: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
+const CrearOrden: React.FC<DashBoardProps> = ({ setCargando }) => {
 
     const { productosDetalle } = productosUtil();
 
@@ -197,9 +197,6 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
                 <div className="col-12 col-sm-12 col-md-12 col-lg-12" >
                     <div className='div-co-bottom'>
                         <h3 className='titulo-form'>Crear orden de pedido</h3>
-                        <button className='btn btn-link a-link-whit-icon' onClick={() => setRedirect('')} >
-                            <FontAwesomeIcon icon={faReplyAll} className='a-link-whit-icon' /> Volver
-                        </button>
                     </div>
                 </div>
             </div>

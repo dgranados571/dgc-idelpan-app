@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import ModalMensaje from '../modalMensaje/modalMensaje'
 import productosUtil from '../util/productosUtil'
 
-const GestionOrdenes: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) => {
+const GestionOrdenes: React.FC<DashBoardProps> = ({ setCargando }) => {
 
   const { productosDetalle } = productosUtil();
   const navigate = useNavigate();
@@ -108,9 +108,6 @@ const GestionOrdenes: React.FC<DashBoardProps> = ({ setRedirect, setCargando }) 
         <div className="col-12 col-sm-12 col-md-12 col-lg-12" >
           <div className='div-co-bottom'>
             <h3 className='titulo-form'>Mis ordenes de pedido</h3>
-            <button className='btn btn-link a-link-whit-icon' onClick={() => setRedirect('')} >
-              <FontAwesomeIcon icon={faReplyAll} className='a-link-whit-icon' /> Volver
-            </button>
           </div>
         </div>
       </div>
