@@ -22,7 +22,7 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const [redirect, setRedirect] = useState('');
 
-    const [openMenu, setOpenMenu] = useState(true);
+    const [openMenu, setOpenMenu] = useState(false);
 
     const [infoMenuUsuario, setInfoMenuUsuario] = useState({
         usuario: '',
