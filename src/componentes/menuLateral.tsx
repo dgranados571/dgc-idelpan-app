@@ -9,7 +9,7 @@ const MenuLateralComponent: React.FC<MenuLateralProps> = ({ setRedirect, setCarg
 
     const navigate = useNavigate();
 
-    const [menuLateral, setmenuLateral] = useState<MenuLateral[]>([
+    const [menuLateral, setMenuLateral] = useState<MenuLateral[]>([
         {
             nombreItem: 'Inicio',
             className: 'div-item-menu active',
@@ -39,7 +39,7 @@ const MenuLateralComponent: React.FC<MenuLateralProps> = ({ setRedirect, setCarg
                 return { ...itemMenu, className: 'div-item-menu' };
             }
         });
-        setmenuLateral(nuevoMenuLateral);
+        setMenuLateral(nuevoMenuLateral);
     };
 
     const cerrarSesion = () => {

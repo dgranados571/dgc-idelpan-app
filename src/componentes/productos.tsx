@@ -7,7 +7,7 @@ const Productos = () => {
 
     return (
         <>
-            <h3 className='titulo-form mb-3'>Producto Idelpan:</h3>
+            <h3 className='titulo-form mb-3'>Productos Idelpan:</h3>
             <div className="row">
                 {
                     Object.entries(productosDetalle).map(([key, producto]) => {
