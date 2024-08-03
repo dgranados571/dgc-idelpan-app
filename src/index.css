@@ -256,15 +256,6 @@ code {
   font-weight: 500;
 }
 
-.div-co-bottom {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1rem;
-  padding: 0px 15px 0px 0px;
-}
-
 .a-link-whit-icon {
   display: flex;
   color: #333333;
@@ -293,12 +284,6 @@ code {
   display: flex;
   justify-content: space-between;
   align-items: center
-}
-
-.div-detalle-producto-t1 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .a-link-whit-icon-2 {
@@ -413,6 +398,14 @@ code {
 
 .icon-menu-lateral {
   margin: 0px 12px 0px 8px;
+}
+
+.div-valida-carrito{
+  display: flex;
+  padding: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column
 }
 
 @media (min-width: 760px) {}

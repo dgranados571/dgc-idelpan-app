@@ -1,46 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import logo from '../img/idelpanlogo.jpg'
-import { faHome, faUser, faSignOut, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
-import { MenuLateral, MenuLateralProps } from '../interfaces/IAuthServices'
+import { faSignOut } from '@fortawesome/free-solid-svg-icons'
+import { MenuLateralProps } from '../interfaces/IAuthServices'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from 'react-router-dom'
 
-const MenuLateralComponent: React.FC<MenuLateralProps> = ({ setRedirect, setCargando, setOpenMenu, openMenu, infoMenuUsuario }) => {
+const MenuLateralComponent: React.FC<MenuLateralProps> = ({ setOpenMenu, selecionaMenu, menuLateral, openMenu, infoMenuUsuario }) => {
 
     const navigate = useNavigate();
-
-    const [menuLateral, setMenuLateral] = useState<MenuLateral[]>([
-        {
-            nombreItem: 'Inicio',
-            className: 'div-item-menu active',
-            iconMenu: faHome,
-            controlVista: ''
-        },
-        {
-            nombreItem: 'Mis ordenes de pedido',
-            className: 'div-item-menu',
-            iconMenu: faShoppingBag,
-            controlVista: 'VISTA_GESTION_ORDENES'
-        },
-        {
-            nombreItem: 'Mi cuenta',
-            className: 'div-item-menu',
-            iconMenu: faUser,
-            controlVista: 'VISTA_MI_CUENTA'
-        }
-    ])
-
-    const selecionaMenu = (itemSeleccionado: MenuLateral) => {
-        setRedirect(itemSeleccionado.controlVista);
-        const nuevoMenuLateral = menuLateral.map(itemMenu => {
-            if (itemMenu.nombreItem === itemSeleccionado.nombreItem) {
-                return { ...itemMenu, className: 'div-item-menu active' };
-            } else {
-                return { ...itemMenu, className: 'div-item-menu' };
-            }
-        });
-        setMenuLateral(nuevoMenuLateral);
-    };
 
     const cerrarSesion = () => {
         sessionStorage.clear();

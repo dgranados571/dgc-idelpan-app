@@ -14,10 +14,17 @@ export interface DashBoardProps {
     setCargando: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface MenuLateralProps {
+export interface GestionOrdenPedidoProps {
     setRedirect: React.Dispatch<React.SetStateAction<string>>;
     setCargando: React.Dispatch<React.SetStateAction<boolean>>;
+    selecionaMenu: Function,
+    menuLateral:MenuLateral[]
+}
+
+export interface MenuLateralProps {
     setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
+    selecionaMenu: Function,
+    menuLateral:MenuLateral[],
     openMenu: boolean,
     infoMenuUsuario: UsuarioSession
 }

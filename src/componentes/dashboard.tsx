@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartArrowDown, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faCartArrowDown, faBars, faHome, faUser, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import CrearOrden from './crearOrden'
 import GestionOrdenes from './gestionOrdenes'
-import { TransaccionProps } from '../interfaces/IAuthServices'
+import { MenuLateral, TransaccionProps } from '../interfaces/IAuthServices'
 import ModalMensaje from '../modalMensaje/modalMensaje'
 import Productos from './productos'
 import MenuLateralComponent from './menuLateral'
@@ -13,13 +13,34 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const navigate = useNavigate();
 
+    const [redirect, setRedirect] = useState('');
+
+    const [menuLateral, setMenuLateral] = useState<MenuLateral[]>([
+        {
+            nombreItem: 'Inicio',
+            className: 'div-item-menu active',
+            iconMenu: faHome,
+            controlVista: ''
+        },
+        {
+            nombreItem: 'Mis ordenes de pedido',
+            className: 'div-item-menu',
+            iconMenu: faShoppingBag,
+            controlVista: 'VISTA_GESTION_ORDENES'
+        },
+        {
+            nombreItem: 'Mi cuenta',
+            className: 'div-item-menu',
+            iconMenu: faUser,
+            controlVista: 'VISTA_MI_CUENTA'
+        }
+    ])
+
     const [modalMensaje, setModalMensaje] = useState({
         estado: false,
         indiceMensaje: '',
         funcionSi: () => { }
     });
-
-    const [redirect, setRedirect] = useState('');
 
     const [openMenu, setOpenMenu] = useState(false);
 
@@ -45,6 +66,18 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
             ejecutaModalMensaje('Auth-010');
         }
     }, [])
+
+    const selecionaMenu = (itemSeleccionado: MenuLateral) => {
+        setRedirect(itemSeleccionado.controlVista);
+        const nuevoMenuLateral = menuLateral.map(itemMenu => {
+            if (itemMenu.nombreItem === itemSeleccionado.nombreItem) {
+                return { ...itemMenu, className: 'div-item-menu active' };
+            } else {
+                return { ...itemMenu, className: 'div-item-menu' };
+            }
+        });
+        setMenuLateral(nuevoMenuLateral);
+    };
 
     const cerrarSesion = () => {
         sessionStorage.clear();
@@ -76,11 +109,13 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                 )
             case 'VISTA_GESTION_ORDENES':
                 return (
-                    <GestionOrdenes setCargando={setCargando} />
+                    <GestionOrdenes setRedirect={setRedirect} setCargando={setCargando} selecionaMenu={selecionaMenu} menuLateral={menuLateral}/>
                 )
             default:
                 return (
-                    <Productos />
+                    <div className='div-style-form'>
+                        <Productos />
+                    </div>
                 )
         }
     }
@@ -89,7 +124,8 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
         <div className='div-container'>
             <div className="row">
                 <div className="col-12 col-sm-12 col-md-12 col-lg-3" >
-                    <MenuLateralComponent setRedirect={setRedirect} setCargando={setCargando} setOpenMenu={setOpenMenu} openMenu={openMenu} infoMenuUsuario={infoMenuUsuario} />
+                    <MenuLateralComponent setOpenMenu={setOpenMenu} selecionaMenu={selecionaMenu}
+                        menuLateral={menuLateral} openMenu={openMenu} infoMenuUsuario={infoMenuUsuario} />
                 </div>
                 <div className="col-12 col-sm-12 col-md-12 col-lg-9" >
                     <div className='div-dashboard-header-busqueda-padre'>
@@ -100,11 +136,9 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                         </div>
                     </div>
                     <div className="div-dashboard-content">
-                        <div className='div-style-form'>
-                            {
-                                validateRedirect()
-                            }
-                        </div>
+                        {
+                            validateRedirect()
+                        }
                     </div>
 
                 </div>
