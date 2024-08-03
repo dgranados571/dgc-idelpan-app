@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed and Relative Position Example</title>
+    <style>
+        /* Estilo para el contenedor principal para que sea lo suficientemente grande para desplazarse */
+        .container {
+            width: 100%;
+            height: 2000px;
+            background-color: #f0f0f0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Estilo para la caja relativa */
+        .relative-box {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: #add8e6;
+            margin: 50px;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        /* Estilo para la caja fija */
+        .fixed-box {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            background-color: #ff6347;
+            top: 20px;
+            left: 20px;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            text-align: center;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="relative-box">
+            Relative Box
+            <div class="fixed-box">Fixed Box</div>
+        </div>
+    </div>
+</body>
+</html>

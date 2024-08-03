@@ -29,7 +29,6 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
         id_procesamiento: ''
     })
 
-
     useEffect(() => {
         setCargando(true);
         let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
@@ -71,10 +70,6 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const validateRedirect = () => {
         switch (redirect) {
-            case 'VISTA_CREAR_ORDEN':
-                return (
-                    <CrearOrden setCargando={setCargando} />
-                )
             case 'VISTA_MI_CUENTA':
                 return (
                     <CrearOrden setCargando={setCargando} />
@@ -98,14 +93,18 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                 </div>
                 <div className="col-12 col-sm-12 col-md-12 col-lg-9" >
                     <div className='div-dashboard-header-busqueda-padre'>
-                        <FontAwesomeIcon icon={faBars} className='dasboard-icon-header-menu' onClick={() => setOpenMenu(true)} />
-                        <input type="text" className='form-control form-imput-busqueda' placeholder='Buscar productos' autoComplete='off' />
-                        <FontAwesomeIcon icon={faCartArrowDown} className='dasboard-icon-header-busqueda' />
+                        <div className="div-dashboard-header-busqueda">
+                            <FontAwesomeIcon icon={faBars} className='dasboard-icon-header-menu' onClick={() => setOpenMenu(true)} />
+                            <input type="text" className='form-control form-imput-busqueda' placeholder='Buscar productos' autoComplete='off' />
+                            <FontAwesomeIcon icon={faCartArrowDown} className='dasboard-icon-header-busqueda' />
+                        </div>
                     </div>
-                    <div className='div-style-form'>
-                        {
-                            validateRedirect()
-                        }
+                    <div className="div-dashboard-content">
+                        <div className='div-style-form'>
+                            {
+                                validateRedirect()
+                            }
+                        </div>
                     </div>
 
                 </div>

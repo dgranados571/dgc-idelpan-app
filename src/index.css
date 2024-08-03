@@ -82,9 +82,24 @@ code {
 }
 
 .div-dashboard-header-busqueda-padre {
+  position: relative;
+}
+
+.div-dashboard-header-busqueda {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 0 1rem 0;
+  background-color: #dddfe1;
+}
+
+.div-dashboard-content {
+  overflow: auto;
+  margin-top: 3.25rem;
 }
 
 .div-dashboard-logo {
@@ -400,11 +415,26 @@ code {
   margin: 0px 12px 0px 8px;
 }
 
-
 @media (min-width: 760px) {}
 
 
 @media (min-width: 1025px) {
+
+  .div-dashboard-content {
+    position: relative;
+    margin-top: 0rem;
+  }
+
+  .div-dashboard-header-busqueda {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+  }
 
   .dasboard-icon-header-menu {
     display: none;
