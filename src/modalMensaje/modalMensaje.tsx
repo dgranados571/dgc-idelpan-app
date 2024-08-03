@@ -63,13 +63,10 @@ const ModalMensaje: React.FC<ModalProps> = ({ funcionSi, indiceMensaje }) => {
                                     <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
                                     <div className="col-12 col-sm-12 col-md-12 col-lg-12">
                                         <div className='div-style-form'>
-                                            <div className='div-detalle-producto-t1'>
-                                                <p className='p-label-form my-0'>Detalle del produto: </p>
-                                            </div>
-                                            <hr />
                                             <div className='div-p-label-form'>
                                                 <p className='p-label-form my-0'> {detalleProductoObj.product.nombre} </p>
                                             </div>
+                                            <hr />
                                             <div className='div-p-label-form'>
                                                 <p className='m-0'>Unidades x canasta: </p>
                                                 <p className='p-label-form my-0'> {detalleProductoObj.product.PxC} paquetes</p>
