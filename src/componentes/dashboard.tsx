@@ -4,7 +4,7 @@ import { faCartArrowDown, faBars, faHome, faUser, faShoppingBag } from '@fortawe
 import { useNavigate } from 'react-router-dom'
 import CrearOrden from './crearOrden'
 import GestionOrdenes from './gestionOrdenes'
-import { MenuLateral, TransaccionProps } from '../interfaces/IAuthServices'
+import { MenuLateral, OrdenPedidoProduct, TransaccionProps } from '../interfaces/IAuthServices'
 import ModalMensaje from '../modalMensaje/modalMensaje'
 import Productos from './productos'
 import MenuLateralComponent from './menuLateral'
@@ -49,6 +49,8 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
         nombre_completo: '',
         id_procesamiento: ''
     })
+
+    const [ordenPedido, setOrdenPedido] = useState<OrdenPedidoProduct[]>([]);
 
     useEffect(() => {
         setCargando(true);
@@ -109,12 +111,13 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                 )
             case 'VISTA_GESTION_ORDENES':
                 return (
-                    <GestionOrdenes setRedirect={setRedirect} setCargando={setCargando} selecionaMenu={selecionaMenu} menuLateral={menuLateral} />
+                    <GestionOrdenes setRedirect={setRedirect} setCargando={setCargando} selecionaMenu={selecionaMenu} menuLateral={menuLateral}
+                        ordenPedido={ordenPedido} setOrdenPedido={setOrdenPedido} />
                 )
             default:
                 return (
                     <div className='div-style-form'>
-                        <Productos />
+                        <Productos ordenPedido={ordenPedido} setOrdenPedido={setOrdenPedido} />
                     </div>
                 )
         }
@@ -132,7 +135,7 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                         <div className="div-dashboard-header-busqueda">
                             <FontAwesomeIcon icon={faBars} className='dasboard-icon-header-menu' onClick={() => setOpenMenu(true)} />
                             <input type="text" className='form-control form-imput-busqueda' placeholder='Buscar productos' autoComplete='off' />
-                            <FontAwesomeIcon icon={faCartArrowDown} className='dasboard-icon-header-busqueda' />
+                            <FontAwesomeIcon icon={faCartArrowDown} className='dasboard-icon-header-busqueda' onClick={() => selecionaMenu(menuLateral[1])}/>
                         </div>
                     </div>
                     <div className="div-dashboard-content">
@@ -145,7 +148,7 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
             </div>
             {
                 modalMensaje.estado ?
-                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} />
+                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={() => { }} />
                     :
                     <></>
             }

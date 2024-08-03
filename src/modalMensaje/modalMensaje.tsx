@@ -1,10 +1,11 @@
 import { ModalMensajeUtil } from './modalMensajeUtil';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { DetalleProductState, ModalProps } from '../interfaces/IAuthServices';
 import './modalMensaje.css'
 import { useState } from 'react';
 
-const ModalMensaje: React.FC<ModalProps> = ({ funcionSi, indiceMensaje }) => {
+const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionControl }) => {
 
     const { modalInfo } = ModalMensajeUtil();
 
@@ -51,9 +52,8 @@ const ModalMensaje: React.FC<ModalProps> = ({ funcionSi, indiceMensaje }) => {
 
     const validateRedirect = () => {
         switch (indiceMensaje) {
-            case 'GESTION_CARRITO_COMPRAS':
+            case 'GESTION_CARRITO_COMPRAS':                
                 const detalleProducto = sessionStorage.getItem('detalleProducto') || 'Error';
-                console.log('VARIABLE SESSION--> ', detalleProducto)
                 const detalleProductoObj: DetalleProductState = JSON.parse(detalleProducto);              
                 return (
                     <>
@@ -65,6 +65,7 @@ const ModalMensaje: React.FC<ModalProps> = ({ funcionSi, indiceMensaje }) => {
                                         <div className='div-style-form'>
                                             <div className='div-p-label-form'>
                                                 <p className='p-label-form my-0'> {detalleProductoObj.product.nombre} </p>
+                                                <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => funcionControl() } />
                                             </div>
                                             <hr />
                                             <div className='div-p-label-form'>

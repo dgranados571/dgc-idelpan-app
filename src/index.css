@@ -143,6 +143,7 @@ code {
   font-size: 2rem;
   margin-left: 1rem;
   margin-right: 1rem;
+  cursor: pointer;
 }
 
 .dasboard-icon-header-menu {
@@ -340,10 +341,18 @@ code {
   border-radius: 15px;
 }
 
+.icon-cierra {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #333333;
+  border-radius: 15px;
+}
+
 .card-img {
   object-fit: cover;
   border-radius: 10px 10px 0px 0px;
   height: 7rem;
+  cursor: pointer;
 }
 
 .div-card-info {
@@ -406,7 +415,7 @@ code {
   margin: 0px 12px 0px 8px;
 }
 
-.div-valida-carrito{
+.div-valida-carrito {
   display: flex;
   padding: 1rem;
   justify-content: space-between;

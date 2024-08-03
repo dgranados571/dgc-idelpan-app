@@ -7,7 +7,7 @@ import { GenericResponse } from '../interfaces/IGenericResponse'
 import { useNavigate } from 'react-router-dom'
 import ModalMensaje from '../modalMensaje/modalMensaje'
 
-const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCargando, selecionaMenu, menuLateral }) => {
+const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCargando, selecionaMenu, menuLateral, ordenPedido, setOrdenPedido }) => {
 
   const navigate = useNavigate();
 
@@ -29,6 +29,33 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
       ejecutaModalMensaje('Auth-010');
     }
   }, [])
+
+  const cerrarOrden = async () => {
+    setCargando(true);
+    let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
+    if (!!usuarioLocalStorage) {
+        const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
+        const body = {
+            usuario: usuarioLocalStorageObj.usuario,
+            ordenPedido: {}
+        }
+        const authServices = new AuthServices();
+        try {
+            const response: GenericResponse = await authServices.requestPost(body, 5);
+            if (response.estado) {
+
+            }
+            ejecutaModalMensaje(response.mensaje);
+            setCargando(false);
+        } catch (error) {
+            setCargando(false);
+            ejecutaModalMensaje('Auth-002');
+        }
+    } else {
+        setCargando(false);
+        ejecutaModalMensaje('Auth-010');
+    }
+}
 
   const consultaOrdenesDePedido = async (usuarioLocalStorage: any) => {
     const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
@@ -129,7 +156,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
       </div>
       {
         modalMensaje.estado ?
-          <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} />
+          <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={()=>{}} />
           :
           <></>
       }

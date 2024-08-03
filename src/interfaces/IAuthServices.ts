@@ -18,7 +18,9 @@ export interface GestionOrdenPedidoProps {
     setRedirect: React.Dispatch<React.SetStateAction<string>>;
     setCargando: React.Dispatch<React.SetStateAction<boolean>>;
     selecionaMenu: Function,
-    menuLateral:MenuLateral[]
+    menuLateral:MenuLateral[],
+    setOrdenPedido: React.Dispatch<React.SetStateAction<OrdenPedidoProduct[]>>;
+    ordenPedido: OrdenPedidoProduct[]
 }
 
 export interface MenuLateralProps {
@@ -29,6 +31,11 @@ export interface MenuLateralProps {
     infoMenuUsuario: UsuarioSession
 }
 
+export interface ProductosProps {
+    setOrdenPedido: React.Dispatch<React.SetStateAction<OrdenPedidoProduct[]>>;
+    ordenPedido: OrdenPedidoProduct[] 
+}
+
 export interface UsuarioSession {
     usuario: string;
     nombre_completo: string;
@@ -36,8 +43,9 @@ export interface UsuarioSession {
 }
 
 export interface ModalProps {
-    funcionSi: Function;
     indiceMensaje: string;
+    funcionSi: Function;
+    funcionControl: Function;
 }
 
 export interface UserSession {

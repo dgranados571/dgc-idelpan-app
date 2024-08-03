@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import productosUtil from '../util/productosUtil';
-import { DetalleProductState } from '../interfaces/IAuthServices';
+import { DetalleProductState, OrdenPedidoProduct, ProductosProps } from '../interfaces/IAuthServices';
 import ModalMensaje from '../modalMensaje/modalMensaje';
 
-const Productos = () => {
+const Productos: React.FC<ProductosProps>  = ({ordenPedido, setOrdenPedido}) => {
 
     const { productosDetalle } = productosUtil();
 
@@ -26,14 +26,33 @@ const Productos = () => {
             estado: true,
             indiceMensaje: 'GESTION_CARRITO_COMPRAS',
             funcionSi: () => {
-                sessionStorage.removeItem('detalleProducto')
-                setModalMensaje({
-                    estado: false,
-                    indiceMensaje: '',
-                    funcionSi: () => { }
-                });
+                capturaProducto(detalleProducto);      
             }
         })
+    }
+
+    const capturaProducto = (detalleProducto: DetalleProductState) => { 
+        const productOP: OrdenPedidoProduct = {
+            idProduct: '',
+            product: {
+                nombre: detalleProducto.product.nombre,
+                PxC: detalleProducto.product.PxC,
+                valorPaquete: detalleProducto.product.valorPaquete,
+                valorCanasta: detalleProducto.product.valorCanasta
+            },
+            tipoCompra: '',
+            cantidad: '0'
+        }
+        setOrdenPedido([...ordenPedido, productOP]);
+    }
+
+    const funcionControlModal = () => {
+        sessionStorage.removeItem('detalleProducto')
+        setModalMensaje({
+            estado: false,
+            indiceMensaje: '',
+            funcionSi: () => { }
+        });
     }
 
     return (
@@ -50,7 +69,7 @@ const Productos = () => {
                                             <div className="div-card-icon">
                                                 <FontAwesomeIcon icon={faPlusCircle} className='icon-agrega-carrito' onClick={() => selecionaProducto(key)} />
                                             </div>
-                                            <img className='card-img' src={producto.urlImage} alt=''></img>
+                                            <img className='card-img' src={producto.urlImage} alt='' onClick={() => selecionaProducto(key)}></img>
                                             <div className='div-card-info'>
                                                 <p className='card-info-nombre'>{producto.nombre}</p>
                                                 <p className='card-info-txt'>{producto.PxC} Paquetes x Canasta</p>
@@ -72,11 +91,10 @@ const Productos = () => {
                 }
                 {
                     modalMensaje.estado ?
-                        <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} />
+                        <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={funcionControlModal} />
                         :
                         <></>
                 }
-
             </div>
         </>
     )

@@ -223,7 +223,7 @@ const RegistroClientes: React.FC<AuthProps> = ({ setRedirect, setCargando }) => 
             </div>
             {
                 modalMensaje.estado ?
-                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} />
+                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={()=>{}} />
                     :
                     <></>
             }
