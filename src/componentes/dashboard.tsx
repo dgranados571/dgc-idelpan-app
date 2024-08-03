@@ -109,7 +109,7 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                 )
             case 'VISTA_GESTION_ORDENES':
                 return (
-                    <GestionOrdenes setRedirect={setRedirect} setCargando={setCargando} selecionaMenu={selecionaMenu} menuLateral={menuLateral}/>
+                    <GestionOrdenes setRedirect={setRedirect} setCargando={setCargando} selecionaMenu={selecionaMenu} menuLateral={menuLateral} />
                 )
             default:
                 return (

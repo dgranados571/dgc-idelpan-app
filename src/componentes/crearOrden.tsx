@@ -20,96 +20,22 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setCargando }) => {
         funcionSi: () => { }
     });
 
-    const tiposDeCompra = [
-        { value: 'INITIAL', label: 'Seleccione' },
-        { value: 'PAQUETE', label: 'Paquete' },
-        { value: 'CANASTA', label: 'Canasta' },
-    ]
-
-    const [tipoCompra, setTipoCompra] = useState('INITIAL');
-    const [cantidad, setCantidad] = useState('');
     const [ordenPedido, setOrdenPedido] = useState<OrdenPedidoProduct[]>([]);
 
-    const [tipoCompraError, setTipoCompraError] = useState(false);
-    const [cantidadError, setCantidadError] = useState(false);
-
-    const [detalleProduct, setDetalleProduct] = useState<DetalleProductState>({
-        activo: false,
-        idProduct: '',
-        product: {
-            nombre: 'Sin producto seleccionado',
-            PxC: 0,
-            valorPaquete: 0,
-            valorCanasta: 0
-        }
-    });
-
-    const selecionaProducto = (idProduct: any) => {
-        setDetalleProduct({
-            activo: true,
-            idProduct,
-            product: productosDetalle[idProduct]
-        });
-        setTipoCompra('INITIAL');
-        setCantidad('');
-        setTipoCompraError(false);
-        setCantidadError(false);
-    }
-
-    const limpiarBusqueda = () => {
-        setDetalleProduct({
-            activo: false,
+    const capturaProducto = () => {
+        
+        const productOP: OrdenPedidoProduct = {
             idProduct: '',
             product: {
-                nombre: 'Sin producto seleccionado',
+                nombre: '',
                 PxC: 0,
                 valorPaquete: 0,
                 valorCanasta: 0
-            }
-        });
-    }
-
-    const capturaProducto = () => {
-        const formValidado = validaCampos();
-        if (formValidado) {
-            const productOP: OrdenPedidoProduct = {
-                idProduct: detalleProduct.idProduct,
-                product: detalleProduct.product,
-                tipoCompra,
-                cantidad
-            }
-            setOrdenPedido([...ordenPedido, productOP]);
-            limpiarBusqueda();
+            },
+            tipoCompra: '',
+            cantidad: '0'
         }
-    }
-
-    const validaCampos = () => {
-        let controlCampo1 = false;
-        let controlCampo2 = false;
-        setTipoCompraError(controlCampo1);
-        setCantidadError(controlCampo2);
-        if (tipoCompra === 'INITIAL') {
-            controlCampo1 = true;
-        }
-        if (cantidad.length === 0) {
-            controlCampo2 = true;
-        } else {
-            const cantidadNumber = Number(cantidad);
-            if (Number.isNaN(cantidadNumber)) {
-                controlCampo2 = true;
-            } else {
-                if (cantidadNumber === 0) {
-                    controlCampo2 = true;
-                }
-            }
-        }
-        if (controlCampo1 || controlCampo2) {
-            setTipoCompraError(controlCampo1);
-            setCantidadError(controlCampo2);
-            return false
-        } else {
-            return true
-        }
+        setOrdenPedido([...ordenPedido, productOP]);
     }
 
     const labelTipoPedido = (tipoPedido: string, cantidad: string) => {
@@ -185,7 +111,7 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setCargando }) => {
                     funcionSi: () => { }
                 });
                 if (indiceMsj === 'Auth-010') {
-                    cerrarSesion();                    
+                    cerrarSesion();
                 }
             }
         });
@@ -214,9 +140,6 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setCargando }) => {
                                         <>
                                             <div className='div-item-produto'>
                                                 <p className='m-0'>{producto.nombre}</p>
-                                                <button className='btn btn-link a-link-whit-icon' onClick={() => selecionaProducto(key)} >
-                                                    <FontAwesomeIcon icon={faPlusCircle} className='a-link-whit-icon' /> Agregar
-                                                </button>
                                             </div>
                                         </>
                                     )
@@ -226,62 +149,7 @@ const CrearOrden: React.FC<DashBoardProps> = ({ setCargando }) => {
                     </div>
                 </div>
                 <div className="col-12 col-sm-12 col-md-5 col-lg-4" >
-                    <div className='div-style-form'>
-                        <div className='div-detalle-producto-t1'>
-                            <p className='p-label-form my-0'>Detalle del produto: </p>
-                            {
-                                detalleProduct.activo ?
-                                    <button className='btn btn-link a-link-whit-icon-2' onClick={() => limpiarBusqueda()} >
-                                        Borrar <FontAwesomeIcon icon={faTrashAlt} className='a-link-whit-icon-2' />
-                                    </button>
-                                    :
-                                    <></>
-                            }
-                        </div>
-                        <hr />
-                        <div className='div-p-label-form'>
-                            <p className='p-label-form my-0'> {detalleProduct.product.nombre} </p>
-                        </div>
-                        <div className='div-p-label-form'>
-                            <p className='m-0'>Unidades x canasta: </p>
-                            <p className='p-label-form'> {detalleProduct.product.PxC} paquetes</p>
-                        </div>
-                        <div className='div-p-label-form'>
-                            <p className='m-0'>Valor x paquete: </p>
-                            <p className='p-label-form'> $ {detalleProduct.product.valorPaquete}  </p>
-                        </div>
-                        <div className='div-p-label-form'>
-                            <p className='m-0'>Valor x canasta: </p>
-                            <p className='p-label-form'> $ {detalleProduct.product.valorCanasta} </p>
-                        </div>
-                        {
-                            detalleProduct.activo ?
-                                <>
-                                    <hr />
-                                    <div className='div-form'>
-                                        <p className='p-label-form'>Tipo de compra: </p>
-                                        <select className={tipoCompraError ? 'form-control form-control-error' : 'form-control'} value={tipoCompra} onChange={(e) => setTipoCompra(e.target.value)}  >
-                                            {
-                                                tiposDeCompra.map((key, i) => {
-                                                    return (
-                                                        <option key={i} value={key.value}>{key.label}</option>
-                                                    )
-                                                })
-                                            }
-                                        </select>
-                                    </div>
-                                    <div className='div-form'>
-                                        <p className='p-label-form'>Cantidad: </p>
-                                        <input type="text" className={cantidadError ? 'form-control form-control-error' : 'form-control'} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='' autoComplete='off' />
-                                    </div>
-                                    <div className='div-buttom-registra'>
-                                        <button className='btn btn-primary bottom-custom' onClick={() => capturaProducto()}>Agregar</button>
-                                    </div>
-                                </>
-                                :
-                                <></>
-                        }
-                    </div>
+                    
                 </div>
                 <div className="col-12 col-sm-12 col-md-5 col-lg-4" >
                     <div className='div-style-form'>

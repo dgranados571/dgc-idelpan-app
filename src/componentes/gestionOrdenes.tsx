@@ -73,7 +73,6 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
   const gestionarProductos = () => {
     setRedirect('');
     selecionaMenu(menuLateral[0])
-    
   }
 
   const detalleOrdenPedido = (idProcesamiento: string, productosLista: OrdenPedidoProduct[]) => {
