@@ -100,6 +100,8 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
         });
         if (indiceMsj === 'Auth-010') {
           cerrarSesion();
+        } else if (indiceMsj === 'Auth-011') {
+          gestionarProductos()
         }
       }
     });

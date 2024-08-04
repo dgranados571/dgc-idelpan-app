@@ -71,7 +71,6 @@ export interface DetalleProductState {
 export interface OrdenPedidoProduct {
     idProduct: string;
     product: Product;
-    tipoCompra: string;
     cantidadPaquetes: string;
     cantidadCanastas: string;
 }

@@ -31,7 +31,12 @@ const Productos: React.FC<ProductosProps>  = ({ordenPedido, setOrdenPedido}) => 
         })
     }
 
-    const capturaProducto = (detalleProducto: DetalleProductState) => { 
+    const capturaProducto = (detalleProducto: DetalleProductState) => {
+        const cantidadPaquetesTotal = sessionStorage.getItem('cantidadPaquetes') || '0';
+        const valorEntero = Number(cantidadPaquetesTotal) / detalleProducto.product.PxC; 
+        const valorResiduo = Number(cantidadPaquetesTotal) % detalleProducto.product.PxC; 
+        const cantidadCanastas = Math.trunc(valorEntero);
+        const cantidadPaquetes = valorResiduo;        
         const productOP: OrdenPedidoProduct = {
             idProduct: detalleProducto.idProduct,
             product: {
@@ -40,9 +45,8 @@ const Productos: React.FC<ProductosProps>  = ({ordenPedido, setOrdenPedido}) => 
                 valorPaquete: detalleProducto.product.valorPaquete,
                 valorCanasta: detalleProducto.product.valorCanasta
             },
-            tipoCompra: sessionStorage.getItem('tipoCompra') || '',
-            cantidadPaquetes: sessionStorage.getItem('cantidadPaquetes') || '',
-            cantidadCanastas: sessionStorage.getItem('cantidadCanastas') || '',
+            cantidadPaquetes: String(cantidadPaquetes),
+            cantidadCanastas: String(cantidadCanastas),
         }
         setOrdenPedido([...ordenPedido, productOP]);
     }

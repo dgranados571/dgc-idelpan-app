@@ -9,55 +9,29 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
 
     const { modalInfo } = ModalMensajeUtil();
 
-    const tiposDeCompra = [
-        { value: 'INITIAL', label: 'Seleccione' },
-        { value: 'PAQUETE', label: 'Paquete' },
-        { value: 'CANASTA', label: 'Canasta' },
-    ]
-
-    const [tipoCompra, setTipoCompra] = useState('INITIAL');
     const [cantidad, setCantidad] = useState('');
 
-    const [tipoCompraError, setTipoCompraError] = useState(false);
     const [cantidadError, setCantidadError] = useState(false);
 
     const agregaACarrito = () => {
-        let controlCampo1 = false;
-        let controlCampo2 = false;
-        setTipoCompraError(controlCampo1);
-        setCantidadError(controlCampo2);
-        if (tipoCompra === 'INITIAL') {
-            controlCampo1 = true;
-        }
+        let controlCampo = false;
+        setCantidadError(controlCampo);
         if (cantidad.length === 0) {
-            controlCampo2 = true;
+            controlCampo = true;
         } else {
             const cantidadNumber = Number(cantidad);
             if (Number.isNaN(cantidadNumber)) {
-                controlCampo2 = true;
+                controlCampo = true;
             } else {
                 if (cantidadNumber === 0) {
-                    controlCampo2 = true;
+                    controlCampo = true;
                 }
             }
         }
-        if (controlCampo1 || controlCampo2) {
-            setTipoCompraError(controlCampo1);
-            setCantidadError(controlCampo2);
+        if (controlCampo) {
+            setCantidadError(controlCampo);
         } else {
-            sessionStorage.setItem('tipoCompra', tipoCompra);
-            switch (tipoCompra) {
-                case 'PAQUETE':
-                    sessionStorage.setItem('cantidadPaquetes', cantidad);
-                    sessionStorage.setItem('cantidadCanastas', '0');
-                    break;
-                case 'CANASTA':
-                    sessionStorage.setItem('cantidadPaquetes', '0');
-                    sessionStorage.setItem('cantidadCanastas', cantidad);
-                    break;
-                default:
-                    break;
-            }           
+            sessionStorage.setItem('cantidadPaquetes', cantidad); 
             funcionSi();
             funcionControl();
         }
@@ -94,21 +68,9 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                                 <p className='p-label-form my-0'> $ {detalleProductoObj.product.valorCanasta} </p>
                                             </div>
                                             <>
-                                                <hr />
+                                                <hr />                                               
                                                 <div className='div-form'>
-                                                    <p className='p-label-form'>Tipo de compra: </p>
-                                                    <select className={tipoCompraError ? 'form-control form-control-error' : 'form-control'} value={tipoCompra} onChange={(e) => setTipoCompra(e.target.value)}  >
-                                                        {
-                                                            tiposDeCompra.map((key, i) => {
-                                                                return (
-                                                                    <option key={i} value={key.value}>{key.label}</option>
-                                                                )
-                                                            })
-                                                        }
-                                                    </select>
-                                                </div>
-                                                <div className='div-form'>
-                                                    <p className='p-label-form'>Cantidad: </p>
+                                                    <p className='p-label-form'>Cantidad en Paquetes: </p>
                                                     <input type="text" className={cantidadError ? 'form-control form-control-error' : 'form-control'} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='' autoComplete='off' />
                                                 </div>
                                                 <div className='div-buttom-registra'>
