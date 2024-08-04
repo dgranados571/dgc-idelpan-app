@@ -315,6 +315,12 @@ code {
   justify-content: flex-end;
 }
 
+.div-buttioms-actions-op {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .div-card-padre {
   display: flex;
   justify-content: center;
@@ -435,7 +441,7 @@ code {
   cursor: pointer;
 }
 
-.div-label-info-op{
+.div-label-info-op {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -443,7 +449,13 @@ code {
   height: 100%;
 }
 
-@media (min-width: 760px) {}
+@media (min-width: 760px) {
+  .div-buttioms-actions-op {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
 
 
 @media (min-width: 1025px) {

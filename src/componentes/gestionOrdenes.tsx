@@ -176,10 +176,10 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
               }
 
               <div className="row mb-3">
-                <div className="col-7 col-sm-12 col-md-12 col-lg-1" ></div>
-                <div className="col-7 col-sm-12 col-md-12 col-lg-9" >
+                <div className="col-12 col-sm-12 col-md-12 col-lg-1" ></div>
+                <div className="col-12 col-sm-12 col-md-12 col-lg-9" >
                   <hr />
-                  <div className='div-header-list-op-2'>
+                  <div className='div-buttioms-actions-op'>
                     <button className='btn btn-link a-link-whit-icon' >
                       <button className='btn btn-primary bottom-custom' onClick={() => gestionarProductos()}>Explorar productos</button>
                     </button>
