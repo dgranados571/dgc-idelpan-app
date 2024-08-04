@@ -33,21 +33,24 @@ const Productos: React.FC<ProductosProps>  = ({ordenPedido, setOrdenPedido}) => 
 
     const capturaProducto = (detalleProducto: DetalleProductState) => { 
         const productOP: OrdenPedidoProduct = {
-            idProduct: '',
+            idProduct: detalleProducto.idProduct,
             product: {
                 nombre: detalleProducto.product.nombre,
                 PxC: detalleProducto.product.PxC,
                 valorPaquete: detalleProducto.product.valorPaquete,
                 valorCanasta: detalleProducto.product.valorCanasta
             },
-            tipoCompra: '',
-            cantidad: '0'
+            tipoCompra: sessionStorage.getItem('tipoCompra') || '',
+            cantidadPaquetes: sessionStorage.getItem('cantidadPaquetes') || '',
+            cantidadCanastas: sessionStorage.getItem('cantidadCanastas') || '',
         }
         setOrdenPedido([...ordenPedido, productOP]);
     }
 
     const funcionControlModal = () => {
-        sessionStorage.removeItem('detalleProducto')
+        sessionStorage.removeItem('detalleProducto');
+        sessionStorage.removeItem('tipoCompra')
+        sessionStorage.removeItem('cantidad')
         setModalMensaje({
             estado: false,
             indiceMensaje: '',

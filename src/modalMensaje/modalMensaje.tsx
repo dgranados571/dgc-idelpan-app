@@ -21,7 +21,7 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
     const [tipoCompraError, setTipoCompraError] = useState(false);
     const [cantidadError, setCantidadError] = useState(false);
 
-    const validaCampos = () => {
+    const agregaACarrito = () => {
         let controlCampo1 = false;
         let controlCampo2 = false;
         setTipoCompraError(controlCampo1);
@@ -44,17 +44,30 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
         if (controlCampo1 || controlCampo2) {
             setTipoCompraError(controlCampo1);
             setCantidadError(controlCampo2);
-            return false
         } else {
-            return true
+            sessionStorage.setItem('tipoCompra', tipoCompra);
+            switch (tipoCompra) {
+                case 'PAQUETE':
+                    sessionStorage.setItem('cantidadPaquetes', cantidad);
+                    sessionStorage.setItem('cantidadCanastas', '0');
+                    break;
+                case 'CANASTA':
+                    sessionStorage.setItem('cantidadPaquetes', '0');
+                    sessionStorage.setItem('cantidadCanastas', cantidad);
+                    break;
+                default:
+                    break;
+            }           
+            funcionSi();
+            funcionControl();
         }
     }
 
     const validateRedirect = () => {
         switch (indiceMensaje) {
-            case 'GESTION_CARRITO_COMPRAS':                
+            case 'GESTION_CARRITO_COMPRAS':
                 const detalleProducto = sessionStorage.getItem('detalleProducto') || 'Error';
-                const detalleProductoObj: DetalleProductState = JSON.parse(detalleProducto);              
+                const detalleProductoObj: DetalleProductState = JSON.parse(detalleProducto);
                 return (
                     <>
                         <div className='div-modal-active'>
@@ -65,7 +78,7 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                         <div className='div-style-form'>
                                             <div className='div-p-label-form'>
                                                 <p className='p-label-form my-0'> {detalleProductoObj.product.nombre} </p>
-                                                <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => funcionControl() } />
+                                                <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => funcionControl()} />
                                             </div>
                                             <hr />
                                             <div className='div-p-label-form'>
@@ -99,7 +112,7 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                                     <input type="text" className={cantidadError ? 'form-control form-control-error' : 'form-control'} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='' autoComplete='off' />
                                                 </div>
                                                 <div className='div-buttom-registra'>
-                                                    <button className='btn btn-primary bottom-custom' onClick={() => funcionSi()}>Agregar al carrito</button>
+                                                    <button className='btn btn-primary bottom-custom' onClick={() => agregaACarrito()}>Agregar al carrito</button>
                                                 </div>
                                             </>
                                         </div>

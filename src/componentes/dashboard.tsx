@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartArrowDown, faBars, faHome, faUser, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
+import { faCartArrowDown, faBars, faHome, faUser, faShoppingBag, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import CrearOrden from './crearOrden'
 import GestionOrdenes from './gestionOrdenes'
@@ -135,7 +135,10 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                         <div className="div-dashboard-header-busqueda">
                             <FontAwesomeIcon icon={faBars} className='dasboard-icon-header-menu' onClick={() => setOpenMenu(true)} />
                             <input type="text" className='form-control form-imput-busqueda' placeholder='Buscar productos' autoComplete='off' />
-                            <FontAwesomeIcon icon={faCartArrowDown} className='dasboard-icon-header-busqueda' onClick={() => selecionaMenu(menuLateral[1])}/>
+                            <div className="div-cantidad-carrito">
+                                <p className='p-cantidad-carrito m-0' onClick={() => selecionaMenu(menuLateral[1])}>{ordenPedido.length} </p>
+                                <FontAwesomeIcon icon={faShoppingCart} className='dasboard-icon-header-busqueda' onClick={() => selecionaMenu(menuLateral[1])} />
+                            </div>
                         </div>
                     </div>
                     <div className="div-dashboard-content">

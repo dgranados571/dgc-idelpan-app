@@ -72,7 +72,8 @@ export interface OrdenPedidoProduct {
     idProduct: string;
     product: Product;
     tipoCompra: string;
-    cantidad: string;
+    cantidadPaquetes: string;
+    cantidadCanastas: string;
 }
 
 export interface GestionOrdenesDePedido {
