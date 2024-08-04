@@ -5,7 +5,7 @@ import productosUtil from '../util/productosUtil';
 import { DetalleProductState, OrdenPedidoProduct, ProductosProps } from '../interfaces/IAuthServices';
 import ModalMensaje from '../modalMensaje/modalMensaje';
 
-const Productos: React.FC<ProductosProps>  = ({ordenPedido, setOrdenPedido}) => {
+const Productos: React.FC<ProductosProps> = ({ ordenPedido, setOrdenPedido }) => {
 
     const { productosDetalle } = productosUtil();
 
@@ -26,35 +26,56 @@ const Productos: React.FC<ProductosProps>  = ({ordenPedido, setOrdenPedido}) => 
             estado: true,
             indiceMensaje: 'GESTION_CARRITO_COMPRAS',
             funcionSi: () => {
-                capturaProducto(detalleProducto);      
+                capturaProducto(detalleProducto);
             }
         })
     }
 
     const capturaProducto = (detalleProducto: DetalleProductState) => {
-        const cantidadPaquetesTotal = sessionStorage.getItem('cantidadPaquetes') || '0';
-        const valorEntero = Number(cantidadPaquetesTotal) / detalleProducto.product.PxC; 
-        const valorResiduo = Number(cantidadPaquetesTotal) % detalleProducto.product.PxC; 
-        const cantidadCanastas = Math.trunc(valorEntero);
-        const cantidadPaquetes = valorResiduo;        
-        const productOP: OrdenPedidoProduct = {
-            idProduct: detalleProducto.idProduct,
-            product: {
-                nombre: detalleProducto.product.nombre,
-                PxC: detalleProducto.product.PxC,
-                valorPaquete: detalleProducto.product.valorPaquete,
-                valorCanasta: detalleProducto.product.valorCanasta
-            },
-            cantidadPaquetes: String(cantidadPaquetes),
-            cantidadCanastas: String(cantidadCanastas),
+        const cantidadPaquetesSesion = sessionStorage.getItem('cantidadPaquetes') || '0';
+        const ordenPedidoFiltrado = ordenPedido.filter(idOp => idOp.idProduct === detalleProducto.idProduct);
+        if (ordenPedidoFiltrado.length > 0) {
+            const nuevoOrdenPedido = ordenPedido.map(idOp => {
+                if (idOp.idProduct === detalleProducto.idProduct) {
+                    const cantidadPaquetesXCanastaExistente = Number(idOp.cantidadCanastas) * detalleProducto.product.PxC;
+                    const cantidadPaquetesNumber = Number(cantidadPaquetesSesion) + Number(idOp.cantidadPaquetes) + cantidadPaquetesXCanastaExistente;
+                    const valorEntero = cantidadPaquetesNumber / detalleProducto.product.PxC;
+                    const valorResiduo = cantidadPaquetesNumber % detalleProducto.product.PxC;
+                    const cantidadCanastas = Math.trunc(valorEntero);
+                    const cantidadPaquetes = valorResiduo;
+                    return {
+                        ...idOp,
+                        cantidadPaquetes: String(cantidadPaquetes),
+                        cantidadCanastas: String(cantidadCanastas),
+                    }
+                } else {
+                    return { ...idOp }
+                }
+            })
+            setOrdenPedido(nuevoOrdenPedido);
+        } else {
+            const valorEntero = Number(cantidadPaquetesSesion) / detalleProducto.product.PxC; 
+            const valorResiduo = Number(cantidadPaquetesSesion) % detalleProducto.product.PxC;
+            const cantidadCanastas = Math.trunc(valorEntero);
+            const cantidadPaquetes = valorResiduo;
+            const productOP: OrdenPedidoProduct = {
+                idProduct: detalleProducto.idProduct,
+                product: {
+                    nombre: detalleProducto.product.nombre,
+                    PxC: detalleProducto.product.PxC,
+                    valorPaquete: detalleProducto.product.valorPaquete,
+                    valorCanasta: detalleProducto.product.valorCanasta
+                },
+                cantidadPaquetes: String(cantidadPaquetes),
+                cantidadCanastas: String(cantidadCanastas),
+            }
+            setOrdenPedido([...ordenPedido, productOP]);
         }
-        setOrdenPedido([...ordenPedido, productOP]);
     }
 
     const funcionControlModal = () => {
         sessionStorage.removeItem('detalleProducto');
-        sessionStorage.removeItem('tipoCompra')
-        sessionStorage.removeItem('cantidad')
+        sessionStorage.removeItem('cantidadPaquetes');
         setModalMensaje({
             estado: false,
             indiceMensaje: '',

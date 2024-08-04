@@ -445,8 +445,22 @@ code {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  align-items: flex-end;
+  align-items: flex-start;
   height: 100%;
+}
+
+.div-gestion-product-agrega-padre{
+  display: flex;
+  justify-content: space-between;
+}
+
+.div-gestion-product-agrega{
+  display: flex;
+}
+
+.div-gran-total{
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media (min-width: 760px) {

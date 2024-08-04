@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GestionOrdenesDePedido, GestionOrdenPedidoProps, OrdenPedidoProduct } from '../interfaces/IAuthServices'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faShoppingBasket } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faShoppingBasket, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 import { AuthServices } from '../api/authServices'
 import { GenericResponse } from '../interfaces/IGenericResponse'
 import { useNavigate } from 'react-router-dom'
@@ -112,6 +112,12 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
     selecionaMenu(menuLateral[0])
   }
 
+  const limpiarOp = () => {
+    setOrdenPedido([])
+    setRedirect('');
+    selecionaMenu(menuLateral[0])
+  }
+
   const detalleOrdenPedido = (idProcesamiento: string, productosLista: OrdenPedidoProduct[]) => {
 
   }
@@ -119,7 +125,6 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
   const labelInfoProductOP = (product: OrdenPedidoProduct) => {
     let labelTipoCompra1 = '';
     let labelTipoCompra2 = '';
-
     const cantidadNumberPaquetes = Number(product.cantidadPaquetes);
     if (cantidadNumberPaquetes === 1) {
       labelTipoCompra1 = 'Paquete';
@@ -127,7 +132,6 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
       labelTipoCompra1 = 'Paquetes';
     }
     const precioProductoPaquetes = cantidadNumberPaquetes * product.product.valorPaquete;
-
     const cantidadNumberCanastas = Number(product.cantidadCanastas);
     if (cantidadNumberCanastas === 1) {
       labelTipoCompra2 = 'Canasta';
@@ -139,8 +143,13 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
     return (
       <div className="div-label-info-op">
         <p className="card-info-nombre m-0">{product.product.nombre}</p>
-        <div className="">
-          <p className="m-0">{cantidadNumberPaquetes} {labelTipoCompra1}</p>
+        <div className="div-gestion-product-agrega-padre">
+          <p className="mx-0 my-0"> {labelTipoCompra1}</p>
+          <div className="div-gestion-product-agrega mx-3 my-0">
+            <FontAwesomeIcon icon={faMinusCircle} className='a-link-whit-icon' onClick={() => actualizaOpIdMinius(product)} />
+            <p className="mx-2 my-0">{cantidadNumberPaquetes}</p>
+            <FontAwesomeIcon icon={faPlusCircle} className='a-link-whit-icon' onClick={() => actualizaOpIdPlus(product)} />
+          </div>
         </div>
         <div className="">
           <p className="m-0">{cantidadNumberCanastas} {labelTipoCompra2}</p>
@@ -149,6 +158,68 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
       </div>
     )
   }
+
+  const actualizaOpIdPlus = (detalleProducto: OrdenPedidoProduct) => {
+    const nuevoOrdenPedido = ordenPedido.map(idOp => {
+      if (idOp.idProduct === detalleProducto.idProduct) {
+        const cantidadPaquetesXCanastaExistente = Number(idOp.cantidadCanastas) * detalleProducto.product.PxC;
+        const cantidadPaquetesNumber = Number(idOp.cantidadPaquetes) + 1 + cantidadPaquetesXCanastaExistente;
+        const valorEntero = cantidadPaquetesNumber / detalleProducto.product.PxC;
+        const valorResiduo = cantidadPaquetesNumber % detalleProducto.product.PxC;
+        const cantidadCanastas = Math.trunc(valorEntero);
+        const cantidadPaquetes = valorResiduo;
+        return {
+          ...idOp,
+          cantidadPaquetes: String(cantidadPaquetes),
+          cantidadCanastas: String(cantidadCanastas),
+        }
+      } else {
+        return { ...idOp }
+      }
+    })
+    setOrdenPedido(nuevoOrdenPedido);
+  }
+
+  const actualizaOpIdMinius = (detalleProducto: OrdenPedidoProduct) => {
+    const nuevoOrdenPedido = ordenPedido.map(idOp => {
+      if (idOp.idProduct === detalleProducto.idProduct) {
+        const cantidadPaquetesXCanastaExistente = Number(idOp.cantidadCanastas) * detalleProducto.product.PxC;
+        let valorReduce = 1
+        if (cantidadPaquetesXCanastaExistente === 0 && Number(idOp.cantidadPaquetes) === 1) {
+          valorReduce = 0
+        }
+        const cantidadPaquetesNumber = Number(idOp.cantidadPaquetes) - valorReduce + cantidadPaquetesXCanastaExistente;
+        const valorEntero = cantidadPaquetesNumber / detalleProducto.product.PxC;
+        const valorResiduo = cantidadPaquetesNumber % detalleProducto.product.PxC;
+        const cantidadCanastas = Math.trunc(valorEntero);
+        const cantidadPaquetes = valorResiduo;
+        return {
+          ...idOp,
+          cantidadPaquetes: String(cantidadPaquetes),
+          cantidadCanastas: String(cantidadCanastas),
+        }
+      } else {
+        return { ...idOp }
+      }
+    })
+    setOrdenPedido(nuevoOrdenPedido);
+  }
+
+  const precioTotalOrden = () => {
+    let totalOp = 0
+    ordenPedido.map(product => {
+      const cantidadNumberPaquetes = Number(product.cantidadPaquetes);
+      const precioProductoPaquetes = cantidadNumberPaquetes * product.product.valorPaquete;
+      const cantidadNumberCanastas = Number(product.cantidadCanastas);
+      const precioProductoCanasta = cantidadNumberCanastas * product.product.valorCanasta;
+      const precioProducto = precioProductoPaquetes + precioProductoCanasta;
+      totalOp = totalOp + precioProducto;
+    })
+    return (
+      <p className="card-info-nombre m-0">Total: ${totalOp} </p>
+    )
+  }
+
 
   const validateRedirect = () => {
     switch (carritoEstado) {
@@ -174,14 +245,22 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                   )
                 })
               }
-
               <div className="row mb-3">
                 <div className="col-12 col-sm-12 col-md-12 col-lg-1" ></div>
                 <div className="col-12 col-sm-12 col-md-12 col-lg-9" >
                   <hr />
+                  <div className="div-gran-total">
+                    {
+                      precioTotalOrden()
+                    }
+                  </div>
+                  <hr />
                   <div className='div-buttioms-actions-op'>
+                  <button className='btn btn-link a-link-whit-icon' >
+                      <button className='btn btn-link a-link-login' onClick={() => limpiarOp()}>Limpiar</button>
+                    </button>
                     <button className='btn btn-link a-link-whit-icon' >
-                      <button className='btn btn-primary bottom-custom' onClick={() => gestionarProductos()}>Explorar productos</button>
+                      <button className='btn btn-link a-link-login' onClick={() => gestionarProductos()}>Explorar productos</button>
                     </button>
                     <button className='btn btn-link a-link-whit-icon' >
                       <button className='btn btn-primary bottom-custom' onClick={() => cerrarOrden()}>Enviar</button>
@@ -190,7 +269,6 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                 </div>
                 <div className="col-12 col-sm-12 col-md-12 col-lg-2" ></div>
               </div>
-
             </div>
           </>
         )
