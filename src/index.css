@@ -465,7 +465,8 @@ code {
 
 .div-ordenes-pedido-lista-detalle-padre{
   position: relative;
-  height: auto;
+  width: 100%;
+  display: flex;
 }
 
 .div-ordenes-pedido-lista-detalle-1{
@@ -473,15 +474,14 @@ code {
   height: 0%;
   position: relative;
   background-color: white;
-  overflow: hidden;
-  display: none;
   transition-duration: 1.5s;
+  overflow: hidden;
 }
 
 .div-ordenes-pedido-lista-detalle-1.active{
   width: 100%;
-  display: block;
   transition-duration: 1.5s;
+  overflow: auto;
 }
 
 .div-ordenes-pedido-lista-detalle-2{
@@ -490,7 +490,6 @@ code {
   position: relative;
   background-color: white;
   overflow: hidden;
-  display: none;
   transition-duration: 1.5s;
 }
 
@@ -498,6 +497,7 @@ code {
   width: 100%;
   display: block;
   transition-duration: 1.5s;
+  overflow: auto;
 }
 
 @media (min-width: 760px) {

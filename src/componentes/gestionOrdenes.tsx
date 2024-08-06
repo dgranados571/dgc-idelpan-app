@@ -256,10 +256,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
       vistaActiva: true,
       idDetalleOp: ordePedido.idProcesamiento
     })
-    setTimeout(() => {
-      setDetalleOP(ordePedido.productosLista);
-    }, 500)
-
+    setDetalleOP(ordePedido.productosLista);
   }
 
   const cierraDetalleOrdenPedido = () => {
@@ -393,6 +390,42 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
             <hr />
             <div className="row">
               {
+                Object.entries(detalleOp).map(([key, ordenPedido]) => {
+                  return (
+                    <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
+                      <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
+                      <div className="div-gestion-product-agrega-padre">
+                        <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
+                      </div>
+                      <div className="">
+                        <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
+                      </div>
+                      {
+                        precioProductoDetalle(ordenPedido)
+                      }
+                    </div>
+                  )
+                })
+              }
+               {
+                Object.entries(detalleOp).map(([key, ordenPedido]) => {
+                  return (
+                    <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
+                      <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
+                      <div className="div-gestion-product-agrega-padre">
+                        <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
+                      </div>
+                      <div className="">
+                        <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
+                      </div>
+                      {
+                        precioProductoDetalle(ordenPedido)
+                      }
+                    </div>
+                  )
+                })
+              }
+               {
                 Object.entries(detalleOp).map(([key, ordenPedido]) => {
                   return (
                     <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
