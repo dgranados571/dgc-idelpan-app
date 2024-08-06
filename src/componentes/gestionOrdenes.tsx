@@ -336,19 +336,6 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
       {
         validateRedirect()
       }
-      <div className="div-ordenes-pedido-lista-detalle-padre">
-        {
-          infoDelleOp.vistaActiva ?
-            <div className="div-ordenes-pedido-lista-detalle-2 active">
-
-            </div>
-            :
-            <div className="div-ordenes-pedido-lista-detalle-1 active">
-
-            </div>
-        }
-      </div>
-
       {
         infoDelleOp.vistaActiva ?
           <div className='div-style-form'>

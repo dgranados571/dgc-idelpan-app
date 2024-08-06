@@ -463,42 +463,6 @@ code {
   justify-content: flex-end;
 }
 
-.div-ordenes-pedido-lista-detalle-padre{
-  position: relative;
-  width: 100%;
-  display: flex;
-}
-
-.div-ordenes-pedido-lista-detalle-1{
-  width: 0%;
-  height: 0%;
-  position: relative;
-  background-color: white;
-  transition-duration: 1.5s;
-  overflow: hidden;
-}
-
-.div-ordenes-pedido-lista-detalle-1.active{
-  width: 100%;
-  transition-duration: 1.5s;
-  overflow: auto;
-}
-
-.div-ordenes-pedido-lista-detalle-2{
-  width: 0%;
-  height: 0%;
-  position: relative;
-  background-color: white;
-  overflow: hidden;
-  transition-duration: 1.5s;
-}
-
-.div-ordenes-pedido-lista-detalle-2.active{
-  width: 100%;
-  transition-duration: 1.5s;
-  overflow: auto;
-}
-
 @media (min-width: 760px) {
   .div-buttioms-actions-op {
     display: flex;
