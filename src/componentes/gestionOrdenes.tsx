@@ -439,7 +439,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                           </div>
                           <div className='div-header-list-op-2'>
                             <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido)} >
-                              <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver Orden
+                              <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver
                             </button>
                           </div>
                         </div>
