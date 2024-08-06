@@ -348,117 +348,122 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
             </div>
         }
       </div>
-      <div className='div-style-form'>
-        <h3 className='titulo-form'>Mis ordenes de pedido</h3>
-        <div className="row">
-          <div className="col-12 col-sm-12 col-md-12 col-lg-12" >
-            <p className='p-label-form my-3'>Aqui podrá vizualizar el detalle de cada una de sus ordenes de pedido:</p>
+
+      {
+        infoDelleOp.vistaActiva ?
+          <div className='div-style-form'>
+            <div className='div-p-label-form'>
+              <h3 className='titulo-form'>Detalle orden de pedido  {infoDelleOp.idDetalleOp} </h3>
+              <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => cierraDetalleOrdenPedido()} />
+            </div>
             <hr />
-            <div className='div-item-produto'>
-              <div className='div-header-list-op-1'>
-                <p className='p-label-form my-0'>Fecha</p>
-              </div>
-              <div className='div-header-list-op-1'>
-                <p className='p-label-form my-0'>Id Orden de Pedido: </p>
-              </div>
-              <div className='div-header-list-op-2'>
-                <p className='p-label-form my-0'>Detalles</p>
+            <div className="row">
+              {
+                Object.entries(detalleOp).map(([key, ordenPedido]) => {
+                  return (
+                    <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
+                      <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
+                      <div className="div-gestion-product-agrega-padre">
+                        <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
+                      </div>
+                      <div className="">
+                        <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
+                      </div>
+                      {
+                        precioProductoDetalle(ordenPedido)
+                      }
+                    </div>
+                  )
+                })
+              }
+              {
+                Object.entries(detalleOp).map(([key, ordenPedido]) => {
+                  return (
+                    <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
+                      <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
+                      <div className="div-gestion-product-agrega-padre">
+                        <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
+                      </div>
+                      <div className="">
+                        <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
+                      </div>
+                      {
+                        precioProductoDetalle(ordenPedido)
+                      }
+                    </div>
+                  )
+                })
+              }
+              {
+                Object.entries(detalleOp).map(([key, ordenPedido]) => {
+                  return (
+                    <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
+                      <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
+                      <div className="div-gestion-product-agrega-padre">
+                        <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
+                      </div>
+                      <div className="">
+                        <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
+                      </div>
+                      {
+                        precioProductoDetalle(ordenPedido)
+                      }
+                    </div>
+                  )
+                })
+              }
+            </div>
+            <hr />
+            <div className="div-gran-total">
+              {
+                precioTotalOrdenDetalle()
+              }
+            </div>
+            <hr />
+          </div>
+          :
+          <div className='div-style-form'>
+            <h3 className='titulo-form'>Mis ordenes de pedido</h3>
+            <div className="row">
+              <div className="col-12 col-sm-12 col-md-12 col-lg-12" >
+                <p className='p-label-form my-3'>Aqui podrá vizualizar el detalle de cada una de sus ordenes de pedido:</p>
+                <hr />
+                <div className='div-item-produto'>
+                  <div className='div-header-list-op-1'>
+                    <p className='p-label-form my-0'>Fecha</p>
+                  </div>
+                  <div className='div-header-list-op-1'>
+                    <p className='p-label-form my-0'>Id Orden de Pedido: </p>
+                  </div>
+                  <div className='div-header-list-op-2'>
+                    <p className='p-label-form my-0'>Detalles</p>
+                  </div>
+                </div>
+                {
+                  Object.entries(ordenesPedido).map(([key, ordenPedido]) => {
+                    return (
+                      <>
+                        <div className='div-item-produto'>
+                          <div className='div-header-list-op-1'>
+                            <p className='m-0'>{ordenPedido.fechaOrdenPedido}</p>
+                          </div>
+                          <div className='div-header-list-op-1'>
+                            <p className='m-0'>{ordenPedido.idProcesamiento}</p>
+                          </div>
+                          <div className='div-header-list-op-2'>
+                            <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido)} >
+                              <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver Orden
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    )
+                  })
+                }
               </div>
             </div>
-            {
-              Object.entries(ordenesPedido).map(([key, ordenPedido]) => {
-                return (
-                  <>
-                    <div className='div-item-produto'>
-                      <div className='div-header-list-op-1'>
-                        <p className='m-0'>{ordenPedido.fechaOrdenPedido}</p>
-                      </div>
-                      <div className='div-header-list-op-1'>
-                        <p className='m-0'>{ordenPedido.idProcesamiento}</p>
-                      </div>
-                      <div className='div-header-list-op-2'>
-                        <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido)} >
-                          <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver Orden
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )
-              })
-            }
           </div>
-        </div>
-      </div>
-      <div className='div-style-form'>
-        <div className='div-p-label-form'>
-          <h3 className='titulo-form'>Detalle orden de pedido  {infoDelleOp.idDetalleOp} </h3>
-          <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => cierraDetalleOrdenPedido()} />
-        </div>
-        <hr />
-        <div className="row">
-          {
-            Object.entries(detalleOp).map(([key, ordenPedido]) => {
-              return (
-                <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
-                  <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
-                  <div className="div-gestion-product-agrega-padre">
-                    <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
-                  </div>
-                  <div className="">
-                    <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
-                  </div>
-                  {
-                    precioProductoDetalle(ordenPedido)
-                  }
-                </div>
-              )
-            })
-          }
-          {
-            Object.entries(detalleOp).map(([key, ordenPedido]) => {
-              return (
-                <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
-                  <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
-                  <div className="div-gestion-product-agrega-padre">
-                    <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
-                  </div>
-                  <div className="">
-                    <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
-                  </div>
-                  {
-                    precioProductoDetalle(ordenPedido)
-                  }
-                </div>
-              )
-            })
-          }
-          {
-            Object.entries(detalleOp).map(([key, ordenPedido]) => {
-              return (
-                <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
-                  <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
-                  <div className="div-gestion-product-agrega-padre">
-                    <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
-                  </div>
-                  <div className="">
-                    <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
-                  </div>
-                  {
-                    precioProductoDetalle(ordenPedido)
-                  }
-                </div>
-              )
-            })
-          }
-        </div>
-        <hr />
-        <div className="div-gran-total">
-          {
-            precioTotalOrdenDetalle()
-          }
-        </div>
-        <hr />
-      </div>
+      }
       {
         modalMensaje.estado ?
           <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={() => { }} />
