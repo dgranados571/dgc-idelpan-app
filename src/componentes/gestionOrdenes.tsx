@@ -147,7 +147,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
       <div className="div-label-info-op">
         <p className="card-info-nombre m-0">{product.product.nombre}</p>
         <div className="">
-          <p className="m-0">{cantidadNumberCanastas} {labelTipoCompra2}</p>
+          <p className="m-0">{labelTipoCompra2} {cantidadNumberCanastas}</p>
         </div>
         <div className="div-gestion-product-agrega-padre">
           <p className="mx-0 my-0"> {labelTipoCompra1}</p>
