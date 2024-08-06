@@ -372,6 +372,13 @@ code {
   border-radius: 0px 0px 10px 10px;
 }
 
+.card-info-nombre-padre {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
 .card-info-nombre {
   font-weight: bold;
   padding: 0;
