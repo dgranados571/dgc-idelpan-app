@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartArrowDown, faBars, faHome, faUser, faShoppingBag, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faHome, faUser, faShoppingBag, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import CrearOrden from './crearOrden'
 import GestionOrdenes from './gestionOrdenes'

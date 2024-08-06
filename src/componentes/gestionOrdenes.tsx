@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GestionOrdenesDePedido, GestionOrdenPedidoProps, OrdenPedidoProduct } from '../interfaces/IAuthServices'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faShoppingBasket, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faShoppingBasket, faPlusCircle, faMinusCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { AuthServices } from '../api/authServices'
 import { GenericResponse } from '../interfaces/IGenericResponse'
 import { useNavigate } from 'react-router-dom'
@@ -23,6 +23,13 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
   });
 
   const [ordenesPedido, setOrdenesPedido] = useState<GestionOrdenesDePedido[]>([]);
+
+  const [infoDelleOp, setInfoDelleOp] = useState({
+    vistaActiva: false,
+    idDetalleOp: ''
+  })
+
+  const [detalleOp, setDetalleOP] = useState<OrdenPedidoProduct[]>([]);
 
   useEffect(() => {
     setCargando(true);
@@ -116,10 +123,6 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
     setOrdenPedido([])
     setRedirect('');
     selecionaMenu(menuLateral[0])
-  }
-
-  const detalleOrdenPedido = (idProcesamiento: string, productosLista: OrdenPedidoProduct[]) => {
-
   }
 
   const labelInfoProductOP = (product: OrdenPedidoProduct) => {
@@ -220,6 +223,52 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
     )
   }
 
+  const precioTotalOrdenDetalle = () => {
+    let totalOp = 0
+    detalleOp.map(product => {
+      const cantidadNumberPaquetes = Number(product.cantidadPaquetes);
+      const precioProductoPaquetes = cantidadNumberPaquetes * productosDetalle[product.idProduct].valorPaquete;
+      const cantidadNumberCanastas = Number(product.cantidadCanastas);
+      const precioProductoCanasta = cantidadNumberCanastas * productosDetalle[product.idProduct].valorCanasta;
+      const precioProducto = precioProductoPaquetes + precioProductoCanasta;
+      totalOp = totalOp + precioProducto;
+    })
+    return (
+      <p className="card-info-nombre m-0">Total: ${totalOp} </p>
+    )
+  }
+
+  const precioProductoDetalle = (productDetalle: OrdenPedidoProduct) => {
+    let totalProductoOp = 0
+    const cantidadNumberPaquetes = Number(productDetalle.cantidadPaquetes);
+    const precioProductoPaquetes = cantidadNumberPaquetes * productosDetalle[productDetalle.idProduct].valorPaquete;
+    const cantidadNumberCanastas = Number(productDetalle.cantidadCanastas);
+    const precioProductoCanasta = cantidadNumberCanastas * productosDetalle[productDetalle.idProduct].valorCanasta;
+    const precioProducto = precioProductoPaquetes + precioProductoCanasta;
+    totalProductoOp = totalProductoOp + precioProducto;
+    return (
+      <p className="card-info-nombre m-0">Valor: ${totalProductoOp} </p>
+    )
+  }
+
+  const detalleOrdenPedido = (ordePedido: GestionOrdenesDePedido) => {
+    setInfoDelleOp({
+      vistaActiva: true,
+      idDetalleOp: ordePedido.idProcesamiento
+    })
+    setTimeout(() => {
+      setDetalleOP(ordePedido.productosLista);
+    }, 500)
+
+  }
+
+  const cierraDetalleOrdenPedido = () => {
+    setDetalleOP([]);
+    setInfoDelleOp({
+      vistaActiva: false,
+      idDetalleOp: ''
+    })
+  }
 
   const validateRedirect = () => {
     switch (carritoEstado) {
@@ -256,7 +305,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                   </div>
                   <hr />
                   <div className='div-buttioms-actions-op'>
-                  <button className='btn btn-link a-link-whit-icon' >
+                    <button className='btn btn-link a-link-whit-icon' >
                       <button className='btn btn-link a-link-login' onClick={() => limpiarOp()}>Limpiar</button>
                     </button>
                     <button className='btn btn-link a-link-whit-icon' >
@@ -280,47 +329,6 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
               <p className='p-label-form my-3'>Tu carrito de compras esta vacio</p>
               <button className='btn btn-primary bottom-custom' onClick={() => gestionarProductos()}>Explorar productos</button>
             </div>
-            <div className='div-style-form'>
-              <h3 className='titulo-form'>Mis ordenes de pedido</h3>
-              <div className="row">
-                <div className="col-12 col-sm-12 col-md-12 col-lg-12" >
-                  <p className='p-label-form my-3'>Aqui podrá vizualizar el detalle de cada una de sus ordenes de pedido:</p>
-                  <hr />
-                  <div className='div-item-produto'>
-                    <div className='div-header-list-op-1'>
-                      <p className='p-label-form my-0'>Fecha</p>
-                    </div>
-                    <div className='div-header-list-op-1'>
-                      <p className='p-label-form my-0'>Id Orden de Pedido: </p>
-                    </div>
-                    <div className='div-header-list-op-2'>
-                      <p className='p-label-form my-0'>Detalles</p>
-                    </div>
-                  </div>
-                  {
-                    Object.entries(ordenesPedido).map(([key, ordenPedido]) => {
-                      return (
-                        <>
-                          <div className='div-item-produto'>
-                            <div className='div-header-list-op-1'>
-                              <p className='m-0'>{ordenPedido.fechaOrdenPedido}</p>
-                            </div>
-                            <div className='div-header-list-op-1'>
-                              <p className='m-0'>{ordenPedido.idProcesamiento}</p>
-                            </div>
-                            <div className='div-header-list-op-2'>
-                              <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido.idProcesamiento, ordenPedido.productosLista)} >
-                                <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver detalle
-                              </button>
-                            </div>
-                          </div>
-                        </>
-                      )
-                    })
-                  }
-                </div>
-              </div>
-            </div>
           </>
         )
     }
@@ -331,6 +339,88 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
       {
         validateRedirect()
       }
+      <div className="div-ordenes-pedido-lista-detalle-padre">
+
+        <div  className={infoDelleOp.vistaActiva ? "div-ordenes-pedido-lista-detalle-1" : "div-ordenes-pedido-lista-detalle-1 active"}>
+          <div className='div-style-form'>
+            <h3 className='titulo-form'>Mis ordenes de pedido</h3>
+            <div className="row">
+              <div className="col-12 col-sm-12 col-md-12 col-lg-12" >
+                <p className='p-label-form my-3'>Aqui podrá vizualizar el detalle de cada una de sus ordenes de pedido:</p>
+                <hr />
+                <div className='div-item-produto'>
+                  <div className='div-header-list-op-1'>
+                    <p className='p-label-form my-0'>Fecha</p>
+                  </div>
+                  <div className='div-header-list-op-1'>
+                    <p className='p-label-form my-0'>Id Orden de Pedido: </p>
+                  </div>
+                  <div className='div-header-list-op-2'>
+                    <p className='p-label-form my-0'>Detalles</p>
+                  </div>
+                </div>
+                {
+                  Object.entries(ordenesPedido).map(([key, ordenPedido]) => {
+                    return (
+                      <>
+                        <div className='div-item-produto'>
+                          <div className='div-header-list-op-1'>
+                            <p className='m-0'>{ordenPedido.fechaOrdenPedido}</p>
+                          </div>
+                          <div className='div-header-list-op-1'>
+                            <p className='m-0'>{ordenPedido.idProcesamiento}</p>
+                          </div>
+                          <div className='div-header-list-op-2'>
+                            <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido)} >
+                              <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver Orden
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    )
+                  })
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={infoDelleOp.vistaActiva ? "div-ordenes-pedido-lista-detalle-2 active" : "div-ordenes-pedido-lista-detalle-2"} >
+          <div className='div-style-form'>
+            <div className='div-p-label-form'>
+              <h3 className='titulo-form'>Detalle orden de pedido  {infoDelleOp.idDetalleOp} </h3>
+              <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => cierraDetalleOrdenPedido()} />
+            </div>
+            <hr />
+            <div className="row">
+              {
+                Object.entries(detalleOp).map(([key, ordenPedido]) => {
+                  return (
+                    <div className="col-12 col-sm-12 col-md-12 col-lg-4 mb-4" >
+                      <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
+                      <div className="div-gestion-product-agrega-padre">
+                        <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
+                      </div>
+                      <div className="">
+                        <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
+                      </div>
+                      {
+                        precioProductoDetalle(ordenPedido)
+                      }
+                    </div>
+                  )
+                })
+              }
+            </div>
+            <hr />
+            <div className="div-gran-total">
+              {
+                precioTotalOrdenDetalle()
+              }
+            </div>
+            <hr />
+          </div>
+        </div>
+      </div>
       {
         modalMensaje.estado ?
           <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={() => { }} />
