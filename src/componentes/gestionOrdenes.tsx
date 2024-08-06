@@ -147,15 +147,15 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
       <div className="div-label-info-op">
         <p className="card-info-nombre m-0">{product.product.nombre}</p>
         <div className="div-gestion-product-agrega-padre">
+          <div className="">
+            <p className="m-0">{cantidadNumberCanastas} {labelTipoCompra2}</p>
+          </div>
           <p className="mx-0 my-0"> {labelTipoCompra1}</p>
           <div className="div-gestion-product-agrega mx-3 my-0">
             <FontAwesomeIcon icon={faMinusCircle} className='a-link-whit-icon' onClick={() => actualizaOpIdMinius(product)} />
             <p className="mx-2 my-0">{cantidadNumberPaquetes}</p>
             <FontAwesomeIcon icon={faPlusCircle} className='a-link-whit-icon' onClick={() => actualizaOpIdPlus(product)} />
           </div>
-        </div>
-        <div className="">
-          <p className="m-0">{cantidadNumberCanastas} {labelTipoCompra2}</p>
         </div>
         <p className="card-info-nombre m-0">${precioProducto}</p>
       </div>
@@ -350,12 +350,12 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                   return (
                     <div className="col-6 col-sm-6 col-md-6 col-lg-4 mb-4" >
                       <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
-                      <div className="div-gestion-product-agrega-padre">
-                        <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
-                      </div>
                       <div className="">
                         <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
                       </div>
+                      <div className="div-gestion-product-agrega-padre">
+                        <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
+                      </div>                      
                       {
                         precioProductoDetalle(ordenPedido)
                       }
