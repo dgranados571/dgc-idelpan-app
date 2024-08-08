@@ -14,7 +14,7 @@ const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
         indiceMensaje: '',
         funcionSi: () => { }
     });
-    
+
     const [viewStep, setviewStep] = useState('');
     const [usuario, setUsuario] = useState('');
     const [contrasenia, setContrasenia] = useState('');
@@ -115,7 +115,11 @@ const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
                     setviewStep(response.mensaje);
                 } else {
                     sessionStorage.setItem('usuarioApp', JSON.stringify(response.objeto))
-                    navigate('/privateZone');
+                    if (response.objeto.role === 'ROLE_ROOT') {
+                        navigate('/admin');
+                    } else {
+                        navigate('/clientes');
+                    }
                 }
             } else {
                 ejecutaModalMensaje(response.mensaje);
@@ -173,7 +177,7 @@ const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
     const limpiarCampos = () => {
         setUsuario('');
         setContrasenia('');
-        setConfirmaContrasenia('');   
+        setConfirmaContrasenia('');
     }
 
     return (
@@ -183,7 +187,7 @@ const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
             }
             {
                 modalMensaje.estado ?
-                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={()=>{}} />
+                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={() => { }} />
                     :
                     <></>
             }

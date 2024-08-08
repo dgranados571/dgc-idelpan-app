@@ -82,6 +82,12 @@ export const ModalMensajeUtil = () => {
       icono: faExclamationCircle,
       claseIcono: 'modal-icono-error'
     },
+    'Auth-013': {
+      titulo: 'Cliente eliminado exitosamente.',
+      descripcion: 'Hemos perdido un cliente y con el sus ordenes de pedido.',
+      icono: faCheckDouble,
+      claseIcono: 'modal-icono'
+    },
 
   }
 

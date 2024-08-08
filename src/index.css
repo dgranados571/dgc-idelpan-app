@@ -456,18 +456,32 @@ code {
   height: 100%;
 }
 
-.div-gestion-product-agrega-padre{
+.div-gestion-product-agrega-padre {
   display: flex;
   justify-content: space-between;
 }
 
-.div-gestion-product-agrega{
+.div-gestion-product-agrega {
   display: flex;
 }
 
-.div-gran-total{
+.div-gran-total {
   display: flex;
   justify-content: flex-end;
+}
+
+.div-actions-clientes {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.p-actions-clientes {
+  margin-right: 10px;
+}
+
+.div-info-clientes {
+  display: flex;
+  justify-content: flex-start;
 }
 
 @media (min-width: 760px) {

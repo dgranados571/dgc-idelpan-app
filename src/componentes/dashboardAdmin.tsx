@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { MenuLateral, TransaccionProps } from '../interfaces/IAuthServices'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faHome, faUser, faShoppingBag, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import { useNavigate } from 'react-router-dom'
-import CrearOrden from './crearOrden'
-import GestionOrdenes from './gestionOrdenes'
-import { MenuLateral, OrdenPedidoProduct, TransaccionProps } from '../interfaces/IAuthServices'
-import ModalMensaje from '../modalMensaje/modalMensaje'
-import Productos from './productos'
-import MenuLateralComponent from './menuLateral'
+import { faUserFriends, faHome, faUserLock, faBars, faFolderTree } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
+import MenuLateralComponent from './menuLateral';
+import ModalMensaje from '../modalMensaje/modalMensaje';
+import Clientes from './clientes';
 
-const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
+const DashboardAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const navigate = useNavigate();
 
@@ -23,16 +21,22 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
             controlVista: ''
         },
         {
-            nombreItem: 'Mis ordenes de pedido',
+            nombreItem: 'Inventarios',
             className: 'div-item-menu',
-            iconMenu: faShoppingBag,
-            controlVista: 'VISTA_GESTION_ORDENES'
+            iconMenu: faFolderTree,
+            controlVista: 'VISTA_INVENTARIOS'
         },
         {
-            nombreItem: 'Mi cuenta',
+            nombreItem: 'Mis clientes',
             className: 'div-item-menu',
-            iconMenu: faUser,
-            controlVista: 'VISTA_MI_CUENTA'
+            iconMenu: faUserFriends,
+            controlVista: 'VISTA_CLIENTES'
+        },
+        {
+            nombreItem: 'Usuarios de aplicación',
+            className: 'div-item-menu',
+            iconMenu: faUserLock,
+            controlVista: 'VISTA_USUARIOS_APP'
         }
     ])
 
@@ -49,8 +53,6 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
         nombre_completo: '',
         id_procesamiento: ''
     })
-
-    const [ordenPedido, setOrdenPedido] = useState<OrdenPedidoProduct[]>([]);
 
     useEffect(() => {
         setCargando(true);
@@ -105,23 +107,31 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const validateRedirect = () => {
         switch (redirect) {
-            case 'VISTA_MI_CUENTA':
+            case 'VISTA_INVENTARIOS':
                 return (
-                    <CrearOrden setCargando={setCargando} />
+                    <div className='div-style-form'>
+                        VISTA_INVENTARIOS
+                    </div>
                 )
-            case 'VISTA_GESTION_ORDENES':
+            case 'VISTA_CLIENTES':
                 return (
-                    <GestionOrdenes setRedirect={setRedirect} setCargando={setCargando} selecionaMenu={selecionaMenu} menuLateral={menuLateral}
-                        ordenPedido={ordenPedido} setOrdenPedido={setOrdenPedido} />
+                    <Clientes setCargando={setCargando} />                    
+                )
+            case 'VISTA_USUARIOS_APP':
+                return (
+                    <div className='div-style-form'>
+                        VISTA_USUARIOS_APP
+                    </div>
                 )
             default:
                 return (
                     <div className='div-style-form'>
-                        <Productos ordenPedido={ordenPedido} setOrdenPedido={setOrdenPedido} />
+                        Default
                     </div>
                 )
         }
     }
+
 
     return (
         <div className='div-container'>
@@ -134,11 +144,8 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                     <div className='div-dashboard-header-busqueda-padre'>
                         <div className="div-dashboard-header-busqueda">
                             <FontAwesomeIcon icon={faBars} className='dasboard-icon-header-menu' onClick={() => setOpenMenu(true)} />
-                            <input type="text" className='form-control form-imput-busqueda' placeholder='Buscar productos' autoComplete='off' />
-                            <div className="div-cantidad-carrito">
-                                <p className='p-cantidad-carrito m-0' onClick={() => selecionaMenu(menuLateral[1])}>{ordenPedido.length} </p>
-                                <FontAwesomeIcon icon={faShoppingCart} className='dasboard-icon-header-busqueda' onClick={() => selecionaMenu(menuLateral[1])} />
-                            </div>
+                            <input type="text" className='form-control form-imput-busqueda' placeholder='Buscar' autoComplete='off' />
+                            <div className="div-cantidad-carrito"></div>
                         </div>
                     </div>
                     <div className="div-dashboard-content">
@@ -154,8 +161,8 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                     :
                     <></>
             }
-        </div>
+        </div >
     )
 }
 
-export default Dashboard
+export default DashboardAdmin

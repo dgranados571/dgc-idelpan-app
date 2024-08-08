@@ -18,7 +18,7 @@ export interface GestionOrdenPedidoProps {
     setRedirect: React.Dispatch<React.SetStateAction<string>>;
     setCargando: React.Dispatch<React.SetStateAction<boolean>>;
     selecionaMenu: Function,
-    menuLateral:MenuLateral[],
+    menuLateral: MenuLateral[],
     setOrdenPedido: React.Dispatch<React.SetStateAction<OrdenPedidoProduct[]>>;
     ordenPedido: OrdenPedidoProduct[]
 }
@@ -26,14 +26,14 @@ export interface GestionOrdenPedidoProps {
 export interface MenuLateralProps {
     setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
     selecionaMenu: Function,
-    menuLateral:MenuLateral[],
+    menuLateral: MenuLateral[],
     openMenu: boolean,
     infoMenuUsuario: UsuarioSession
 }
 
 export interface ProductosProps {
     setOrdenPedido: React.Dispatch<React.SetStateAction<OrdenPedidoProduct[]>>;
-    ordenPedido: OrdenPedidoProduct[] 
+    ordenPedido: OrdenPedidoProduct[]
 }
 
 export interface UsuarioSession {
@@ -87,4 +87,20 @@ export interface MenuLateral {
     className: string;
     iconMenu: IconDefinition
     controlVista: string
+}
+
+export interface IClientes {
+    usuario: string;
+    contrasenia: string;
+    nombres: string;
+    apellidos: string;
+    tipo_identificacion: string;
+    identificacion: string;
+    correo: string;
+    role: string;
+    fecha_registro: string;
+    fechaRegistroStr: string;
+    usuario_activo: string;
+    id_procesamiento: string;
+    iniciales_nombre: string;
 }

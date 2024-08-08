@@ -18,7 +18,6 @@ export class AuthServices {
             'Content-Type': 'application/json'
         }
         const rqBody = apiLambda ? f : body;
-        console.log('URL --> ', urlRq)
         return new Promise((resolve, reject) => {
             axios.post(urlRq, rqBody, {
                 headers
