@@ -75,7 +75,8 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
   const consultaOrdenesDePedido = async (usuarioLocalStorage: any) => {
     const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
     const body = {
-      usuario: usuarioLocalStorageObj.usuario
+      usuario: usuarioLocalStorageObj.usuario,
+      estado: 'OP_ABIERTA',
     }
     const authServices = new AuthServices();
     try {
@@ -361,7 +362,6 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                           precioProductoDetalle(ordenPedido)
                         }
                       </div>
-
                     </div>
                   )
                 })
@@ -389,6 +389,9 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                   <div className='div-header-list-op-1'>
                     <p className='p-label-form my-0'>Id Orden de Pedido: </p>
                   </div>
+                  <div className='div-header-list-op-1'>
+                    <p className='p-label-form my-0'>Estado de la Orden: </p>
+                  </div>
                   <div className='div-header-list-op-2'>
                     <p className='p-label-form my-0'>Detalles</p>
                   </div>
@@ -403,6 +406,9 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                           </div>
                           <div className='div-header-list-op-1'>
                             <p className='m-0'>{ordenPedido.idProcesamiento}</p>
+                          </div>
+                          <div className='div-header-list-op-1'>
+                            <p className='m-0'>{ordenPedido.estadoOP}</p>
                           </div>
                           <div className='div-header-list-op-2'>
                             <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido)} >

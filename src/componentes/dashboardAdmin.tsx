@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import MenuLateralComponent from './menuLateral';
 import ModalMensaje from '../modalMensaje/modalMensaje';
 import Clientes from './clientes';
+import UsuariosApp from './usuariosApp';
+import GestionAdminOrdenes from './gestionAdminOrdenes';
 
 const DashboardAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
 
@@ -115,19 +117,15 @@ const DashboardAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
                 )
             case 'VISTA_CLIENTES':
                 return (
-                    <Clientes setCargando={setCargando} />                    
+                    <Clientes setCargando={setCargando} />
                 )
             case 'VISTA_USUARIOS_APP':
                 return (
-                    <div className='div-style-form'>
-                        VISTA_USUARIOS_APP
-                    </div>
+                    <UsuariosApp setCargando={setCargando} />
                 )
             default:
                 return (
-                    <div className='div-style-form'>
-                        Default
-                    </div>
+                    <GestionAdminOrdenes setCargando={setCargando} />
                 )
         }
     }

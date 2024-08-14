@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { IClientes, TransaccionProps } from '../interfaces/IAuthServices';
+import { IUsuarios, TransaccionProps } from '../interfaces/IAuthServices';
 import ModalMensaje from '../modalMensaje/modalMensaje';
 import { GenericResponse } from '../interfaces/IGenericResponse';
 import { AuthServices } from '../api/authServices';
@@ -15,7 +15,7 @@ const Clientes: React.FC<TransaccionProps> = ({ setCargando }) => {
         funcionSi: () => { }
     });
 
-    const [clientes, setClientes] = useState<IClientes[]>([]);
+    const [clientes, setClientes] = useState<IUsuarios[]>([]);
     const [roleUse, setRoleUse] = useState('');
 
     useEffect(() => {
@@ -30,6 +30,7 @@ const Clientes: React.FC<TransaccionProps> = ({ setCargando }) => {
             setRoleUse(usuarioLocalStorageObj.role);
             const body = {
                 usuario: usuarioLocalStorageObj.usuario,
+                role: 'ROLE_CLIENTE'
             }
             const authServices = new AuthServices();
             try {

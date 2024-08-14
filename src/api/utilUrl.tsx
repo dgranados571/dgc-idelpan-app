@@ -46,13 +46,19 @@ export const UtilUrl = () => {
       urlEntornoLambda,
       urlEntornoLocal,
       urlDominioServidor,
-      pathLambda: '/service/idelpan/consultaClientes'
+      pathLambda: '/service/idelpan/consultaUsuarios'
     },
     8: {
       urlEntornoLambda,
       urlEntornoLocal,
       urlDominioServidor,
       pathLambda: '/service/idelpan/eliminaCliente'
+    },
+    9: {
+      urlEntornoLambda,
+      urlEntornoLocal,
+      urlDominioServidor,
+      pathLambda: '/service/idelpan/crearUsuariosApp'
     }
   };
 

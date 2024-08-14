@@ -79,7 +79,8 @@ export interface GestionOrdenesDePedido {
     usuario: string;
     fechaOrdenPedido: string;
     idProcesamiento: string;
-    productosLista: OrdenPedidoProduct[]
+    productosLista: OrdenPedidoProduct[];
+    estadoOP:string
 }
 
 export interface MenuLateral {
@@ -89,7 +90,7 @@ export interface MenuLateral {
     controlVista: string
 }
 
-export interface IClientes {
+export interface IUsuarios {
     usuario: string;
     contrasenia: string;
     nombres: string;

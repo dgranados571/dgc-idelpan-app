@@ -84,7 +84,7 @@ export const ModalMensajeUtil = () => {
     },
     'Auth-013': {
       titulo: 'Cliente eliminado exitosamente.',
-      descripcion: 'Hemos perdido un cliente y con el sus ordenes de pedido.',
+      descripcion: 'Hemos perdido un cliente y con él sus ordenes de pedido.',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
     },

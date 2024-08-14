@@ -115,7 +115,7 @@ const Login: React.FC<AuthProps> = ({ setRedirect, setCargando }) => {
                     setviewStep(response.mensaje);
                 } else {
                     sessionStorage.setItem('usuarioApp', JSON.stringify(response.objeto))
-                    if (response.objeto.role === 'ROLE_ROOT') {
+                    if (response.objeto.role === 'ROLE_ROOT' || response.objeto.role === 'ROLE_ADMINISTRADOR') {
                         navigate('/admin');
                     } else {
                         navigate('/clientes');
