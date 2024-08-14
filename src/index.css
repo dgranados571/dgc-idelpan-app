@@ -274,12 +274,13 @@ code {
 
 .div-item-produto-padre-padre {
   overflow: auto;
+  width: 100%;
 }
 
 .div-item-produto-padre {
   justify-content: space-between;
   align-items: center;
-  width: 55rem
+  width: 47rem
 }
 
 .div-item-produto {
@@ -317,6 +318,7 @@ code {
   width: 100%;
   display: flex;
   justify-content: flex-start;
+  min-width: 8rem;
 }
 
 .div-header-list-op-2 {
