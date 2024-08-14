@@ -314,7 +314,6 @@ const UsuariosApp: React.FC<TransaccionProps> = ({ setCargando }) => {
                                             {
                                                 roleUse === 'ROLE_ROOT' ?
                                                     <>
-
                                                         <button className='btn btn-link a-link-login px-0' onClick={() => eliminarCliente(usuario.usuario)} >Eliminar</button>
                                                     </>
 

@@ -139,7 +139,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
             const response: GenericResponse = await authServices.requestPost(body, 10);
             if (response.estado) {
                 let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
-                if (!!usuarioLocalStorage) {                    
+                if (!!usuarioLocalStorage) {
                     consultaOrdenesDePedido(usuarioLocalStorage);
                     ejecutaModalMensaje(response.mensaje);
                 }
@@ -199,60 +199,64 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                                 </div>
                                 :
                                 <>
-                                    <div className='div-item-produto'>
-                                        <div className='div-header-list-op-1'>
-                                            <p className='p-label-form my-0'>Fecha</p>
-                                        </div>
-                                        <div className='div-header-list-op-1'>
-                                            <p className='p-label-form my-0'>Usuario</p>
-                                        </div>
-                                        <div className='div-header-list-op-2'>
-                                            <p className='p-label-form my-0'>Id Op</p>
-                                        </div>
-                                        <div className='div-header-list-op-2'>
-                                            <p className='p-label-form my-0'>Estado de la Orden</p>
-                                        </div>
-                                        <div className='div-header-list-op-2'>
-                                            <p className='p-label-form my-0'>Detalles</p>
+                                    <div className='div-item-produto-padre-padre'>
+                                        <div className='div-item-produto-padre'>
+                                            <div className='div-item-produto'>
+                                                <div className='div-header-list-op-1'>
+                                                    <p className='p-label-form my-0'>Fecha</p>
+                                                </div>
+                                                <div className='div-header-list-op-1'>
+                                                    <p className='p-label-form my-0'>Usuario</p>
+                                                </div>
+                                                <div className='div-header-list-op-2'>
+                                                    <p className='p-label-form my-0'>Id Op</p>
+                                                </div>
+                                                <div className='div-header-list-op-2'>
+                                                    <p className='p-label-form my-0'>Estado de la Orden</p>
+                                                </div>
+                                                <div className='div-header-list-op-2'>
+                                                    <p className='p-label-form my-0'>Detalles</p>
+                                                </div>
+                                            </div>
+                                            {
+                                                Object.entries(ordenesPedido).map(([key, ordenPedido]) => {
+                                                    return (
+                                                        <>
+                                                            <div className='div-item-produto'>
+                                                                <div className='div-header-list-op-1'>
+                                                                    <p className='m-0'>{ordenPedido.fechaOrdenPedido}</p>
+                                                                </div>
+                                                                <div className='div-header-list-op-1'>
+                                                                    <p className='m-0'>{ordenPedido.usuario}</p>
+                                                                </div>
+                                                                <div className='div-header-list-op-2'>
+                                                                    <p className='m-0'>{ordenPedido.idProcesamiento}</p>
+                                                                </div>
+                                                                <div className='div-header-list-op-2'>
+                                                                    <p className='m-0'>{ordenPedido.estadoOP}</p>
+                                                                </div>
+                                                                <div className='div-header-list-op-2'>
+                                                                    <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido)} >
+                                                                        <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver
+                                                                    </button>
+                                                                    {
+                                                                        roleUse === 'ROLE_ROOT' ?
+                                                                            <>
+                                                                                <button className='btn btn-link a-link-whit-icon' onClick={() => eliminarOp(ordenPedido)} >
+                                                                                    <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Eliminar
+                                                                                </button>
+                                                                            </>
+                                                                            :
+                                                                            <></>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                })
+                                            }
                                         </div>
                                     </div>
-                                    {
-                                        Object.entries(ordenesPedido).map(([key, ordenPedido]) => {
-                                            return (
-                                                <>
-                                                    <div className='div-item-produto'>
-                                                        <div className='div-header-list-op-1'>
-                                                            <p className='m-0'>{ordenPedido.fechaOrdenPedido}</p>
-                                                        </div>
-                                                        <div className='div-header-list-op-1'>
-                                                            <p className='m-0'>{ordenPedido.usuario}</p>
-                                                        </div>
-                                                        <div className='div-header-list-op-2'>
-                                                            <p className='m-0'>{ordenPedido.idProcesamiento}</p>
-                                                        </div>
-                                                        <div className='div-header-list-op-2'>
-                                                            <p className='m-0'>{ordenPedido.estadoOP}</p>
-                                                        </div>
-                                                        <div className='div-header-list-op-2'>
-                                                            <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido)} >
-                                                                <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver
-                                                            </button>
-                                                            {
-                                                                roleUse === 'ROLE_ROOT' ?
-                                                                    <>
-                                                                        <button className='btn btn-link a-link-whit-icon' onClick={() => eliminarOp(ordenPedido)} >
-                                                                            <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Eliminar
-                                                                        </button>
-                                                                    </>
-                                                                    :
-                                                                    <></>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            )
-                                        })
-                                    }
                                 </>
                         }
                     </div>

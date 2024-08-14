@@ -272,10 +272,20 @@ code {
   padding: 0px 10px;
 }
 
+.div-item-produto-padre-padre {
+  overflow: auto;
+}
+
+.div-item-produto-padre {
+  justify-content: space-between;
+  align-items: center;
+  width: 55rem
+}
+
 .div-item-produto {
   display: flex;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
 }
 
 .a-link-whit-icon-2 {
@@ -485,13 +495,20 @@ code {
 }
 
 @media (min-width: 760px) {
+
   .div-buttioms-actions-op {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
   }
-}
 
+  .div-item-produto-padre {
+    justify-content: space-between;
+    align-items: center;
+    width: 100%
+  }
+
+}
 
 @media (min-width: 1025px) {
 
