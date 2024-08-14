@@ -88,6 +88,12 @@ export const ModalMensajeUtil = () => {
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
     },
+    'Auth-014': {
+      titulo: 'Orden de pedido eliminada exitosamente.',
+      descripcion: 'Hemos eliminado la orden de pedido satisfactoriamente.',
+      icono: faCheckDouble,
+      claseIcono: 'modal-icono'
+    }
 
   }
 

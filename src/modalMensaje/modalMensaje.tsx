@@ -8,6 +8,7 @@ import { useState } from 'react';
 const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionControl }) => {
 
     const { modalInfo } = ModalMensajeUtil();
+    console.log('Modal Info --> ', modalInfo[indiceMensaje])
 
     const [cantidad, setCantidad] = useState('');
 

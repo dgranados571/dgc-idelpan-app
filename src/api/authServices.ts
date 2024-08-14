@@ -5,6 +5,7 @@ export class AuthServices {
 
     requestPost(body: any, indexUrl: number): Promise<any> {
         const { url, apiLambda } = UtilUrl();
+        console.log('URL Component --> ', url[indexUrl])
         let urlRq: string;
         const f = new FormData();
         if (apiLambda) {

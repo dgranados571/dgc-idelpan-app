@@ -293,7 +293,7 @@ const UsuariosApp: React.FC<TransaccionProps> = ({ setCargando }) => {
                     {
                         Object.entries(usuarios).map(([key, usuario]) => {
                             return (
-                                <div className="col-6 col-sm-6 col-md-6 col-lg-4 mb-4" >
+                                <div className="col-6 col-sm-6 col-md-6 col-lg-6 mb-4" >
                                     <div className="card-info-nombre-padre">
                                         <p className="card-info-nombre m-0">{usuario.nombres} {usuario.apellidos}</p>
                                         <p className="card-info-nombre m-0">{usuario.role}</p>

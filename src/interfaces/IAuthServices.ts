@@ -76,6 +76,7 @@ export interface OrdenPedidoProduct {
 }
 
 export interface GestionOrdenesDePedido {
+    idOp: number,
     usuario: string;
     fechaOrdenPedido: string;
     idProcesamiento: string;
