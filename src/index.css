@@ -89,7 +89,7 @@ code {
 .div-dashboard-header-busqueda {
   position: fixed;
   left: 0;
-  right: 0;
+  right: 1rem;
   top: 0rem;
   display: flex;
   justify-content: space-between;
