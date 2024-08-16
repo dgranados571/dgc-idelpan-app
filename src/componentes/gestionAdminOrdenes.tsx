@@ -14,6 +14,14 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const { productosDetalle } = productosUtil();
 
+    const estadosOp = [
+        { value: '', label: 'Todas' },
+        { value: 'OP_ABIERTA', label: 'Abiertas' },
+        { value: 'OP_DE_ALTA', label: 'Entregadas' }
+    ]
+
+    const [estadoBusquedaOp, setEstadoBusquedaOp] = useState('');
+
     const [ordenesPedido, setOrdenesPedido] = useState<GestionOrdenesDePedido[]>([]);
 
     const [detalleOp, setDetalleOP] = useState<OrdenPedidoProduct[]>([]);
@@ -38,29 +46,35 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
         if (!!usuarioLocalStorage) {
             const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
             setRoleUse(usuarioLocalStorageObj.role);
-            consultaOrdenesDePedido(usuarioLocalStorage);
+            consultaOrdenesDePedido();
         } else {
             ejecutaModalMensaje('Auth-010');
         }
-    }, [])
+    }, [estadoBusquedaOp])
 
-    const consultaOrdenesDePedido = async (usuarioLocalStorage: any) => {
+    const consultaOrdenesDePedido = async () => {
         setCargando(true);
-        const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
-        const body = {
-            usuario: usuarioLocalStorageObj.usuario,
-            estado: '',
-        }
-        const authServices = new AuthServices();
-        try {
-            const response: GenericResponse = await authServices.requestPost(body, 6);
-            if (response.estado) {
-                setOrdenesPedido(response.objeto);
+        let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
+
+        if (!!usuarioLocalStorage) {
+            const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
+            const body = {
+                usuario: usuarioLocalStorageObj.usuario,
+                estado: estadoBusquedaOp,
             }
-            setCargando(false);
-        } catch (error) {
-            setCargando(false);
-            ejecutaModalMensaje('Auth-002');
+            const authServices = new AuthServices();
+            try {
+                const response: GenericResponse = await authServices.requestPost(body, 6);
+                if (response.estado) {
+                    setOrdenesPedido(response.objeto);
+                }
+                setCargando(false);
+            } catch (error) {
+                setCargando(false);
+                ejecutaModalMensaje('Auth-002');
+            }
+        } else {
+            ejecutaModalMensaje('Auth-010');
         }
     }
 
@@ -148,11 +162,8 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
         try {
             const response: GenericResponse = await authServices.requestPost(body, 10);
             if (response.estado) {
-                let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
-                if (!!usuarioLocalStorage) {
-                    consultaOrdenesDePedido(usuarioLocalStorage);
-                    ejecutaModalMensaje(response.mensaje);
-                }
+                consultaOrdenesDePedido();
+                ejecutaModalMensaje(response.mensaje);
             }
             setCargando(false);
         } catch (error) {
@@ -176,6 +187,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
             const response: GenericResponse = await authServices.requestPost(body, 11);
             if (response.estado) {
                 sessionStorage.removeItem('modoPago');
+                consultaOrdenesDePedido();
                 cierraDetalleOrdenPedido();
             }
             ejecutaModalMensaje(response.mensaje);
@@ -204,10 +216,31 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
         });
     }
 
+
     return (
         <>
             <div className='div-style-form'>
-                <h3 className='titulo-form'>Ordenes de pedido</h3>
+                <div className="row">
+                    <div className="col-12 col-sm-12 col-md-6 col-lg-6" >
+                        <h3 className='titulo-form'>Ordenes de pedido</h3>
+                    </div>
+                    <div className="col-12 col-sm-12 col-md-6 col-lg-6" >
+                        {
+                            infoDetalleOp.vistaActiva ?
+                                <p></p>
+                                :
+                                <select className='form-control' value={estadoBusquedaOp} onChange={(e) => setEstadoBusquedaOp(e.target.value)} >
+                                    {
+                                        estadosOp.map((key, i) => {
+                                            return (
+                                                <option key={i} value={key.value}>{key.label}</option>
+                                            )
+                                        })
+                                    }
+                                </select>
+                        }
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-12 col-sm-12 col-md-12 col-lg-12" >
                         <p className='p-label-form my-3'>Aqui podrá gestionar las ordenes de pedido de sus clientes:</p>

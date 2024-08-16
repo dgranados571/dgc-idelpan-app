@@ -122,7 +122,6 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                             <hr />
                                             <div className='div-form'>
                                                 <p className='p-label-form'>Modo de pago: </p>
-
                                                 <select className={modoPagoError ? 'form-control form-control-error' : 'form-control'} value={modoPago} onChange={(e) => setModoPago(e.target.value)}  >
                                                     {
                                                         modoPagos.map((key, i) => {

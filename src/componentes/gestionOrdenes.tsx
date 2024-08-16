@@ -14,6 +14,14 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
 
   const { productosDetalle } = productosUtil();
 
+  const estadosOp = [
+    { value: '', label: 'Todas' },
+    { value: 'OP_ABIERTA', label: 'Abiertas' },
+    { value: 'OP_DE_ALTA', label: 'Entregadas' }
+  ]
+
+  const [estadoBusquedaOp, setEstadoBusquedaOp] = useState('');
+
   const [carritoEstado, setcarritoEstado] = useState('');
 
   const [modalMensaje, setModalMensaje] = useState({
@@ -24,7 +32,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
 
   const [ordenesPedido, setOrdenesPedido] = useState<GestionOrdenesDePedido[]>([]);
 
-  const [infoDelleOp, setInfoDelleOp] = useState({
+  const [infoDetalleOp, setInfoDetalleOp] = useState({
     vistaActiva: false,
     idDetalleOp: ''
   })
@@ -32,18 +40,16 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
   const [detalleOp, setDetalleOP] = useState<OrdenPedidoProduct[]>([]);
 
   useEffect(() => {
-    setCargando(true);
     let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
     if (!!usuarioLocalStorage) {
-      consultaOrdenesDePedido(usuarioLocalStorage);
+      consultaOrdenesDePedido();
       if (ordenPedido.length > 0) {
         setcarritoEstado('CARRITO_LLENO')
       }
     } else {
-      setCargando(false);
       ejecutaModalMensaje('Auth-010');
     }
-  }, [])
+  }, [estadoBusquedaOp])
 
   const cerrarOrden = async () => {
     setCargando(true);
@@ -72,22 +78,29 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
     }
   }
 
-  const consultaOrdenesDePedido = async (usuarioLocalStorage: any) => {
-    const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
-    const body = {
-      usuario: usuarioLocalStorageObj.usuario,
-      estado: '',
-    }
-    const authServices = new AuthServices();
-    try {
-      const response: GenericResponse = await authServices.requestPost(body, 6);
-      if (response.estado) {
-        setOrdenesPedido(response.objeto);
+  const consultaOrdenesDePedido = async () => {
+    setCargando(true);
+    let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
+    if (!!usuarioLocalStorage) {
+      const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
+      const body = {
+        usuario: usuarioLocalStorageObj.usuario,
+        estado: estadoBusquedaOp,
       }
+      const authServices = new AuthServices();
+      try {
+        const response: GenericResponse = await authServices.requestPost(body, 6);
+        if (response.estado) {
+          setOrdenesPedido(response.objeto);
+        }
+        setCargando(false);
+      } catch (error) {
+        setCargando(false);
+        ejecutaModalMensaje('Auth-002');
+      }
+    } else {
       setCargando(false);
-    } catch (error) {
-      setCargando(false);
-      ejecutaModalMensaje('Auth-002');
+      ejecutaModalMensaje('Auth-010');
     }
   }
 
@@ -253,7 +266,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
   }
 
   const detalleOrdenPedido = (ordePedido: GestionOrdenesDePedido) => {
-    setInfoDelleOp({
+    setInfoDetalleOp({
       vistaActiva: true,
       idDetalleOp: ordePedido.idProcesamiento
     })
@@ -262,7 +275,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
 
   const cierraDetalleOrdenPedido = () => {
     setDetalleOP([]);
-    setInfoDelleOp({
+    setInfoDetalleOp({
       vistaActiva: false,
       idDetalleOp: ''
     })
@@ -338,10 +351,10 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
         validateRedirect()
       }
       {
-        infoDelleOp.vistaActiva ?
+        infoDetalleOp.vistaActiva ?
           <div className='div-style-form'>
             <div className='div-p-label-form'>
-              <h3 className='titulo-form'>Detalle {infoDelleOp.idDetalleOp} </h3>
+              <h3 className='titulo-form'>Detalle {infoDetalleOp.idDetalleOp} </h3>
               <button className='btn btn-link a-link-whit-icon' onClick={() => cierraDetalleOrdenPedido()} >
                 Cerrar <FontAwesomeIcon icon={faTimesCircle} className='a-link-whit-icon' />
               </button>
@@ -380,49 +393,75 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
           </div>
           :
           <div className='div-style-form'>
-            <h3 className='titulo-form'>Mis ordenes de pedido</h3>
+            <div className="row">
+              <div className="col-12 col-sm-12 col-md-6 col-lg-6" >
+                <h3 className='titulo-form'>Ordenes de pedido</h3>
+              </div>
+              <div className="col-12 col-sm-12 col-md-6 col-lg-6" >
+                {
+                  infoDetalleOp.vistaActiva ?
+                    <p></p>
+                    :
+                    <select className='form-control' value={estadoBusquedaOp} onChange={(e) => setEstadoBusquedaOp(e.target.value)} >
+                      {
+                        estadosOp.map((key, i) => {
+                          return (
+                            <option key={i} value={key.value}>{key.label}</option>
+                          )
+                        })
+                      }
+                    </select>
+                }
+              </div>
+            </div>
             <div className="row">
               <div className="col-12 col-sm-12 col-md-12 col-lg-12" >
                 <p className='p-label-form my-3'>Aqui podrá vizualizar el detalle de cada una de sus ordenes de pedido:</p>
                 <hr />
-                <div className='div-item-produto'>
-                  <div className='div-header-list-op-1'>
-                    <p className='p-label-form my-0'>Fecha</p>
-                  </div>
-                  <div className='div-header-list-op-1'>
-                    <p className='p-label-form my-0'>Id Orden de Pedido: </p>
-                  </div>
-                  <div className='div-header-list-op-1'>
-                    <p className='p-label-form my-0'>Estado de la Orden: </p>
-                  </div>
-                  <div className='div-header-list-op-2'>
-                    <p className='p-label-form my-0'>Detalles</p>
+                <div className='div-item-produto-padre-padre'>
+                  <div className='div-item-produto-padre'>
+                    <div className='div-item-produto'>
+                      <div className='div-header-list-op-1'>
+                        <p className='p-label-form my-0'>Fecha</p>
+                      </div>
+                      <div className='div-header-list-op-1'>
+                        <p className='p-label-form my-0'>Id Orden de Pedido: </p>
+                      </div>
+                      <div className='div-header-list-op-1'>
+                        <p className='p-label-form my-0'>Estado de la Orden: </p>
+                      </div>
+                      <div className='div-header-list-op-2'>
+                        <p className='p-label-form my-0'>Detalles</p>
+                      </div>
+                    </div>
+                    {
+                      Object.entries(ordenesPedido).map(([key, ordenPedido]) => {
+                        return (
+                          <>
+
+                            <div className='div-item-produto'>
+                              <div className='div-header-list-op-1'>
+                                <p className='m-0'>{ordenPedido.fechaOrdenPedido}</p>
+                              </div>
+                              <div className='div-header-list-op-1'>
+                                <p className='m-0'>{ordenPedido.idProcesamiento}</p>
+                              </div>
+                              <div className='div-header-list-op-1'>
+                                <p className='m-0'>{ordenPedido.estadoOP}</p>
+                              </div>
+                              <div className='div-header-list-op-2'>
+                                <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido)} >
+                                  <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver
+                                </button>
+                              </div>
+                            </div>
+                          </>
+                        )
+                      })
+                    }
                   </div>
                 </div>
-                {
-                  Object.entries(ordenesPedido).map(([key, ordenPedido]) => {
-                    return (
-                      <>
-                        <div className='div-item-produto'>
-                          <div className='div-header-list-op-1'>
-                            <p className='m-0'>{ordenPedido.fechaOrdenPedido}</p>
-                          </div>
-                          <div className='div-header-list-op-1'>
-                            <p className='m-0'>{ordenPedido.idProcesamiento}</p>
-                          </div>
-                          <div className='div-header-list-op-1'>
-                            <p className='m-0'>{ordenPedido.estadoOP}</p>
-                          </div>
-                          <div className='div-header-list-op-2'>
-                            <button className='btn btn-link a-link-whit-icon' onClick={() => detalleOrdenPedido(ordenPedido)} >
-                              <FontAwesomeIcon icon={faEye} className='a-link-whit-icon' /> Ver
-                            </button>
-                          </div>
-                        </div>
-                      </>
-                    )
-                  })
-                }
+
               </div>
             </div>
           </div>
