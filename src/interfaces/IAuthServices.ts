@@ -106,3 +106,12 @@ export interface IUsuarios {
     id_procesamiento: string;
     iniciales_nombre: string;
 }
+
+export interface IinfoDetalleOp {
+    vistaActiva: boolean;
+    idDetalleOp: string;
+    idOp: number;
+    oPdeAlta: boolean;
+}
+
+

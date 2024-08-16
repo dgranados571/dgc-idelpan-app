@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { GestionOrdenesDePedido, OrdenPedidoProduct, TransaccionProps } from '../interfaces/IAuthServices';
+import { GestionOrdenesDePedido, IinfoDetalleOp, OrdenPedidoProduct, TransaccionProps } from '../interfaces/IAuthServices';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faTimesCircle, faShareFromSquare } from '@fortawesome/free-solid-svg-icons'
 import { AuthServices } from '../api/authServices';
 import { GenericResponse } from '../interfaces/IGenericResponse';
 import { useNavigate } from 'react-router-dom';
@@ -18,9 +18,11 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const [detalleOp, setDetalleOP] = useState<OrdenPedidoProduct[]>([]);
 
-    const [infoDelleOp, setInfoDelleOp] = useState({
+    const [infoDetalleOp, setInfoDetalleOp] = useState<IinfoDetalleOp>({
         vistaActiva: false,
-        idDetalleOp: ''
+        idDetalleOp: '',
+        idOp: 0,
+        oPdeAlta: false
     })
 
     const [roleUse, setRoleUse] = useState('');
@@ -32,23 +34,22 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
     });
 
     useEffect(() => {
-        setCargando(true);
         let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
         if (!!usuarioLocalStorage) {
             const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
             setRoleUse(usuarioLocalStorageObj.role);
             consultaOrdenesDePedido(usuarioLocalStorage);
         } else {
-            setCargando(false);
             ejecutaModalMensaje('Auth-010');
         }
     }, [])
 
     const consultaOrdenesDePedido = async (usuarioLocalStorage: any) => {
+        setCargando(true);
         const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
         const body = {
             usuario: usuarioLocalStorageObj.usuario,
-            estado: 'OP_ABIERTA',
+            estado: '',
         }
         const authServices = new AuthServices();
         try {
@@ -64,18 +65,26 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
     }
 
     const detalleOrdenPedido = (ordePedido: GestionOrdenesDePedido) => {
-        setInfoDelleOp({
+        let oPdeAlta = false;
+        if (ordePedido.estadoOP === 'OP_DE_ALTA') {
+            oPdeAlta = true;
+        }
+        setInfoDetalleOp({
             vistaActiva: true,
-            idDetalleOp: ordePedido.idProcesamiento
+            idDetalleOp: ordePedido.idProcesamiento,
+            idOp: ordePedido.idOp,
+            oPdeAlta
         })
         setDetalleOP(ordePedido.productosLista);
     }
 
     const cierraDetalleOrdenPedido = () => {
         setDetalleOP([]);
-        setInfoDelleOp({
+        setInfoDetalleOp({
             vistaActiva: false,
-            idDetalleOp: ''
+            idDetalleOp: '',
+            idOp: 0,
+            oPdeAlta: false
         })
     }
 
@@ -130,6 +139,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
     }
 
     const eliminarOp = async (ordenPedido: GestionOrdenesDePedido) => {
+        setCargando(true);
         const body = {
             usuario: ordenPedido.usuario,
             idOp: ordenPedido.idOp,
@@ -151,6 +161,49 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
         }
     }
 
+    const deAltaOpService = async () => {
+        setCargando(true);
+        const modoPago = sessionStorage.getItem('modoPago')
+        const usuarioLocalStorage = sessionStorage.getItem('usuarioApp') || '';
+        const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
+        const body = {
+            usuario: usuarioLocalStorageObj.usuario,
+            idOp: infoDetalleOp.idOp,
+            modoPago
+        }
+        const authServices = new AuthServices();
+        try {
+            const response: GenericResponse = await authServices.requestPost(body, 11);
+            if (response.estado) {
+                sessionStorage.removeItem('modoPago');
+                cierraDetalleOrdenPedido();
+            }
+            ejecutaModalMensaje(response.mensaje);
+            setCargando(false);
+        } catch (error) {
+            setCargando(false);
+            ejecutaModalMensaje('Auth-002');
+        }
+    }
+
+    const deAltaOp = () => {
+        sessionStorage.setItem('infoDetalleOp', JSON.stringify(infoDetalleOp));
+        setModalMensaje({
+            estado: true,
+            indiceMensaje: 'DAR_DE_ALTA_OP',
+            funcionSi: () => { deAltaOpService() }
+        })
+    }
+
+    const funcionControlModal = () => {
+        sessionStorage.removeItem('infoDetalleOp');
+        setModalMensaje({
+            estado: false,
+            indiceMensaje: '',
+            funcionSi: () => { }
+        });
+    }
+
     return (
         <>
             <div className='div-style-form'>
@@ -160,11 +213,13 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                         <p className='p-label-form my-3'>Aqui podrá gestionar las ordenes de pedido de sus clientes:</p>
                         <hr />
                         {
-                            infoDelleOp.vistaActiva ?
+                            infoDetalleOp.vistaActiva ?
                                 <div className='div-style-form'>
                                     <div className='div-p-label-form'>
-                                        <h3 className='titulo-form'>Detalle {infoDelleOp.idDetalleOp} </h3>
-                                        <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => cierraDetalleOrdenPedido()} />
+                                        <h3 className='titulo-form'>Detalle {infoDetalleOp.idDetalleOp} </h3>
+                                        <button className='btn btn-link a-link-whit-icon' onClick={() => cierraDetalleOrdenPedido()} >
+                                            Cerrar <FontAwesomeIcon icon={faTimesCircle} className='a-link-whit-icon' />
+                                        </button>
                                     </div>
                                     <hr />
                                     <div className="row">
@@ -175,10 +230,10 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                                                         <div className="card-info-nombre-padre">
                                                             <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
                                                             <div className="div-gestion-product-agrega-padre">
-                                                                <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
+                                                                <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
                                                             </div>
                                                             <div className="">
-                                                                <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
+                                                                <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
                                                             </div>
                                                             {
                                                                 precioProductoDetalle(ordenPedido)
@@ -191,6 +246,14 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                                     </div>
                                     <hr />
                                     <div className="div-gran-total">
+                                        {
+                                            infoDetalleOp.oPdeAlta ?
+                                                <p></p>
+                                                :
+                                                <button className='btn btn-link a-link-whit-icon p-0' onClick={() => deAltaOp()} >
+                                                    <FontAwesomeIcon icon={faShareFromSquare} className='a-link-whit-icon' />Dar de Alta
+                                                </button>
+                                        }
                                         {
                                             precioTotalOrdenDetalle()
                                         }
@@ -206,7 +269,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                                                     <p className='p-label-form my-0'>Fecha</p>
                                                 </div>
                                                 <div className='div-header-list-op-1'>
-                                                    <p className='p-label-form my-0'>Usuario</p>
+                                                    <p className='p-label-form my-0'>Cliente</p>
                                                 </div>
                                                 <div className='div-header-list-op-2'>
                                                     <p className='p-label-form my-0'>Id Op</p>
@@ -264,7 +327,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
             </div>
             {
                 modalMensaje.estado ?
-                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={() => { }} />
+                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={funcionControlModal} />
                     :
                     <></>
             }

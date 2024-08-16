@@ -76,7 +76,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
     const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
     const body = {
       usuario: usuarioLocalStorageObj.usuario,
-      estado: 'OP_ABIERTA',
+      estado: '',
     }
     const authServices = new AuthServices();
     try {
@@ -342,7 +342,9 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
           <div className='div-style-form'>
             <div className='div-p-label-form'>
               <h3 className='titulo-form'>Detalle {infoDelleOp.idDetalleOp} </h3>
-              <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => cierraDetalleOrdenPedido()} />
+              <button className='btn btn-link a-link-whit-icon' onClick={() => cierraDetalleOrdenPedido()} >
+                Cerrar <FontAwesomeIcon icon={faTimesCircle} className='a-link-whit-icon' />
+              </button>
             </div>
             <hr />
             <div className="row">
@@ -353,10 +355,10 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                       <div className="card-info-nombre-padre">
                         <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
                         <div className="div-gestion-product-agrega-padre">
-                          <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
+                          <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
                         </div>
                         <div className="">
-                          <p className="m-0">{ordenPedido.cantidadCanastas} Canastas</p>
+                          <p className="mx-0 my-0">{ordenPedido.cantidadPaquetes} Paquetes</p>
                         </div>
                         {
                           precioProductoDetalle(ordenPedido)
@@ -369,6 +371,7 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
             </div>
             <hr />
             <div className="div-gran-total">
+              <p></p>
               {
                 precioTotalOrdenDetalle()
               }

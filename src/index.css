@@ -479,7 +479,7 @@ code {
 
 .div-gran-total {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .div-actions-clientes {

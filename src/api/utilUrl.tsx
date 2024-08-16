@@ -65,6 +65,12 @@ export const UtilUrl = () => {
       urlEntornoLocal,
       urlDominioServidor,
       pathLambda: '/service/idelpan/eliminaOp'
+    },
+    11: {
+      urlEntornoLambda,
+      urlEntornoLocal,
+      urlDominioServidor,
+      pathLambda: '/service/idelpan/darDeAltaOp'
     }
   };
 

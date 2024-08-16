@@ -1,7 +1,7 @@
 import { ModalMensajeUtil } from './modalMensajeUtil';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
-import { DetalleProductState, ModalProps } from '../interfaces/IAuthServices';
+import { DetalleProductState, IinfoDetalleOp, ModalProps } from '../interfaces/IAuthServices';
 import './modalMensaje.css'
 import { useState } from 'react';
 
@@ -10,9 +10,17 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
     const { modalInfo } = ModalMensajeUtil();
     console.log('Modal Info --> ', modalInfo[indiceMensaje])
 
-    const [cantidad, setCantidad] = useState('');
+    const modoPagos = [
+        { value: 'INITIAL', label: 'Seleccione' },
+        { value: 'EFECTIVO', label: 'Efectivo' },
+        { value: 'CREDITO', label: 'Crédito' }
+    ]
 
+    const [cantidad, setCantidad] = useState('');
     const [cantidadError, setCantidadError] = useState(false);
+
+    const [modoPago, setModoPago] = useState('INITIAL')
+    const [modoPagoError, setModoPagoError] = useState(false)
 
     const agregaACarrito = () => {
         let controlCampo = false;
@@ -32,9 +40,19 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
         if (controlCampo) {
             setCantidadError(controlCampo);
         } else {
-            sessionStorage.setItem('cantidadPaquetes', cantidad); 
+            sessionStorage.setItem('cantidadPaquetes', cantidad);
             funcionSi();
             funcionControl();
+        }
+    }
+
+    const enviarDeAlta = () => {
+        setModoPagoError(false)
+        if (modoPago === 'INITIAL') {
+            setModoPagoError(true)
+        } else {
+            sessionStorage.setItem('modoPago', modoPago);
+            funcionSi();
         }
     }
 
@@ -69,7 +87,7 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                                 <p className='p-label-form my-0'> $ {detalleProductoObj.product.valorCanasta} </p>
                                             </div>
                                             <>
-                                                <hr />                                               
+                                                <hr />
                                                 <div className='div-form'>
                                                     <p className='p-label-form'>Cantidad en Paquetes: </p>
                                                     <input type="text" className={cantidadError ? 'form-control form-control-error' : 'form-control'} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='' autoComplete='off' />
@@ -78,6 +96,46 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                                     <button className='btn btn-primary bottom-custom' onClick={() => agregaACarrito()}>Agregar al carrito</button>
                                                 </div>
                                             </>
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            case 'DAR_DE_ALTA_OP':
+                const infoDetalleOp = sessionStorage.getItem('infoDetalleOp') || 'Error';
+                const infoDetalleOpObj: IinfoDetalleOp = JSON.parse(infoDetalleOp);
+                return (
+                    <>
+                        <div className='div-modal-active'>
+                            <div className='div-modal-element'>
+                                <div className="row">
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className='div-style-form'>
+                                            <div className='div-p-label-form'>
+                                                <p className='p-label-form my-0'>Dar de alta a {infoDetalleOpObj.idDetalleOp} </p>
+                                                <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => funcionControl()} />
+                                            </div>
+                                            <hr />
+                                            <div className='div-form'>
+                                                <p className='p-label-form'>Modo de pago: </p>
+
+                                                <select className={modoPagoError ? 'form-control form-control-error' : 'form-control'} value={modoPago} onChange={(e) => setModoPago(e.target.value)}  >
+                                                    {
+                                                        modoPagos.map((key, i) => {
+                                                            return (
+                                                                <option key={i} value={key.value}>{key.label}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div className='div-buttom-registra'>
+                                                <button className='btn btn-primary bottom-custom' onClick={() => enviarDeAlta()}>Enviar</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>

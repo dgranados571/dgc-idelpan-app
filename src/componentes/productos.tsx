@@ -15,22 +15,6 @@ const Productos: React.FC<ProductosProps> = ({ ordenPedido, setOrdenPedido }) =>
         funcionSi: () => { }
     });
 
-    const selecionaProducto = (idProduct: any) => {
-        const detalleProducto: DetalleProductState = {
-            activo: true,
-            idProduct,
-            product: productosDetalle[idProduct]
-        }
-        sessionStorage.setItem('detalleProducto', JSON.stringify(detalleProducto));
-        setModalMensaje({
-            estado: true,
-            indiceMensaje: 'GESTION_CARRITO_COMPRAS',
-            funcionSi: () => {
-                capturaProducto(detalleProducto);
-            }
-        })
-    }
-
     const capturaProducto = (detalleProducto: DetalleProductState) => {
         const cantidadPaquetesSesion = sessionStorage.getItem('cantidadPaquetes') || '0';
         const ordenPedidoFiltrado = ordenPedido.filter(idOp => idOp.idProduct === detalleProducto.idProduct);
@@ -71,6 +55,22 @@ const Productos: React.FC<ProductosProps> = ({ ordenPedido, setOrdenPedido }) =>
             }
             setOrdenPedido([...ordenPedido, productOP]);
         }
+    }
+
+    const selecionaProducto = (idProduct: any) => {
+        const detalleProducto: DetalleProductState = {
+            activo: true,
+            idProduct,
+            product: productosDetalle[idProduct]
+        }
+        sessionStorage.setItem('detalleProducto', JSON.stringify(detalleProducto));
+        setModalMensaje({
+            estado: true,
+            indiceMensaje: 'GESTION_CARRITO_COMPRAS',
+            funcionSi: () => {
+                capturaProducto(detalleProducto);
+            }
+        })
     }
 
     const funcionControlModal = () => {

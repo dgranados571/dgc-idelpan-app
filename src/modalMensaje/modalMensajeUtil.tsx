@@ -93,6 +93,12 @@ export const ModalMensajeUtil = () => {
       descripcion: 'Hemos eliminado la orden de pedido satisfactoriamente.',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
+    },
+    'Auth-015': {
+      titulo: 'Orden de pedido entregado.',
+      descripcion: 'Hemos cumplido con tus productos Idelpan. Estaremos muy atentos a tus nuevas ordenes de pedido',
+      icono: faCheckDouble,
+      claseIcono: 'modal-icono'
     }
 
   }
