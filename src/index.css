@@ -175,6 +175,13 @@ code {
   height: 100%;
 }
 
+.div-buttom-registra-inventario {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
 .bottom-custom {
   width: 10rem;
   background-color: orange;

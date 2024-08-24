@@ -160,8 +160,8 @@ const UsuariosApp: React.FC<TransaccionProps> = ({ setCargando }) => {
                 limpiarCampos();
                 consultaUsuariosIdelpan();
             }
-            setCargando(false);
             ejecutaModalMensaje(response.mensaje);
+            setCargando(false);
         } catch (error) {
             setCargando(false);
             ejecutaModalMensaje('Auth-002');

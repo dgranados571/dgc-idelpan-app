@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { TransaccionProps, Product, IInventario } from '../interfaces/IAuthServices'
+import { TransaccionProps, Product, IInventario, DetalleProductState } from '../interfaces/IAuthServices'
 import productosUtil from '../util/productosUtil';
 import { AuthServices } from '../api/authServices';
 import { useNavigate } from 'react-router-dom';
@@ -72,7 +72,7 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
             try {
                 const response: GenericResponse = await authServices.requestPost(body, 13);
                 if (response.estado) {
-                    const invetarioList = Object.entries(response.objeto).map(( [key, inventario] ) => {                        
+                    const invetarioList = Object.entries(response.objeto).map(([key, inventario]) => {
                         const idProduct = JSON.parse(JSON.stringify(inventario)).idProduct;
                         const unidadDisponible = JSON.parse(JSON.stringify(inventario)).cantidadDisponible;
                         const invetarioItem: IInventario = {
@@ -97,9 +97,60 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     }
 
+    const agregarInventarios = async (idProduct: string) => {
+        const detalleProductState: DetalleProductState = {
+            idProduct,
+            product: productosDetalle[idProduct],
+            activo: false
+        }
+        sessionStorage.setItem('infoProdutoInvetario', JSON.stringify(detalleProductState));
+        setModalMensaje({
+            estado: true,
+            indiceMensaje: 'CARGAR_INVENTARIO',
+            funcionSi: () => { agregaInventarioService() }
+        })
+    }
 
-    const agregarInventarios = async () => {
+    const funcionControlModal = () => {
+        sessionStorage.removeItem('infoProdutoInvetario');
+        setModalMensaje({
+            estado: false,
+            indiceMensaje: '',
+            funcionSi: () => { }
+        });
+    }
 
+    const agregaInventarioService = async () => {
+        setCargando(true);
+        let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
+        if (!!usuarioLocalStorage) {
+            const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
+            const cantidadAInventario = sessionStorage.getItem('cantidadPaquetes');
+            const productoInvetario = sessionStorage.getItem('infoProdutoInvetario') || 'Error';
+            const productoInvetarioObj: DetalleProductState = JSON.parse(productoInvetario);
+            const authServices = new AuthServices();
+            const body = {
+                usuario: usuarioLocalStorageObj.usuario,
+                idProduct: productoInvetarioObj.idProduct,
+                cantidadAInventario,
+            }
+            try {
+                const response: GenericResponse = await authServices.requestPost(body, 14);
+                if (response.estado) {
+                    sessionStorage.removeItem('cantidadPaquetes');
+                    sessionStorage.removeItem('infoProdutoInvetario');
+                }
+                ejecutaModalMensaje(response.mensaje);
+                setCargando(false);
+                consultaInventarioProductos();
+            } catch (error) {
+                setCargando(false);
+                ejecutaModalMensaje('Auth-002');
+            }
+        } else {
+            setCargando(false);
+            ejecutaModalMensaje('Auth-010');
+        }
     }
 
     const ejecutaModalMensaje = (indiceMsj: string) => {
@@ -143,12 +194,12 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
                             return (
                                 <div key={key} className="col-12 col-sm-6 col-md-6 col-lg-4 mb-4" >
                                     <div className="card-info-nombre-padre">
-                                        <p className="card-info-nombre m-0">{inventario.product.nombre} </p>                                        
+                                        <p className="card-info-nombre m-0">{inventario.product.nombre}</p>
                                         <div className="">
                                             <p className="m-0">Unidades disponibles: {inventario.unidadDisponible}</p>
                                         </div>
                                         <div className="">
-                                            <button className='btn btn-link a-link-login px-0' onClick={() => agregarInventarios()} >Agregar</button>
+                                            <button className='btn btn-link a-link-login px-0' onClick={() => agregarInventarios(inventario.idProduct)} >Agregar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -159,7 +210,7 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
             </div>
             {
                 modalMensaje.estado ?
-                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={() => { }} />
+                    <ModalMensaje funcionSi={modalMensaje.funcionSi} indiceMensaje={modalMensaje.indiceMensaje} funcionControl={funcionControlModal} />
                     :
                     <></>
             }

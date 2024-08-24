@@ -3,12 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { DetalleProductState, IinfoDetalleOp, ModalProps } from '../interfaces/IAuthServices';
 import './modalMensaje.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionControl }) => {
 
     const { modalInfo } = ModalMensajeUtil();
-    console.log('Modal Info --> ', modalInfo[indiceMensaje])
 
     const modoPagos = [
         { value: 'INITIAL', label: 'Seleccione' },
@@ -21,6 +20,10 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
 
     const [modoPago, setModoPago] = useState('INITIAL')
     const [modoPagoError, setModoPagoError] = useState(false)
+
+    useEffect(() => {
+        console.log('Modal Info --> ', modalInfo[indiceMensaje])
+    }, [])
 
     const agregaACarrito = () => {
         let controlCampo = false;
@@ -48,11 +51,35 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
 
     const enviarDeAlta = () => {
         setModoPagoError(false)
-        if (modoPago === 'INITIAL') {
+        if (cantidad) {
             setModoPagoError(true)
         } else {
             sessionStorage.setItem('modoPago', modoPago);
             funcionSi();
+        }
+    }
+
+    const registrarInventario = () => {
+        let controlCampo = false;
+        setCantidadError(controlCampo);
+        if (cantidad.length === 0) {
+            controlCampo = true;
+        } else {
+            const cantidadNumber = Number(cantidad);
+            if (Number.isNaN(cantidadNumber)) {
+                controlCampo = true;
+            } else {
+                if (cantidadNumber === 0) {
+                    controlCampo = true;
+                }
+            }
+        }
+        if (controlCampo) {
+            setCantidadError(controlCampo);
+        } else {
+            sessionStorage.setItem('cantidadPaquetes', cantidad);
+            funcionSi();
+            funcionControl();
         }
     }
 
@@ -138,6 +165,43 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            case 'CARGAR_INVENTARIO':
+                const productoInvetario = sessionStorage.getItem('infoProdutoInvetario') || 'Error';
+                const productoInvetarioObj: DetalleProductState = JSON.parse(productoInvetario);
+                return (
+                    <>
+                        <div className='div-modal-active'>
+                            <div className='div-modal-element'>
+                                <div className='div-style-form'>
+                                    <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
+                                        <div className="col-12 col-sm-12 col-md-12 col-lg-12">
+                                            <div className='div-p-label-form'>
+                                                <p className='p-label-form my-0'>Cargar al invetario:</p>
+                                                <p className='p-label-form my-0'> {productoInvetarioObj.product.nombre} </p>
+                                                <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => funcionControl()} />
+                                            </div>
+                                            <hr />
+                                            <div className='div-p-label-form'>
+                                                <p className='m-0'>Unidades x canasta: </p>
+                                                <p className='p-label-form my-0'> {productoInvetarioObj.product.PxC} paquetes</p>
+                                            </div>
+                                            <hr />
+                                            <div className='div-form'>
+                                                <p className='p-label-form'>Cantidad en Paquetes: </p>
+                                                <input type="text" className={cantidadError ? 'form-control form-control-error' : 'form-control'} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='' autoComplete='off' />
+                                            </div>
+                                            <div className='div-buttom-registra-inventario'>
+                                                <button className='btn btn-primary bottom-custom' onClick={() => { registrarInventario() }}>Cargar producto</button>
+                                            </div>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

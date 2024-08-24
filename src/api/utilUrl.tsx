@@ -83,6 +83,12 @@ export const UtilUrl = () => {
       urlEntornoLocal,
       urlDominioServidor,
       pathLambda: '/service/idelpan/consultaInventario'
+    },
+    14: {
+      urlEntornoLambda,
+      urlEntornoLocal,
+      urlDominioServidor,
+      pathLambda: '/service/idelpan/cargarAInventario'
     }
   };
 

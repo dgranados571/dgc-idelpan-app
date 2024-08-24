@@ -54,8 +54,8 @@ const RegistroClientes: React.FC<AuthProps> = ({ setRedirect, setCargando }) => 
                 if (response.estado) {
                     limpiarCampos();
                 }
-                setCargando(false);
                 ejecutaModalMensaje(response.mensaje);
+                setCargando(false);
             } catch (error) {
                 setCargando(false);
                 ejecutaModalMensaje('Auth-002');

@@ -100,8 +100,8 @@ export const ModalMensajeUtil = () => {
       claseIcono: 'modal-icono'
     },
     'Auth-016': {
-      titulo: 'Productos cargados satisfactoriamente.',
-      descripcion: 'Ha sido actualizada la lista de productos en la base de información',
+      titulo: 'Producto cargado satisfactoriamente.',
+      descripcion: 'Ha sido actualizada el inventario de productos en la base de información',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
     }
