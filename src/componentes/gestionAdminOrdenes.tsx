@@ -55,7 +55,6 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
     const consultaOrdenesDePedido = async () => {
         setCargando(true);
         let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
-
         if (!!usuarioLocalStorage) {
             const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
             const body = {
@@ -216,7 +215,6 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
         });
     }
 
-
     return (
         <>
             <div className='div-style-form'>
@@ -259,7 +257,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                                         {
                                             Object.entries(detalleOp).map(([key, ordenPedido]) => {
                                                 return (
-                                                    <div className="col-6 col-sm-6 col-md-6 col-lg-4 mb-4" >
+                                                    <div key={key} className="col-6 col-sm-6 col-md-6 col-lg-4 mb-4" >
                                                         <div className="card-info-nombre-padre">
                                                             <p className="card-info-nombre m-0">{productosDetalle[ordenPedido.idProduct].nombre} </p>
                                                             <div className="div-gestion-product-agrega-padre">
@@ -318,7 +316,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                                                 Object.entries(ordenesPedido).map(([key, ordenPedido]) => {
                                                     return (
                                                         <>
-                                                            <div className='div-item-produto'>
+                                                            <div key={key} className='div-item-produto'>
                                                                 <div className='div-header-list-op-1'>
                                                                     <p className='m-0'>{ordenPedido.fechaOrdenPedido}</p>
                                                                 </div>

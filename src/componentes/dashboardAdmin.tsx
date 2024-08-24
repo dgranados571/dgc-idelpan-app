@@ -8,6 +8,7 @@ import ModalMensaje from '../modalMensaje/modalMensaje';
 import Clientes from './clientes';
 import UsuariosApp from './usuariosApp';
 import GestionAdminOrdenes from './gestionAdminOrdenes';
+import InventarioAdmin from './inventarioAdmin';
 
 const DashboardAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
 
@@ -111,9 +112,7 @@ const DashboardAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
         switch (redirect) {
             case 'VISTA_INVENTARIOS':
                 return (
-                    <div className='div-style-form'>
-                        VISTA_INVENTARIOS
-                    </div>
+                   <InventarioAdmin setCargando={setCargando} />
                 )
             case 'VISTA_CLIENTES':
                 return (

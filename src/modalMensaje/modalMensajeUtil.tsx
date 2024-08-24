@@ -45,7 +45,6 @@ export const ModalMensajeUtil = () => {
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
     },
-
     'Auth-007': {
       titulo: 'Se ha enviado el correo exitosamente',
       descripcion: 'Hemos enviado un código de seguridad al correo registrado',
@@ -97,6 +96,12 @@ export const ModalMensajeUtil = () => {
     'Auth-015': {
       titulo: 'Orden de pedido entregado.',
       descripcion: 'Hemos cumplido con tus productos Idelpan. Estaremos muy atentos a tus nuevas ordenes de pedido',
+      icono: faCheckDouble,
+      claseIcono: 'modal-icono'
+    },
+    'Auth-016': {
+      titulo: 'Productos cargados satisfactoriamente.',
+      descripcion: 'Ha sido actualizada la lista de productos en la base de información',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
     }

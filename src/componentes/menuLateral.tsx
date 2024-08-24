@@ -35,9 +35,9 @@ const MenuLateralComponent: React.FC<MenuLateralProps> = ({ setOpenMenu, selecio
                 <div className='div-menu-lateral'>
                     <div className='div-dashboard-info-padre'>
                         {
-                            menuLateral.map((itemMenu) => {
+                            menuLateral.map((itemMenu, index) => {
                                 return (
-                                    <div className={itemMenu.className} onClick={() => selecionaMenu(itemMenu)}>
+                                    <div key={index} className={itemMenu.className} onClick={() => selecionaMenu(itemMenu)}>
                                         <FontAwesomeIcon icon={itemMenu.iconMenu} className='icon-menu-lateral' />
                                         <p className='m-0'>{itemMenu.nombreItem} </p>
                                     </div>

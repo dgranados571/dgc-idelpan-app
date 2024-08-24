@@ -59,7 +59,14 @@ export interface Product {
     nombre: string;
     PxC: number;
     valorPaquete: number,
-    valorCanasta: number
+    valorCanasta: number,
+    productoPorCanasta?: number,
+}
+
+export interface IInventario {
+    idProduct: string;
+    product: Product;
+    unidadDisponible: number
 }
 
 export interface DetalleProductState {

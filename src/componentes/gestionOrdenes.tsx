@@ -461,7 +461,6 @@ const GestionOrdenes: React.FC<GestionOrdenPedidoProps> = ({ setRedirect, setCar
                     }
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

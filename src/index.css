@@ -496,6 +496,11 @@ code {
   justify-content: flex-start;
 }
 
+.div-control-products{
+  display: flex;
+  justify-content: flex-end;
+}
+
 @media (min-width: 760px) {
 
   .div-buttioms-actions-op {

@@ -116,9 +116,7 @@ const Dashboard: React.FC<TransaccionProps> = ({ setCargando }) => {
                 )
             default:
                 return (
-                    <div className='div-style-form'>
-                        <Productos ordenPedido={ordenPedido} setOrdenPedido={setOrdenPedido} />
-                    </div>
+                    <Productos ordenPedido={ordenPedido} setOrdenPedido={setOrdenPedido} />
                 )
         }
     }
