@@ -513,6 +513,10 @@ code {
   justify-content: flex-start;
 }
 
+.margin-control-1{
+  margin-right: 15px;
+}
+
 @media (min-width: 760px) {
 
   .div-buttioms-actions-op {

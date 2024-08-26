@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { TransaccionProps, Product, IInventario, DetalleProductState } from '../interfaces/IAuthServices'
+import { TransaccionProps, Product, IInventario, DetalleProductState, IinfoDetalleInventario } from '../interfaces/IAuthServices'
 import productosUtil from '../util/productosUtil';
 import { AuthServices } from '../api/authServices';
 import { useNavigate } from 'react-router-dom';
@@ -113,6 +113,7 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const funcionControlModal = () => {
         sessionStorage.removeItem('infoProdutoInvetario');
+        sessionStorage.removeItem('infoDetalleInventario');
         setModalMensaje({
             estado: false,
             indiceMensaje: '',
@@ -175,8 +176,37 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
         navigate('/publicZone');
     }
 
-    const verDetalleInventarios = (idProduct: string) => {
-
+    const verDetalleInventarios = async (idProduct: string) => {
+        setCargando(true);
+        let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
+        if (!!usuarioLocalStorage) {
+            const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
+            const authServices = new AuthServices();
+            const body = {
+                usuario: usuarioLocalStorageObj.usuario,
+                idProduct
+            }
+            try {
+                const response: GenericResponse = await authServices.requestPost(body, 16);
+                if (response.estado) {
+                    sessionStorage.setItem('infoDetalleInventario', JSON.stringify(response.objeto));
+                    setModalMensaje({
+                        estado: true,
+                        indiceMensaje: 'DETALLE_INVENTARIO',
+                        funcionSi: () => { }
+                    })
+                } else {
+                    ejecutaModalMensaje(response.mensaje);
+                }
+                setCargando(false);
+            } catch (error) {
+                setCargando(false);
+                ejecutaModalMensaje('Auth-002');
+            }
+        } else {
+            setCargando(false);
+            ejecutaModalMensaje('Auth-010');
+        }
     }
 
     return (

@@ -1,13 +1,16 @@
 import { ModalMensajeUtil } from './modalMensajeUtil';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
-import { DetalleProductState, IinfoDetalleOp, ModalProps } from '../interfaces/IAuthServices';
+import { DetalleProductState, IinfoDetalleInventario, IinfoDetalleInventarioObj, IinfoDetalleOp, ModalProps } from '../interfaces/IAuthServices';
 import './modalMensaje.css'
 import { useEffect, useState } from 'react';
+import productosUtil from '../util/productosUtil';
 
 const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionControl }) => {
 
     const { modalInfo } = ModalMensajeUtil();
+
+    const { productosDetalle } = productosUtil();
 
     const modoPagos = [
         { value: 'INITIAL', label: 'Seleccione' },
@@ -199,6 +202,69 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                             </div>
                                             <div className='div-buttom-registra-inventario'>
                                                 <button className='btn btn-primary bottom-custom' onClick={() => { registrarInventario() }}>Cargar producto</button>
+                                            </div>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            case 'DETALLE_INVENTARIO':
+                const detallleInventario = sessionStorage.getItem('infoDetalleInventario') || 'Error';
+                const detallleInventarioObj: IinfoDetalleInventarioObj = JSON.parse(detallleInventario);
+                const nombrePoducto = productosDetalle[detallleInventarioObj.idProduct].nombre
+                return (
+                    <>
+                        <div className='div-modal-active'>
+                            <div className='div-modal-element'>
+                                <div className='div-style-form'>
+                                    <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
+                                        <div className="col-12 col-sm-12 col-md-12 col-lg-12">
+                                            <div className='div-p-label-form'>
+                                                <p className='p-label-form my-0'>Detalle Inventario:</p>
+                                                <p className='p-label-form my-0'>  {nombrePoducto} </p>
+                                                <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => funcionControl()} />
+                                            </div>
+                                            <hr />
+                                            <div className=''>
+                                                <div className=''>
+                                                    <div className='div-item-produto'>
+                                                        <div className='div-header-list-op-1 margin-control-1'>
+                                                            <p className='p-label-form my-0'>Fecha</p>
+                                                        </div>
+                                                        <div className='div-header-list-op-1 margin-control-1'>
+                                                            <p className='p-label-form my-0'>Operación</p>
+                                                        </div>
+                                                        <div className='div-header-list-op-2'>
+                                                            <p className='p-label-form my-0'>Cantidad</p>
+                                                        </div>
+                                                    </div>
+                                                    {
+                                                        Object.entries(detallleInventarioObj.listEventos).map(([key, eventos]) => {
+                                                            return (
+                                                                <>
+                                                                    <div key={key} className='div-item-produto'>
+                                                                        <div className='div-header-list-op-1 margin-control-1'>
+                                                                            <p className='m-0'>{eventos.fechaRegistroStr} {eventos.horaStr} </p>
+                                                                        </div>
+                                                                        <div className='div-header-list-op-1 margin-control-1'>
+                                                                            <p className='m-0'> {eventos.operacion} </p>
+                                                                        </div>
+                                                                        <div className='div-header-list-op-2'>
+                                                                            <p className='m-0'> {eventos.cantidad}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className='div-buttom-registra-inventario'>
+                                                <button className='btn btn-primary bottom-custom' onClick={() => { funcionControl() }}>Aceptar</button>
                                             </div>
                                         </div>
                                         <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>

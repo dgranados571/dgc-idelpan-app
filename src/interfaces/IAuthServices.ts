@@ -121,4 +121,17 @@ export interface IinfoDetalleOp {
     estadoOp: string;
 }
 
+export interface IinfoDetalleInventarioObj {
+    idProduct: string;
+    listEventos: IinfoDetalleInventario[];
+}
+
+export interface IinfoDetalleInventario {
+    fechaRegistroStr: string;
+    horaStr: string;
+    nombreProducto: string;
+	operacion: string;
+	cantidad: number;
+}
+
 
