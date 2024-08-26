@@ -508,6 +508,11 @@ code {
   justify-content: flex-end;
 }
 
+.div-butoms-product-inventario{
+  display: flex;
+  justify-content: flex-start;
+}
+
 @media (min-width: 760px) {
 
   .div-buttioms-actions-op {

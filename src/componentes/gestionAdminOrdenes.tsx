@@ -30,7 +30,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
         vistaActiva: false,
         idDetalleOp: '',
         idOp: 0,
-        oPdeAlta: false
+        estadoOp: ''
     })
 
     const [roleUse, setRoleUse] = useState('');
@@ -78,15 +78,11 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
     }
 
     const detalleOrdenPedido = (ordePedido: GestionOrdenesDePedido) => {
-        let oPdeAlta = false;
-        if (ordePedido.estadoOP === 'OP_DE_ALTA') {
-            oPdeAlta = true;
-        }
         setInfoDetalleOp({
             vistaActiva: true,
             idDetalleOp: ordePedido.idProcesamiento,
             idOp: ordePedido.idOp,
-            oPdeAlta
+            estadoOp: ordePedido.estadoOP
         })
         setDetalleOP(ordePedido.productosLista);
     }
@@ -97,7 +93,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
             vistaActiva: false,
             idDetalleOp: '',
             idOp: 0,
-            oPdeAlta: false
+            estadoOp: ''
         })
     }
 
@@ -173,6 +169,34 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const deAltaOpService = async () => {
         setCargando(true);
+        const usuarioLocalStorage = sessionStorage.getItem('usuarioApp') || '';
+        const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
+        const body = {
+            usuario: usuarioLocalStorageObj.usuario,
+            idOp: infoDetalleOp.idOp,
+            modoPago: ''
+        }
+        const authServices = new AuthServices();
+        try {
+            const response: GenericResponse = await authServices.requestPost(body, 11);
+            if (response.estado) {
+                consultaOrdenesDePedido();
+                cierraDetalleOrdenPedido();
+            }
+            ejecutaModalMensaje(response.mensaje);
+            setCargando(false);
+        } catch (error) {
+            setCargando(false);
+            ejecutaModalMensaje('Auth-002');
+        }
+    }
+
+    const deAltaOp = () => {
+        deAltaOpService()
+    }
+
+    const alistarPedidoService = async () => {
+        setCargando(true);
         const modoPago = sessionStorage.getItem('modoPago')
         const usuarioLocalStorage = sessionStorage.getItem('usuarioApp') || '';
         const usuarioLocalStorageObj = JSON.parse(usuarioLocalStorage);
@@ -183,7 +207,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
         }
         const authServices = new AuthServices();
         try {
-            const response: GenericResponse = await authServices.requestPost(body, 11);
+            const response: GenericResponse = await authServices.requestPost(body, 15);
             if (response.estado) {
                 sessionStorage.removeItem('modoPago');
                 consultaOrdenesDePedido();
@@ -197,12 +221,12 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
         }
     }
 
-    const deAltaOp = () => {
+    const alistarPedido = () => {
         sessionStorage.setItem('infoDetalleOp', JSON.stringify(infoDetalleOp));
         setModalMensaje({
             estado: true,
             indiceMensaje: 'DAR_DE_ALTA_OP',
-            funcionSi: () => { deAltaOpService() }
+            funcionSi: () => { alistarPedidoService() }
         })
     }
 
@@ -213,6 +237,28 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
             indiceMensaje: '',
             funcionSi: () => { }
         });
+    }
+
+    const actionsOperativosOp = () => {
+        switch (infoDetalleOp.estadoOp) {
+            case 'OP_ABIERTA':
+                return (
+                    <button className='btn btn-link a-link-whit-icon p-0' onClick={() => alistarPedido()} >
+                        <FontAwesomeIcon icon={faShareFromSquare} className='a-link-whit-icon' />Alistar Pedido
+                    </button>
+                )
+            case 'OP_ALISTAMIENTO':
+                return (
+                    <button className='btn btn-link a-link-whit-icon p-0' onClick={() => deAltaOp()} >
+                        <FontAwesomeIcon icon={faShareFromSquare} className='a-link-whit-icon' />Dar de Alta
+                    </button>
+                )
+            default:
+                return (
+                    <></>
+                )
+        }
+
     }
 
     return (
@@ -278,12 +324,7 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                                     <hr />
                                     <div className="div-gran-total">
                                         {
-                                            infoDetalleOp.oPdeAlta ?
-                                                <p></p>
-                                                :
-                                                <button className='btn btn-link a-link-whit-icon p-0' onClick={() => deAltaOp()} >
-                                                    <FontAwesomeIcon icon={faShareFromSquare} className='a-link-whit-icon' />Dar de Alta
-                                                </button>
+                                            actionsOperativosOp()
                                         }
                                         {
                                             precioTotalOrdenDetalle()

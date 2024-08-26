@@ -97,7 +97,7 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     }
 
-    const agregarInventarios = async (idProduct: string) => {
+    const agregarInventarios = (idProduct: string) => {
         const detalleProductState: DetalleProductState = {
             idProduct,
             product: productosDetalle[idProduct],
@@ -175,6 +175,10 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
         navigate('/publicZone');
     }
 
+    const verDetalleInventarios = (idProduct: string) => {
+
+    }
+
     return (
         <>
             <div className='div-style-form'>
@@ -198,8 +202,9 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
                                         <div className="">
                                             <p className="m-0">Unidades disponibles: {inventario.unidadDisponible}</p>
                                         </div>
-                                        <div className="">
+                                        <div className="div-butoms-product-inventario">
                                             <button className='btn btn-link a-link-login px-0' onClick={() => agregarInventarios(inventario.idProduct)} >Agregar</button>
+                                            <button className='btn btn-link a-link-login px-0 mx-3' onClick={() => verDetalleInventarios(inventario.idProduct)} >Ver detalle</button>
                                         </div>
                                     </div>
                                 </div>

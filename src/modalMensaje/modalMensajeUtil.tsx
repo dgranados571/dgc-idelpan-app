@@ -94,8 +94,8 @@ export const ModalMensajeUtil = () => {
       claseIcono: 'modal-icono'
     },
     'Auth-015': {
-      titulo: 'Orden de pedido entregado.',
-      descripcion: 'Hemos cumplido con tus productos Idelpan. Estaremos muy atentos a tus nuevas ordenes de pedido',
+      titulo: 'Orden de pedido en alistamiento.',
+      descripcion: 'Ya se esta trabajando en alistar la Orden de pedido, en tanto se confirme la entrega, valide en dar de alta la orden para actualizar los inventarios.',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
     },
@@ -104,7 +104,13 @@ export const ModalMensajeUtil = () => {
       descripcion: 'Ha sido actualizada el inventario de productos en la base de información',
       icono: faCheckDouble,
       claseIcono: 'modal-icono'
-    }
+    },
+    'Auth-017': {
+      titulo: 'Orden de pedido entregado.',
+      descripcion: 'Hemos cumplido con tus productos Idelpan. Estaremos muy atentos a tus nuevas ordenes de pedido',
+      icono: faCheckDouble,
+      claseIcono: 'modal-icono'
+    },
 
   }
 

@@ -118,7 +118,7 @@ export interface IinfoDetalleOp {
     vistaActiva: boolean;
     idDetalleOp: string;
     idOp: number;
-    oPdeAlta: boolean;
+    estadoOp: string;
 }
 
 

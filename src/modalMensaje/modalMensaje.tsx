@@ -143,10 +143,11 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                     <div className="col-12 col-sm-12 col-md-12 col-lg-12">
                                         <div className='div-style-form'>
                                             <div className='div-p-label-form'>
-                                                <p className='p-label-form my-0'>Dar de alta a {infoDetalleOpObj.idDetalleOp} </p>
+                                                <p className='p-label-form my-0'>Alistar pedido {infoDetalleOpObj.idDetalleOp}</p>
                                                 <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => funcionControl()} />
                                             </div>
                                             <hr />
+                                            <p className='p-label-form my-0'>Para iniciar el alistamiento del pedido es requerido indicar el modo de pago:</p>
                                             <div className='div-form'>
                                                 <p className='p-label-form'>Modo de pago: </p>
                                                 <select className={modoPagoError ? 'form-control form-control-error' : 'form-control'} value={modoPago} onChange={(e) => setModoPago(e.target.value)}  >
