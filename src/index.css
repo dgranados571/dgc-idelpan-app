@@ -482,6 +482,8 @@ code {
 
 .div-gestion-product-agrega {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .div-gran-total {
@@ -515,6 +517,16 @@ code {
 
 .margin-control-1{
   margin-right: 15px;
+}
+
+.div-percent-invetario-padre{
+  display: flex;
+  align-items: center;
+}
+
+.div-percent-invetario{
+  height: 1rem;
+  background-color: #5C5C5C;
 }
 
 @media (min-width: 760px) {

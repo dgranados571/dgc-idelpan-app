@@ -75,13 +75,14 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
                     const invetarioList = Object.entries(response.objeto).map(([key, inventario]) => {
                         const idProduct = JSON.parse(JSON.stringify(inventario)).idProduct;
                         const unidadDisponible = JSON.parse(JSON.stringify(inventario)).cantidadDisponible;
+                        const porcentajeRef = JSON.parse(JSON.stringify(inventario)).porcentajeRef;
                         const invetarioItem: IInventario = {
                             idProduct,
                             product: productosDetalle[idProduct],
-                            unidadDisponible
+                            unidadDisponible,
+                            porcentajeRef: `${porcentajeRef}%`
                         }
                         return invetarioItem
-
                     })
                     setInventario(invetarioList)
                 }
@@ -231,6 +232,10 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
                                         <p className="card-info-nombre m-0">{inventario.product.nombre}</p>
                                         <div className="">
                                             <p className="m-0">Unidades disponibles: {inventario.unidadDisponible}</p>
+                                        </div>
+                                        <div className="div-percent-invetario-padre">
+                                            <div className="div-percent-invetario" style={{backgroundColor: "orange", width: inventario.porcentajeRef}}></div>
+                                            <p className="mx-1 my-0">{inventario.porcentajeRef} </p>
                                         </div>
                                         <div className="div-butoms-product-inventario">
                                             <button className='btn btn-link a-link-login px-0' onClick={() => agregarInventarios(inventario.idProduct)} >Agregar</button>

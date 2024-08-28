@@ -1,6 +1,6 @@
 import { ModalMensajeUtil } from './modalMensajeUtil';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { faTimesCircle, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { DetalleProductState, IinfoDetalleInventario, IinfoDetalleInventarioObj, IinfoDetalleOp, ModalProps } from '../interfaces/IAuthServices';
 import './modalMensaje.css'
 import { useEffect, useState } from 'react';
@@ -50,6 +50,18 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
             funcionSi();
             funcionControl();
         }
+    }
+
+    const actualizaOpCantidad = (action: string) => {
+        let cantidadNumber = Number(cantidad);
+        if (action === 'MAS') {
+            cantidadNumber++
+        } else {
+            if(cantidadNumber > 1){
+                cantidadNumber--
+            }
+        }
+        setCantidad(String(cantidadNumber))
     }
 
     const enviarDeAlta = () => {
@@ -116,16 +128,19 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                                 <p className='m-0'>Valor x canasta: </p>
                                                 <p className='p-label-form my-0'> $ {detalleProductoObj.product.valorCanasta} </p>
                                             </div>
-                                            <>
-                                                <hr />
-                                                <div className='div-form'>
-                                                    <p className='p-label-form'>Cantidad en Paquetes: </p>
+                                            <hr />
+                                            <div className='div-form'>
+                                                <p className='p-label-form'>Cantidad en Paquetes: </p>
+                                                <div className="div-gestion-product-agrega mx-0 my-0">
+                                                    <FontAwesomeIcon icon={faMinusCircle} className='a-link-whit-icon' onClick={() => actualizaOpCantidad('MENOS')} />
                                                     <input type="text" className={cantidadError ? 'form-control form-control-error' : 'form-control'} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='' autoComplete='off' />
+                                                    <FontAwesomeIcon icon={faPlusCircle} className='a-link-whit-icon' onClick={() => actualizaOpCantidad('MAS')} />
                                                 </div>
-                                                <div className='div-buttom-registra'>
-                                                    <button className='btn btn-primary bottom-custom' onClick={() => agregaACarrito()}>Agregar al carrito</button>
-                                                </div>
-                                            </>
+                                            </div>
+                                            <div className='div-buttom-registra'>
+                                                <button className='btn btn-primary bottom-custom' onClick={() => agregaACarrito()}>Agregar al carrito</button>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>

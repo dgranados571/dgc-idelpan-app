@@ -67,6 +67,7 @@ export interface IInventario {
     idProduct: string;
     product: Product;
     unidadDisponible: number
+    porcentajeRef: string
 }
 
 export interface DetalleProductState {
@@ -88,7 +89,7 @@ export interface GestionOrdenesDePedido {
     fechaOrdenPedido: string;
     idProcesamiento: string;
     productosLista: OrdenPedidoProduct[];
-    estadoOP:string
+    estadoOP: string
 }
 
 export interface MenuLateral {
@@ -130,8 +131,8 @@ export interface IinfoDetalleInventario {
     fechaRegistroStr: string;
     horaStr: string;
     nombreProducto: string;
-	operacion: string;
-	cantidad: number;
+    operacion: string;
+    cantidad: number;
 }
 
 
