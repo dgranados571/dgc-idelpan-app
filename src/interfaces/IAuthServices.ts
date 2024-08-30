@@ -89,7 +89,8 @@ export interface GestionOrdenesDePedido {
     fechaOrdenPedido: string;
     idProcesamiento: string;
     productosLista: OrdenPedidoProduct[];
-    estadoOP: string
+    estadoOP: string,
+    modoPago: string
 }
 
 export interface MenuLateral {

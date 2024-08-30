@@ -529,6 +529,15 @@ code {
   background-color: #5C5C5C;
 }
 
+.div-inventario-padre{
+  height: 20rem;
+  overflow: auto;
+}
+
+.div-inventario-hijo{
+  overflow: auto;
+}
+
 @media (min-width: 760px) {
 
   .div-buttioms-actions-op {

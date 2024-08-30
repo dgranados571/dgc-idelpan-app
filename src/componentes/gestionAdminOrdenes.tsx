@@ -17,7 +17,8 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
     const estadosOp = [
         { value: '', label: 'Todas' },
         { value: 'OP_ABIERTA', label: 'Abiertas' },
-        { value: 'OP_DE_ALTA', label: 'Entregadas' }
+        { value: 'OP_ALISTAMIENTO', label: 'Alistamiento' },
+        { value: 'OP_DE_ALTA', label: 'Entregadas'}
     ]
 
     const [estadoBusquedaOp, setEstadoBusquedaOp] = useState('');
@@ -347,6 +348,9 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                                                     <p className='p-label-form my-0'>Id Op</p>
                                                 </div>
                                                 <div className='div-header-list-op-2'>
+                                                    <p className='p-label-form my-0'>Modo de pago</p>
+                                                </div>
+                                                <div className='div-header-list-op-2'>
                                                     <p className='p-label-form my-0'>Estado de la Orden</p>
                                                 </div>
                                                 <div className='div-header-list-op-2'>
@@ -366,6 +370,9 @@ const GestionAdminOrdenes: React.FC<TransaccionProps> = ({ setCargando }) => {
                                                                 </div>
                                                                 <div className='div-header-list-op-2'>
                                                                     <p className='m-0'>{ordenPedido.idProcesamiento}</p>
+                                                                </div>
+                                                                <div className='div-header-list-op-2'>
+                                                                    <p className='m-0'>{ordenPedido.modoPago}</p>
                                                                 </div>
                                                                 <div className='div-header-list-op-2'>
                                                                     <p className='m-0'>{ordenPedido.estadoOP}</p>

@@ -244,8 +244,8 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                                 <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => funcionControl()} />
                                             </div>
                                             <hr />
-                                            <div className=''>
-                                                <div className=''>
+                                            <div className='div-inventario-padre'>
+                                                <div className='div-inventario-hijo'>
                                                     <div className='div-item-produto'>
                                                         <div className='div-header-list-op-1 margin-control-1'>
                                                             <p className='p-label-form my-0'>Fecha</p>
