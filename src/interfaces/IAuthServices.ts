@@ -68,6 +68,8 @@ export interface IInventario {
     product: Product;
     unidadDisponible: number
     porcentajeRef: string
+    deltaSemanal: string,
+    deltaDiario: string
 }
 
 export interface DetalleProductState {
@@ -126,6 +128,10 @@ export interface IinfoDetalleOp {
 export interface IinfoDetalleInventarioObj {
     idProduct: string;
     listEventos: IinfoDetalleInventario[];
+    listDeltaSemanal: IinfoDetalleDeltaSemanal[];
+    listDeltaDiario: IinfoDetalleDeltaSemanal[];
+    deltaSemanal: string;
+	deltaDiario: string;
 }
 
 export interface IinfoDetalleInventario {
@@ -134,6 +140,12 @@ export interface IinfoDetalleInventario {
     nombreProducto: string;
     operacion: string;
     cantidad: number;
+}
+
+export interface IinfoDetalleDeltaSemanal {
+    fechaInicial: string;
+    fechaFinal: string;
+    cantidad: string;
 }
 
 

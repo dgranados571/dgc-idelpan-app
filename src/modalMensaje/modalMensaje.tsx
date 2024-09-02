@@ -1,16 +1,13 @@
 import { ModalMensajeUtil } from './modalMensajeUtil';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
-import { DetalleProductState, IinfoDetalleInventario, IinfoDetalleInventarioObj, IinfoDetalleOp, ModalProps } from '../interfaces/IAuthServices';
+import { DetalleProductState, IinfoDetalleOp, ModalProps } from '../interfaces/IAuthServices';
 import './modalMensaje.css'
 import { useEffect, useState } from 'react';
-import productosUtil from '../util/productosUtil';
 
 const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionControl }) => {
 
     const { modalInfo } = ModalMensajeUtil();
-
-    const { productosDetalle } = productosUtil();
 
     const modoPagos = [
         { value: 'INITIAL', label: 'Seleccione' },
@@ -28,7 +25,7 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
         console.log('Modal Info --> ', modalInfo[indiceMensaje])
     }, [])
 
-    const agregaACarrito = () => {
+    const ejecutaACarritoOInventario = () => {
         let controlCampo = false;
         setCantidadError(controlCampo);
         if (cantidad.length === 0) {
@@ -57,7 +54,7 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
         if (action === 'MAS') {
             cantidadNumber++
         } else {
-            if(cantidadNumber > 1){
+            if (cantidadNumber > 1) {
                 cantidadNumber--
             }
         }
@@ -69,32 +66,12 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
         if (cantidad) {
             setModoPagoError(true)
         } else {
-            sessionStorage.setItem('modoPago', modoPago);
-            funcionSi();
-        }
-    }
-
-    const registrarInventario = () => {
-        let controlCampo = false;
-        setCantidadError(controlCampo);
-        if (cantidad.length === 0) {
-            controlCampo = true;
-        } else {
-            const cantidadNumber = Number(cantidad);
-            if (Number.isNaN(cantidadNumber)) {
-                controlCampo = true;
+            if (modoPago === 'INITIAL') {
+                setModoPagoError(true)
             } else {
-                if (cantidadNumber === 0) {
-                    controlCampo = true;
-                }
+                sessionStorage.setItem('modoPago', modoPago);
+                funcionSi();
             }
-        }
-        if (controlCampo) {
-            setCantidadError(controlCampo);
-        } else {
-            sessionStorage.setItem('cantidadPaquetes', cantidad);
-            funcionSi();
-            funcionControl();
         }
     }
 
@@ -138,7 +115,7 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                                 </div>
                                             </div>
                                             <div className='div-buttom-registra'>
-                                                <button className='btn btn-primary bottom-custom' onClick={() => agregaACarrito()}>Agregar al carrito</button>
+                                                <button className='btn btn-primary bottom-custom' onClick={() => ejecutaACarritoOInventario()}>Agregar al carrito</button>
                                             </div>
 
                                         </div>
@@ -216,70 +193,7 @@ const ModalMensaje: React.FC<ModalProps> = ({ indiceMensaje, funcionSi, funcionC
                                                 <input type="text" className={cantidadError ? 'form-control form-control-error' : 'form-control'} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='' autoComplete='off' />
                                             </div>
                                             <div className='div-buttom-registra-inventario'>
-                                                <button className='btn btn-primary bottom-custom' onClick={() => { registrarInventario() }}>Cargar producto</button>
-                                            </div>
-                                        </div>
-                                        <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </>
-                )
-            case 'DETALLE_INVENTARIO':
-                const detallleInventario = sessionStorage.getItem('infoDetalleInventario') || 'Error';
-                const detallleInventarioObj: IinfoDetalleInventarioObj = JSON.parse(detallleInventario);
-                const nombrePoducto = productosDetalle[detallleInventarioObj.idProduct].nombre
-                return (
-                    <>
-                        <div className='div-modal-active'>
-                            <div className='div-modal-element'>
-                                <div className='div-style-form'>
-                                    <div className="row">
-                                        <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>
-                                        <div className="col-12 col-sm-12 col-md-12 col-lg-12">
-                                            <div className='div-p-label-form'>
-                                                <p className='p-label-form my-0'>Detalle Inventario:</p>
-                                                <p className='p-label-form my-0'>  {nombrePoducto} </p>
-                                                <FontAwesomeIcon icon={faTimesCircle} className='icon-cierra' onClick={() => funcionControl()} />
-                                            </div>
-                                            <hr />
-                                            <div className='div-inventario-padre'>
-                                                <div className='div-inventario-hijo'>
-                                                    <div className='div-item-produto'>
-                                                        <div className='div-header-list-op-1 margin-control-1'>
-                                                            <p className='p-label-form my-0'>Fecha</p>
-                                                        </div>
-                                                        <div className='div-header-list-op-1 margin-control-1'>
-                                                            <p className='p-label-form my-0'>Operación</p>
-                                                        </div>
-                                                        <div className='div-header-list-op-2'>
-                                                            <p className='p-label-form my-0'>Cantidad</p>
-                                                        </div>
-                                                    </div>
-                                                    {
-                                                        Object.entries(detallleInventarioObj.listEventos).map(([key, eventos]) => {
-                                                            return (
-                                                                <>
-                                                                    <div key={key} className='div-item-produto'>
-                                                                        <div className='div-header-list-op-1 margin-control-1'>
-                                                                            <p className='m-0'>{eventos.fechaRegistroStr} {eventos.horaStr} </p>
-                                                                        </div>
-                                                                        <div className='div-header-list-op-1 margin-control-1'>
-                                                                            <p className='m-0'> {eventos.operacion} </p>
-                                                                        </div>
-                                                                        <div className='div-header-list-op-2'>
-                                                                            <p className='m-0'> {eventos.cantidad}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </>
-                                                            )
-                                                        })
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div className='div-buttom-registra-inventario'>
-                                                <button className='btn btn-primary bottom-custom' onClick={() => { funcionControl() }}>Aceptar</button>
+                                                <button className='btn btn-primary bottom-custom' onClick={() => ejecutaACarritoOInventario()}>Cargar producto</button>
                                             </div>
                                         </div>
                                         <div className="col-12 col-sm-12 col-md-12 col-lg-12"></div>

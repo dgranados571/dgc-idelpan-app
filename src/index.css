@@ -530,8 +530,7 @@ code {
 }
 
 .div-inventario-padre{
-  height: 20rem;
-  overflow: auto;
+  height: auto;
 }
 
 .div-inventario-hijo{

@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import { TransaccionProps, Product, IInventario, DetalleProductState, IinfoDetalleInventario } from '../interfaces/IAuthServices'
+import { TransaccionProps, Product, IInventario, DetalleProductState, IinfoDetalleInventarioObj } from '../interfaces/IAuthServices'
 import productosUtil from '../util/productosUtil';
 import { AuthServices } from '../api/authServices';
 import { useNavigate } from 'react-router-dom';
 import ModalMensaje from '../modalMensaje/modalMensaje';
 import { GenericResponse } from '../interfaces/IGenericResponse';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle, } from '@fortawesome/free-solid-svg-icons'
 
 const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
 
     const navigate = useNavigate();
 
     const { productosDetalle } = productosUtil();
-
+    const [vistaDetalleInventario, setVistaDetalleInventario] = useState(false);
     const [roleUse, setRoleUse] = useState('');
     const [inventario, setInventario] = useState<IInventario[]>([]);
+
+    const operacionesInventario = [
+        { value: '', label: 'Todas' },
+        { value: 'Adiciona', label: 'Adiciona' },
+        { value: 'Extrae', label: 'Extrae' },
+    ]
 
     const [modalMensaje, setModalMensaje] = useState({
         estado: false,
@@ -76,11 +84,15 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
                         const idProduct = JSON.parse(JSON.stringify(inventario)).idProduct;
                         const unidadDisponible = JSON.parse(JSON.stringify(inventario)).cantidadDisponible;
                         const porcentajeRef = JSON.parse(JSON.stringify(inventario)).porcentajeRef;
+                        const deltaSemanal = JSON.parse(JSON.stringify(inventario)).deltaSemanal;
+                        const deltaDiario = JSON.parse(JSON.stringify(inventario)).deltaDiario;
                         const invetarioItem: IInventario = {
                             idProduct,
                             product: productosDetalle[idProduct],
                             unidadDisponible,
-                            porcentajeRef: `${porcentajeRef}%`
+                            porcentajeRef: `${porcentajeRef}%`,
+                            deltaSemanal,
+                            deltaDiario
                         }
                         return invetarioItem
                     })
@@ -95,7 +107,6 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
             setCargando(false);
             ejecutaModalMensaje('Auth-010');
         }
-
     }
 
     const agregarInventarios = (idProduct: string) => {
@@ -110,16 +121,6 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
             indiceMensaje: 'CARGAR_INVENTARIO',
             funcionSi: () => { agregaInventarioService() }
         })
-    }
-
-    const funcionControlModal = () => {
-        sessionStorage.removeItem('infoProdutoInvetario');
-        sessionStorage.removeItem('infoDetalleInventario');
-        setModalMensaje({
-            estado: false,
-            indiceMensaje: '',
-            funcionSi: () => { }
-        });
     }
 
     const agregaInventarioService = async () => {
@@ -177,7 +178,16 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
         navigate('/publicZone');
     }
 
-    const verDetalleInventarios = async (idProduct: string) => {
+    const funcionControlModal = () => {
+        sessionStorage.removeItem('infoProdutoInvetario');
+        setModalMensaje({
+            estado: false,
+            indiceMensaje: '',
+            funcionSi: () => { }
+        });
+    }
+
+    const verDetalleInventarios = async (idProduct: string, operacion: string) => {
         setCargando(true);
         let usuarioLocalStorage = sessionStorage.getItem('usuarioApp');
         if (!!usuarioLocalStorage) {
@@ -185,17 +195,14 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
             const authServices = new AuthServices();
             const body = {
                 usuario: usuarioLocalStorageObj.usuario,
-                idProduct
+                idProduct,
+                operacion
             }
             try {
                 const response: GenericResponse = await authServices.requestPost(body, 16);
                 if (response.estado) {
                     sessionStorage.setItem('infoDetalleInventario', JSON.stringify(response.objeto));
-                    setModalMensaje({
-                        estado: true,
-                        indiceMensaje: 'DETALLE_INVENTARIO',
-                        funcionSi: () => { }
-                    })
+                    setVistaDetalleInventario(true)
                 } else {
                     ejecutaModalMensaje(response.mensaje);
                 }
@@ -208,6 +215,131 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
             setCargando(false);
             ejecutaModalMensaje('Auth-010');
         }
+    }
+
+    const detalleInventarioAction = (nameOperation: string) => {
+        const detallleInventario = sessionStorage.getItem('infoDetalleInventario') || 'Error';
+        const detallleInventarioObj: IinfoDetalleInventarioObj = JSON.parse(detallleInventario);
+        verDetalleInventarios(detallleInventarioObj.idProduct, nameOperation)
+    }
+
+    const cierraDetalleInventarioAction = () => {
+        sessionStorage.removeItem('infoDetalleInventario');
+        setVistaDetalleInventario(false)
+    }
+
+    const detalleInventarioVista = () => {
+        const detallleInventario = sessionStorage.getItem('infoDetalleInventario') || 'Error';
+        const detallleInventarioObj: IinfoDetalleInventarioObj = JSON.parse(detallleInventario);
+        const nombrePoducto = productosDetalle[detallleInventarioObj.idProduct].nombre
+        return (
+            <div className="row">
+                <div className="col-12 col-sm-12 col-md-12 col-lg-12">
+                    <div className='div-p-label-form'>
+                        <p className='p-label-form my-0'>Detalle Inventario:</p>
+                        <p className='p-label-form my-0'>  {nombrePoducto} </p>
+                        <button className='btn btn-link a-link-whit-icon' onClick={() => { cierraDetalleInventarioAction() }} >
+                            Cerrar <FontAwesomeIcon icon={faTimesCircle} className='a-link-whit-icon' />
+                        </button>
+                    </div>
+                    <hr />
+                    <p className='p-label-form mx-0 my-2'>Detalle delta semanal:</p>
+                    {
+                        Object.entries(detallleInventarioObj.listDeltaSemanal).map(([key, eventos]) => {
+                            return (
+                                <>
+                                    <div key={key} className='div-item-produto'>
+                                        <div className='div-header-list-op-1 margin-control-1'>
+                                            <p className='m-0'>Del</p>
+                                            <p className='mx-2 my-0'>{eventos.fechaInicial} </p>
+                                            <p className='m-0'> a </p>
+                                            <p className='mx-2 my-0'> {eventos.fechaFinal} </p>
+                                        </div>
+                                        <div className='div-header-list-op-2'>
+                                            <p className='m-0'> {eventos.cantidad} Unidades</p>
+                                        </div>
+                                    </div>
+                                </>
+                            )
+                        })
+                    }
+                    <div className='div-p-label-form'>
+                        <p className='p-label-form my-0'>Total delta semanal:</p>
+                        <p className='p-label-form my-0'>{detallleInventarioObj.deltaSemanal} Unidades</p>
+                    </div>
+                    <hr />
+                    <p className='p-label-form mx-0 my-2'>Detalle delta diario:</p>
+                    {
+                        Object.entries(detallleInventarioObj.listDeltaDiario).map(([key, eventos]) => {
+                            return (
+                                <>
+                                    <div key={key} className='div-item-produto'>
+                                        <div className='div-header-list-op-1 margin-control-1'>
+                                            <p className='m-0'>Del</p>
+                                            <p className='mx-2 my-0'>{eventos.fechaInicial} </p>
+                                        </div>
+                                        <div className='div-header-list-op-2'>
+                                            <p className='m-0'> {eventos.cantidad} Unidades</p>
+                                        </div>
+                                    </div>
+                                </>
+                            )
+                        })
+                    }
+                     <div className='div-p-label-form'>
+                        <p className='p-label-form my-0'>Total delta diario:</p>
+                        <p className='p-label-form my-0'>{detallleInventarioObj.deltaDiario} Unidades</p>
+                    </div>
+
+                    <hr />
+                    <p className='p-label-form mx-0 my-2'>Filtrar por operación:</p>
+                    <select className='form-control' onChange={(e) => detalleInventarioAction(e.target.value)} >
+                        {
+                            operacionesInventario.map((key, i) => {
+                                return (
+                                    <option key={i} value={key.value}>{key.label}</option>
+                                )
+                            })
+                        }
+                    </select>
+                    <hr />
+                    <div className='div-inventario-padre'>
+                        <div className='div-inventario-hijo'>
+                            <div className='div-item-produto'>
+                                <div className='div-header-list-op-1 margin-control-1'>
+                                    <p className='p-label-form my-0'>Fecha</p>
+                                </div>
+                                <div className='div-header-list-op-1 margin-control-1'>
+                                    <p className='p-label-form my-0'>Operación</p>
+                                </div>
+                                <div className='div-header-list-op-2'>
+                                    <p className='p-label-form my-0'>Cantidad</p>
+                                </div>
+                            </div>
+                            {
+                                Object.entries(detallleInventarioObj.listEventos).map(([key, eventos]) => {
+                                    return (
+                                        <>
+                                            <div key={key} className='div-item-produto'>
+                                                <div className='div-header-list-op-1 margin-control-1'>
+                                                    <p className='m-0'>{eventos.fechaRegistroStr} {eventos.horaStr} </p>
+                                                </div>
+                                                <div className='div-header-list-op-1 margin-control-1'>
+                                                    <p className='m-0'> {eventos.operacion} </p>
+                                                </div>
+                                                <div className='div-header-list-op-2'>
+                                                    <p className='m-0'> {eventos.cantidad} Unidades</p>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -223,30 +355,48 @@ const InventarioAdmin: React.FC<TransaccionProps> = ({ setCargando }) => {
                         :
                         <></>
                 }
-                <div className="row">
-                    {
-                        Object.entries(inventario).map(([key, inventario]) => {
-                            return (
-                                <div key={key} className="col-12 col-sm-6 col-md-6 col-lg-4 mb-4" >
-                                    <div className="card-info-nombre-padre">
-                                        <p className="card-info-nombre m-0">{inventario.product.nombre}</p>
-                                        <div className="">
-                                            <p className="m-0">Unidades disponibles: {inventario.unidadDisponible}</p>
-                                        </div>
-                                        <div className="div-percent-invetario-padre">
-                                            <div className="div-percent-invetario" style={{backgroundColor: "orange", width: inventario.porcentajeRef}}></div>
-                                            <p className="mx-1 my-0">{inventario.porcentajeRef} </p>
-                                        </div>
-                                        <div className="div-butoms-product-inventario">
-                                            <button className='btn btn-link a-link-login px-0' onClick={() => agregarInventarios(inventario.idProduct)} >Agregar</button>
-                                            <button className='btn btn-link a-link-login px-0 mx-3' onClick={() => verDetalleInventarios(inventario.idProduct)} >Ver detalle</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
+                {
+                    vistaDetalleInventario ?
+                        <>
+                            {
+                                detalleInventarioVista()
+                            }
+                        </>
+                        :
+                        <>
+                            <div className="row">
+                                {
+                                    Object.entries(inventario).map(([key, inventario]) => {
+                                        return (
+                                            <div key={key} className="col-12 col-sm-6 col-md-6 col-lg-4 mb-4" >
+                                                <div className="card-info-nombre-padre">
+                                                    <p className="card-info-nombre m-0">{inventario.product.nombre}</p>
+                                                    <div className="">
+                                                        <p className="m-0">Delta semanal: {inventario.deltaSemanal}</p>
+                                                    </div>
+                                                    <div className="">
+                                                        <p className="m-0">Delta diario: {inventario.deltaDiario}</p>
+                                                    </div>
+                                                    <div className="">
+                                                        <p className="m-0">Unidades disponibles: {inventario.unidadDisponible}</p>
+                                                    </div>
+                                                    <div className="div-percent-invetario-padre">
+                                                        <div className="div-percent-invetario" style={{ backgroundColor: "orange", width: inventario.porcentajeRef }}></div>
+                                                        <p className="mx-1 my-0">{inventario.porcentajeRef} </p>
+                                                    </div>
+                                                    <div className="div-butoms-product-inventario">
+                                                        <button className='btn btn-link a-link-login px-0' onClick={() => agregarInventarios(inventario.idProduct)} >Agregar</button>
+                                                        <button className='btn btn-link a-link-login px-0 mx-3' onClick={() => verDetalleInventarios(inventario.idProduct, '')} >Ver detalle</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </>
+
+                }
             </div>
             {
                 modalMensaje.estado ?
